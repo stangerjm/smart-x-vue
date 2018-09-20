@@ -1,15 +1,27 @@
 {
   "name": "smart-x-vue",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.1",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name smart-x-vue ./src/main.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
+  "main": "./dist/smart-x-vue.common.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
   "dependencies": {
-    "vue": "^2.5.17"
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "moment": "^2.22.2",
+    "vue": "^2.5.17",
+    "vue-flatpickr-component": "^8.0.0",
+    "vue-moment": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",
@@ -31,7 +43,8 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/prettier"
+      "@vue/prettier",
+      "plugin:prettier/recommended"
     ],
     "rules": {},
     "parserOptions": {
