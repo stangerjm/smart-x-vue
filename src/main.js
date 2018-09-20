@@ -1,3 +1,5 @@
+import { initSandbox } from "../sandbox";
+
 import Vue from "vue";
 
 // Bit level components
@@ -77,3 +79,5 @@ export {
   SmartTable,
   SmartTabs
 };
+
+initSandbox();

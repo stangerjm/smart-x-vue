@@ -6,6 +6,9 @@
                     :cell-value="item[key]"
                     :cell-title="key"
                     :is-table-key="index < 2">
+      <template slot-scope="{ obj }">
+        {{ obj.name.value }}
+      </template>
     </bit-table-cell>
 
     <!-- Action container cell -->

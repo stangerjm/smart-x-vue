@@ -21,6 +21,10 @@
       {{ cellValue.value | moment(config.dateFormat) }}
     </template>
 
+    <template v-else-if="cellValue.type === Object.name">
+      <slot :obj="cellValue.value"></slot>
+    </template>
+
     <!-- Render value as text if anything else -->
     <template v-else>
       {{ cellValue.value }}
