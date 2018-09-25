@@ -166,7 +166,11 @@ export default {
      * @returns {boolean}
      */
     isDisplayHeading(heading) {
-      if (this.ignoreFields.includes(heading) || heading[0] === "_") {
+      if (
+        this.ignoreFields.includes(heading) ||
+        heading[0] === "_" ||
+        heading.toLowerCase() === "id"
+      ) {
         return false;
       }
 
