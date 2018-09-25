@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App";
 import Router from "vue-router";
+import Store from "./store";
 
 Vue.use(Router);
 
@@ -11,6 +12,7 @@ export function initSandbox() {
     router: new Router({
       routes: [{ path: "*", name: "Home", component: App }]
     }),
+    store: Store,
     render: h => h(App)
   }).$mount("#app");
 }

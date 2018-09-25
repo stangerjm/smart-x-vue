@@ -1,26 +1,64 @@
 <template>
   <div id="app">
-    <smart-table default-context="test" :table-data="tableData"></smart-table>
+    <!--<smart-form :form-data="formData" :on-submit="submitData"></smart-form>-->
+    <smart-table :table-data="devices" default-context="test" :props-to-link="propsToLink"></smart-table>
   </div>
 </template>
 
 <script>
+import SmartForm from "../src/components/smart-form";
 import SmartTable from "../src/components/smart-table";
-import BitBtn from "../src/components/bit-btn";
+import { createLinkToRecord } from "../src/global/mixins";
+import { createNamespacedHelpers } from "vuex";
+
+const { mapGetters } = createNamespacedHelpers("people");
 
 export default {
   name: "app",
   components: {
-    BitBtn,
+    SmartForm,
     SmartTable
+  },
+  computed: {
+    ...mapGetters(["getPeople", "getDataSortedBy"]),
+    propsToLink() {
+      return {
+        manufacturerName: createLinkToRecord({
+          linkContext: "Manufacturer",
+          linkAction: "Details",
+          destinationLookupKey: "name",
+          destinationTable: this.getPeople,
+          destinationIdKey: "_id"
+        })
+      };
+    }
   },
   data() {
     return {
-      tableData: [
-        { id: 1, name: "James", age: 25, child: { name: "James" } },
-        { id: 2, name: "Joel", age: 23, child: { name: "Lilly" } }
-      ]
+      devices: [
+        { id: 1, deviceModel: "TEST", manufacturerName: "James" },
+        { id: 2, deviceModel: "ANOTHER", manufacturerName: "James" },
+        { id: 3, deviceModel: "More", manufacturerName: "Smart Start" },
+        { id: 4, deviceModel: "Device 1", manufacturerName: "Draeger" },
+        { id: 5, deviceModel: "Device 2", manufacturerName: "Smart Start" },
+        { id: 6, deviceModel: "Device 3", manufacturerName: "Manufacturer 3" }
+      ],
+      formData: {
+        name: String,
+        age: Number,
+        child: ["James", "Jesse", "Jackson", "Jason"],
+        isEmployee: Boolean,
+        birthday: Date
+      }
     };
+  },
+  methods: {
+    submitData(submittedData) {
+      console.log(submittedData);
+    }
+  },
+  created() {
+    this.$store.dispatch("people/fetchPeopleData");
   }
 };
 </script>

@@ -1,4 +1,6 @@
-import { initSandbox } from "../sandbox";
+if (process.env.NODE_ENV === "development") {
+  import("../sandbox").then(init => init.initSandbox());
+}
 
 import Vue from "vue";
 
@@ -36,17 +38,25 @@ import {
   toTitleCase,
   createSchema,
   getNonReactiveCopy,
-  getItemId
+  getItemId,
+  createLinkToRecord
 } from "./global/mixins";
 
-export { toTitleCase, createSchema, getNonReactiveCopy, getItemId };
+export {
+  toTitleCase,
+  createSchema,
+  getNonReactiveCopy,
+  getItemId,
+  createLinkToRecord
+};
 
 // Include mixins
 Vue.mixin({
   methods: {
     createSchema: createSchema,
     getNonReactiveCopy: getNonReactiveCopy,
-    getItemId: getItemId
+    getItemId: getItemId,
+    createLinkToRecord: createLinkToRecord
   },
   filters: {
     toTitleCase: toTitleCase
@@ -79,5 +89,3 @@ export {
   SmartTable,
   SmartTabs
 };
-
-initSandbox();

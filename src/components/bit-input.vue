@@ -1,9 +1,10 @@
 <template>
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
+    <!-- Render label regardless of input type -->
+    <label class="bit-input--label" :for="inputId ? inputId : randomId">{{labelText}}</label>
 
     <!-- Render as a checkbox if value is a boolean -->
-    <template v-if="inputType === 'checkbox'">
-      <label class="bit-input--label" :for="inputName">{{labelText}}</label>
+    <template v-if="inputType === InputTypes.CHECKBOX">
       <input class="bit-input--field"
              :id="inputName"
              :type="inputType"
@@ -16,8 +17,7 @@
     </template>
 
     <!-- Render as a date-picker if value is a date -->
-    <template v-else-if="inputType === 'date'">
-      <label class="bit-input--label" :for="inputId ? inputId : randomId">{{labelText}}</label>
+    <template v-else-if="inputType === InputTypes.DATE">
       <flat-pickr class="bit-input--field bit-input--date"
                   :id="inputId ? inputId : randomId"
                   :name="inputName"
@@ -30,7 +30,6 @@
 
     <!-- Render as an input box if value is any other type -->
     <template v-else>
-      <label class="bit-input--label" :for="inputId ? inputId : randomId">{{labelText}}</label>
       <input class="bit-input--field"
              :id="inputId ? inputId : randomId"
              :value="value"
@@ -46,6 +45,7 @@
 import FlatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { config } from "../../app.config.js";
+import { InputTypes } from "../global/constants/inputTypes";
 
 /**
  * A component that can be rendered as a text, number, or datepicker input.
@@ -116,6 +116,10 @@ export default {
         minDate: "01/01/1900",
         maxDate: "12/31/2099"
       },
+      /**
+       * Allow imported InputTypes constant to be accessible in the template.
+       */
+      InputTypes: InputTypes,
       /**
        * Flag that keeps track of the state of a checkbox
        */

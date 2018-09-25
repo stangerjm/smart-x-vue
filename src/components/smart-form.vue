@@ -15,6 +15,20 @@
                type="hidden"
                :key="key"
                v-model="item.value">
+
+        <!-- Render as a select element if value is a list of items -->
+        <bit-select class="smart-form--field"
+                    :key="key"
+                    v-else-if="Array.isArray(item.value)"
+                    :input-name="key"
+                    :label-text="key | toTitleCase"
+                    :readonly="readonlyInputs.includes(key)"
+                    :select-data="item.value"
+                    v-model="selectData[key]"
+                    :stack-elements="true">
+        </bit-select>
+
+        <!-- Render as a bit-input component if above conditions are false -->
         <bit-input class="smart-form--field"
                    :key="key"
                    v-else-if="isValidField(item, key)"
@@ -33,6 +47,8 @@
 <script>
 import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
+import BitSelect from "./bit-select";
+import { InputTypes } from "../global/constants/inputTypes";
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -42,6 +58,7 @@ import BitInput from "./bit-input";
 export default {
   name: "smart-form",
   components: {
+    BitSelect,
     BitBtn,
     BitInput
   },
@@ -64,6 +81,7 @@ export default {
     },
     /**
      * The model that the form should use as a template.
+     * Note: any properties containing arrays should only contain primitive values.
      */
     formData: {
       type: Object,
@@ -111,11 +129,13 @@ export default {
     }
   },
   data() {
+    let masterData = this.createSchema(this.formData);
     return {
       /**
        * Will contain typed schema derived from the "formData" local property.
        */
-      masterData: this.createSchema(this.formData)
+      masterData: masterData,
+      selectData: this.getSelectData(masterData)
     };
   },
   methods: {
@@ -127,14 +147,16 @@ export default {
     getType: function(item) {
       let type = item.type;
       switch (type) {
-        case "Boolean":
-          return "checkbox";
-        case "Number":
-          return "number";
-        case "Date":
-          return "date";
+        case Array.name:
+          return InputTypes.SELECT;
+        case Boolean.name:
+          return InputTypes.CHECKBOX;
+        case Number.name:
+          return InputTypes.NUMBER;
+        case Date.name:
+          return InputTypes.DATE;
         default:
-          return "text";
+          return InputTypes.TEXT;
       }
     },
     /**
@@ -172,12 +194,62 @@ export default {
       return key.toLowerCase() === "id" || key.toLowerCase() === "_id";
     },
     /**
+     * Reduces an array of entries into an object with the array properties reduced to the corresponding selected item.
+     */
+    reduceArrayPropertiesIntoSelectedValues(accumulatorObj, [key, value]) {
+      if (Object.keys(this.selectData).includes(key)) {
+        // If property is a list, return an object with the selected list value
+        return {
+          ...accumulatorObj,
+          // If an item has been selected from the list, insert the value into the object.
+          // Insert null if nothing has been selected.
+          [key]: !Array.isArray(this.selectData[key])
+            ? this.selectData[key]
+            : null
+        };
+      }
+      //If value pair property is not a list, return the untransformed key
+      return {
+        ...accumulatorObj,
+        [key]: value
+      };
+    },
+    /**
+     * Format the data passed into the component if necessary. Formats may
+     * include reducing arrays into a single user-selected value.
+     */
+    getSubmitData() {
+      let data = this.masterData.untypedObject;
+      if (this.selectData != null) {
+        return Object.entries(data).reduce(
+          this.reduceArrayPropertiesIntoSelectedValues,
+          {}
+        );
+      }
+      return data;
+    },
+    getSelectData(masterData) {
+      return Object.entries(masterData).reduce(function(
+        accumulator,
+        [formKey, formEntry]
+      ) {
+        //If property is an array, include in selectData.
+        if (Array.isArray(formEntry.value)) {
+          return {
+            ...accumulator,
+            [formKey]: formEntry.value
+          };
+        }
+        //Otherwise, ignore.
+        return accumulator;
+      });
+    },
+    /**
      * Execute the "onSubmit" function that was passed into the component and pass
-     * the local typed schema object's "untypedObject" property, which is the untyped
-     * version of the typed schema object.
+     * properly formatted data to be submitted.
      */
     submit() {
-      this.onSubmit(this.masterData.untypedObject);
+      this.onSubmit(this.getSubmitData());
     }
   },
   /**

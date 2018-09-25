@@ -35,7 +35,10 @@ function getSchemaReductor() {
    * @returns {object}
    */
   function revertObjectToUntypedModel(accumulatorObj, [key, typedValue]) {
-    if (typedValue.type !== Object.name && typedValue.value != null) {
+    if (typedValue.value == null) {
+      return accumulatorObj;
+    }
+    if (typedValue.type !== Object.name) {
       return {
         ...accumulatorObj,
         [key]: typedValue.value
@@ -73,7 +76,7 @@ function getSchemaReductor() {
    * @returns {object}
    */
   function gatherIntoSchemaObject(accumulatorObj, [key, value]) {
-    if (value == null || key === "__v") {
+    if (key === "__v") {
       // ignore null values and unwanted keys
       return accumulatorObj;
     }
@@ -139,7 +142,7 @@ function getType(value) {
 function getDefaultValue(type) {
   switch (type) {
     case Number:
-      return null;
+      return 0;
     case String:
       return "";
     case Date:

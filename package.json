@@ -1,6 +1,6 @@
 {
   "name": "smart-x-vue",
-  "version": "0.2.0",
+  "version": "0.2.6",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name smart-x-vue ./src/main.js",
@@ -30,12 +30,16 @@
     "@vue/cli-service": "^3.0.3",
     "@vue/eslint-config-prettier": "^3.0.3",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "vue-router": "^3.0.1",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "vuex": "^3.0.1",
+    "vuex-persist": "^1.5.4",
+    "webpack-bundle-analyzer": "^3.0.2"
   },
   "eslintConfig": {
     "root": true,

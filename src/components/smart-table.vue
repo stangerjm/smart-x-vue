@@ -15,7 +15,8 @@
                       :allow-details="allowDetails"
                       :allow-delete="allowDelete"
                       :allow-edit="allowEdit"
-                      :include-action-container="dataHasIdProperty">
+                      :include-action-container="dataHasIdProperty"
+                      :props-to-link="propsToLink">
     </block-table-body>
   </table>
 </template>
@@ -103,6 +104,10 @@ export default {
     ignoreFields: {
       type: Array,
       default: () => []
+    },
+    propsToLink: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {
