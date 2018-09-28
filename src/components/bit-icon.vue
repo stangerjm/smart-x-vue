@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { getClass } from "../global/mixins/helpers";
+
 /**
  * A component that can render different types of icons.
  * @author James Stanger, Washington State Patrol
@@ -36,16 +38,7 @@ export default {
       /**
        * The class attribute for the icon
        */
-      iconClass: this.getClass(this.iconType)
-    };
-  },
-  methods: {
-    /**
-     * Returns the correct class for the string passed into the iconType property
-     * @param {string} type - icon style
-     */
-    getClass: function(type) {
-      let allowedTypes = [
+      iconClass: getClass("bit-icon", this.iconType, [
         "user",
         "sort",
         "delete",
@@ -53,15 +46,8 @@ export default {
         "edit",
         "search",
         "exit"
-      ];
-      if (!type) {
-        return "bit-icon-error";
-      } else if (allowedTypes.includes(type)) {
-        return "bit-icon-" + type;
-      } else {
-        return "bit-icon-error";
-      }
-    }
+      ])
+    };
   }
 };
 </script>

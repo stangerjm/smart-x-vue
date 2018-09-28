@@ -19,9 +19,6 @@ export function getNonReactiveCopy(originalObj) {
 function createCopy(accumulatorObj, [prop, attribute]) {
   return {
     ...accumulatorObj,
-    [prop]: {
-      type: attribute.type,
-      value: attribute.value
-    }
+    [prop]: attribute
   };
 }

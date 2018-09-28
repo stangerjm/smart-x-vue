@@ -14,6 +14,6 @@ export const config = {
     },
     { linkTitle: "Contact", linkPath: "#" }
   ],
-  dateFormat: "MM-DD-YYYY",
-  flatpickrFormat: "m-d-Y"
+  dateFormat: "MM/DD/YYYY",
+  inputMask: "99/99/9999"
 };

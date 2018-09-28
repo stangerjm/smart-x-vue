@@ -35,19 +35,27 @@ import SmartTabs from "./components/smart-tabs";
 
 // Mixins
 import {
-  toTitleCase,
+  parseDateString,
   createSchema,
+  toTitleCase,
   getNonReactiveCopy,
   getItemId,
-  createLinkToRecord
+  createLinkToRecord,
+  getSortedData,
+  compare,
+  getInputType
 } from "./global/mixins";
 
 export {
-  toTitleCase,
+  parseDateString,
   createSchema,
+  toTitleCase,
   getNonReactiveCopy,
   getItemId,
-  createLinkToRecord
+  createLinkToRecord,
+  getSortedData,
+  compare,
+  getInputType
 };
 
 // Include mixins
@@ -56,14 +64,14 @@ Vue.mixin({
     createSchema: createSchema,
     getNonReactiveCopy: getNonReactiveCopy,
     getItemId: getItemId,
-    createLinkToRecord: createLinkToRecord
+    createLinkToRecord: createLinkToRecord,
+    getInputType: getInputType
   },
   filters: {
     toTitleCase: toTitleCase
   }
 });
 
-// Include vue-moment
 Vue.use(require("vue-moment"));
 
 export {

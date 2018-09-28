@@ -16,16 +16,13 @@
       <input type="hidden" value="false" :name="inputName">
     </template>
 
-    <!-- Render as a date-picker if value is a date -->
     <template v-else-if="inputType === InputTypes.DATE">
-      <flat-pickr class="bit-input--field bit-input--date"
-                  :id="inputId ? inputId : randomId"
-                  :name="inputName"
-                  v-bind="$attrs"
-                  :value="value"
-                  @input="$emit('input', $event)"
-                  :config="config">
-      </flat-pickr>
+      <input class="bit-input--field bit-input--date"
+             :id="inputId ? inputId : randomId"
+             :name="inputName"
+             @input="$emit('input', $event.target.value)"
+             v-bind="$attrs"
+             :type="inputType">
     </template>
 
     <!-- Render as an input box if value is any other type -->
@@ -42,10 +39,12 @@
 </template>
 
 <script>
-import FlatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
+import FlatPickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 import { config } from "../../app.config.js";
 import { InputTypes } from "../global/constants/inputTypes";
+import InputMask from "inputmask";
+import moment from "moment";
 
 /**
  * A component that can be rendered as a text, number, or datepicker input.
@@ -54,9 +53,6 @@ import { InputTypes } from "../global/constants/inputTypes";
  */
 export default {
   name: "bit-input",
-  components: {
-    FlatPickr
-  },
   props: {
     /**
      * Corresponds to the native HTML input attribute "type"
@@ -110,11 +106,12 @@ export default {
       /**
        * Date-picker configuration
        */
-      config: {
+      flatpickrConfig: {
         allowInput: true,
-        dateFormat: config.flatpickrFormat,
+        dateFormat: "m/d/Y",
         minDate: "01/01/1900",
-        maxDate: "12/31/2099"
+        maxDate: "12/31/2099",
+        clickOpens: false
       },
       /**
        * Allow imported InputTypes constant to be accessible in the template.
@@ -133,12 +130,81 @@ export default {
     updateCheckbox() {
       this.checked = !this.checked;
       this.$emit("input", this.checked);
+    },
+    /**
+     * Mounts a date-picker component
+     */
+    mountDatePicker() {
+      /**
+       * Opens a flatpickr component
+       * @param picker
+       * @returns {open}
+       */
+      function openDatePicker(picker) {
+        return function open() {
+          picker.open();
+        };
+      }
+
+      /**
+       * Initializes a flatpickr component by setting options and initial values.
+       * @param datePicker
+       * @param initialValue
+       */
+      function setDatepickerOptions(datePicker, initialValue) {
+        // Create a copy of the inital value so as not to accidentally override an object property
+        let value = initialValue;
+        // If value is an empty string, convert into a date.
+        if (value === "") {
+          value = new Date();
+        }
+
+        // Check if value is not null, so that a constructor can be accessed.
+        // If the value's constructor is a date, convert to string.
+        if (value != null && value.constructor === Date) {
+          value = moment(value).format(config.dateFormat);
+        }
+        // Set the flatpickr input element's date value
+        datePicker.setDate(value);
+        // Add a click listener so that the date picker will always open on click.
+        datePicker._input.onclick = openDatePicker(datePicker);
+      }
+
+      // Transform date elements into date-pickers
+      let datePicker = FlatPickr(".bit-input--date", this.flatpickrConfig);
+      // If more than one date picker, set options for each.
+      if (datePicker.length > 1) {
+        datePicker.forEach(function(picker) {
+          setDatepickerOptions(picker, this.value);
+        });
+      } else if (datePicker.element) {
+        // If only one date picker, set the options for this one.
+        setDatepickerOptions(datePicker, this.value);
+      }
+
+      // Apply input mask
+      let datePickerEl = document.querySelector(
+        ".bit-input--field.bit-input--date:not([type=hidden])"
+      );
+      let inputMask = new InputMask({
+        mask: config.inputMask,
+        placeholder: config.dateFormat
+      });
+      inputMask.mask(datePickerEl);
+    }
+  },
+  /**
+   * If component should be a date-picker, mount a date picker to the element
+   */
+  mounted() {
+    if (this.inputType === InputTypes.DATE) {
+      this.mountDatePicker();
     }
   }
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../styles/sass/global/variables";
 @import "../styles/sass/global/mixins";
 @import "../styles/sass/components/bit/input/bit-input";

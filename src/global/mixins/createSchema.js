@@ -1,5 +1,5 @@
 import { parseDateString } from "./parseDateString";
-import { isObject } from "./helpers";
+import { isObject, getDefaultValue, getType } from "./helpers";
 
 /**
  * Takes in an object and returns a typed schema based on the values
@@ -86,6 +86,7 @@ function getSchemaReductor() {
         ...accumulatorObj,
         [key]: {
           type: getType(value),
+          typeConstructor: getType(value, true),
           value: Object.entries(value).reduce(gatherIntoSchemaObject, {})
         }
       });
@@ -94,6 +95,7 @@ function getSchemaReductor() {
         ...accumulatorObj,
         [key]: {
           type: value.name,
+          typeConstructor: value,
           value: getDefaultValue(value)
         }
       });
@@ -102,6 +104,7 @@ function getSchemaReductor() {
         ...accumulatorObj,
         [key]: {
           type: getType(getValue(value)),
+          typeConstructor: getType(getValue(value), true),
           value: getValue(value)
         }
       });
@@ -123,35 +126,4 @@ function getValue(value, type) {
   }
 
   return value;
-}
-
-/**
- * Returns the name of the type of the value passed in.
- * @param value
- * @returns {string}
- */
-function getType(value) {
-  return Object.getPrototypeOf(Object(value)).constructor.name;
-}
-
-/**
- * Gets the default value for the type passed in.
- * @param type
- * @returns {*}
- */
-function getDefaultValue(type) {
-  switch (type) {
-    case Number:
-      return 0;
-    case String:
-      return "";
-    case Date:
-      return new Date();
-    case Object:
-      return {};
-    case Boolean:
-      return false;
-    case Array:
-      return [];
-  }
 }

@@ -34,7 +34,7 @@
                    v-else-if="isValidField(item, key)"
                    :stack-elements="true"
                    :input-name="key"
-                   :input-type="getType(item)"
+                   :input-type="getInputType(item)"
                    :label-text="key | toTitleCase"
                    :readonly="readonlyInputs.includes(key)"
                    v-model="item.value">
@@ -48,7 +48,6 @@
 import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
 import BitSelect from "./bit-select";
-import { InputTypes } from "../global/constants/inputTypes";
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -140,26 +139,6 @@ export default {
   },
   methods: {
     /**
-     * Gets the appropriate input type depending on the value's data type.
-     * @param item
-     * @returns {string}
-     */
-    getType: function(item) {
-      let type = item.type;
-      switch (type) {
-        case Array.name:
-          return InputTypes.SELECT;
-        case Boolean.name:
-          return InputTypes.CHECKBOX;
-        case Number.name:
-          return InputTypes.NUMBER;
-        case Date.name:
-          return InputTypes.DATE;
-        default:
-          return InputTypes.TEXT;
-      }
-    },
-    /**
      * Ensures that the item passed in is not an array, and that the key passed in
      * has not been marked to be ignored.
      */
@@ -174,7 +153,7 @@ export default {
       for (let requiredInput of this.requiredInputs) {
         let domInput;
 
-        if (this.getType(this.masterData[requiredInput]) === "date") {
+        if (this.getInputType(this.masterData[requiredInput]) === "date") {
           domInput = this.$el.querySelector(
             `.el-date-editor > input[name=${requiredInput}]`
           );

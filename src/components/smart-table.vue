@@ -19,11 +19,18 @@
                       :props-to-link="propsToLink">
     </block-table-body>
   </table>
+
+  <!-- If table data is empty, render an empty message. -->
+  <bit-message messageType="empty"
+               :message-text="tableEmptyMessage" v-else>
+  </bit-message>
 </template>
 
 <script>
 import BlockTableBody from "./block-tableBody";
 import BlockTableHeading from "./block-tableHeading";
+import { getSmartTableProps } from "./props/smartTable";
+import { getSortedData } from "../global/mixins";
 
 /**
  * A component that renders a responsive table from a data-set.
@@ -34,81 +41,11 @@ export default {
   name: "smart-table",
   components: {
     BlockTableBody,
-    BlockTableHeading
+    BlockTableHeading,
+    BitMessage: () => import("./bit-message")
   },
   props: {
-    /**
-     * The data that will render as a table.
-     */
-    tableData: {
-      type: Array,
-      required: true
-    },
-    /**
-     * The default context passed into the action container component
-     * @see block-actionContainer
-     */
-    defaultContext: {
-      type: String,
-      required: true
-    },
-    /**
-     * The method that will be called when a sort button on the table is clicked.
-     * Takes a property key and descending flag, and returns an array of sorted objects.
-     * Should be ordered by the property key, and descending if the 'descending' flag is true.
-     * @param {string} key
-     * @param {boolean} descending
-     * @returns {array}
-     */
-    sortMethod: {
-      type: Function,
-      default: function() {
-        return this.localTableData;
-      }
-    },
-    /**
-     * An array of key names that will render each
-     * heading associated with the key as literal text and not a searchable link.
-     */
-    unsearchableHeadings: {
-      type: Array,
-      default: () => []
-    },
-    /**
-     * Optionally renders the delete action link if true
-     * @see block-actionContainer
-     */
-    allowDelete: {
-      type: Boolean,
-      default: true
-    },
-    /**
-     * Optionally renders the edit action link if true
-     * @see block-actionContainer
-     */
-    allowEdit: {
-      type: Boolean,
-      default: true
-    },
-    /**
-     * Optionally renders the details action link if true
-     * @see block-actionContainer
-     */
-    allowDetails: {
-      type: Boolean,
-      default: true
-    },
-    /**
-     * List of fields to ignore
-     */
-    ignoreFields: {
-      type: Array,
-      default: () => []
-    },
-    propsToLink: {
-      type: Object,
-      default: () => {}
-    }
+    ...getSmartTableProps()
   },
   computed: {
     /**
@@ -131,23 +68,19 @@ export default {
       }
     },
     /**
-     * Maps each item in the "localTableData" property to an array
+     * Maps each item in the "localData" property to an array
      * that holds a typed schema based off of the object passed into
      * the "createSchema" method.
      * @see createSchema
      */
     typedData() {
-      return this.localTableData.map(function(tableItem) {
+      return this.localData.map(function(tableItem) {
         return this.createSchema(tableItem);
       }, this);
     }
   },
   data() {
     return {
-      /**
-       * Local copy of the "tableData" property
-       */
-      localTableData: this.tableData,
       /**
        * Flag indicating if the table sort should be descending or ascending.
        * Note: this will change each time a sort is performed.
@@ -156,8 +89,21 @@ export default {
       /**
        * The current key the table sort will use as the criteria
        */
-      currentKey: undefined
+      currentKey: undefined,
+      /**
+       * Copy of the table data passed into the component. This is used as a workaround for the
+       * prop mutation anti-pattern described in the Vue documentation.
+       */
+      localData: this.tableData
     };
+  },
+  watch: {
+    /**
+     * Watcher that ensures the "localData" property is in sync with the passed in table data.
+     */
+    tableData() {
+      this.localData = this.tableData;
+    }
   },
   methods: {
     /**
@@ -197,8 +143,8 @@ export default {
       }
 
       this.currentKey = key;
-
-      this.localTableData = this.sortMethod(key, this.descending);
+      //Use "getSortedData" mixin to sort data
+      this.localData = getSortedData(this.localData, key, this.descending);
     }
   }
 };

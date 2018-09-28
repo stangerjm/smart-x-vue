@@ -4,3 +4,6 @@ export { toTitleCase } from "./mixins/toTitleCase";
 export { getNonReactiveCopy } from "./mixins/getNonReactiveCopy";
 export { getItemId } from "./mixins/getItemId";
 export { createLinkToRecord } from "./mixins/createLinkToRecord";
+export { getSortedData } from "./mixins/getSortedData";
+export { compare } from "./mixins/compare";
+export { getInputType } from "./mixins/getInputType";

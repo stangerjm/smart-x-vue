@@ -1,7 +1,15 @@
 <template>
   <div id="app">
     <!--<smart-form :form-data="formData" :on-submit="submitData"></smart-form>-->
-    <smart-table :table-data="devices" default-context="test" :props-to-link="propsToLink"></smart-table>
+    <!--<smart-table :table-data="devices" default-context="test" :props-to-link="propsToLink"></smart-table>-->
+    <stack-searchable-table form-title="Test"
+                            route-name="test"
+                            :table-data="getPeople"
+                            default-context="test"
+                            :search-model="searchModel">
+    </stack-searchable-table>
+    <!--<bit-input label-text="test" input-type="text" input-name="test" v-model="textModel"></bit-input>-->
+    <!--<bit-input label-text="Date Test" input-type="date" input-name="dateTest" v-model="dateModel"></bit-input>-->
   </div>
 </template>
 
@@ -17,10 +25,13 @@ export default {
   name: "app",
   components: {
     SmartForm,
-    SmartTable
+    SmartTable,
+    StackSearchableTable: () =>
+      import("../src/components/stack-searchableTable"),
+    BitInput: () => import("../src/components/bit-input")
   },
   computed: {
-    ...mapGetters(["getPeople", "getDataSortedBy"]),
+    ...mapGetters(["getPeople"]),
     propsToLink() {
       return {
         manufacturerName: createLinkToRecord({
@@ -49,13 +60,15 @@ export default {
         child: ["James", "Jesse", "Jackson", "Jason"],
         isEmployee: Boolean,
         birthday: Date
-      }
+      },
+      searchModel: {
+        name: String,
+        age: Number,
+        birthday: Date
+      },
+      textModel: "",
+      dateModel: new Date()
     };
-  },
-  methods: {
-    submitData(submittedData) {
-      console.log(submittedData);
-    }
   },
   created() {
     this.$store.dispatch("people/fetchPeopleData");

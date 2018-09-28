@@ -1,4 +1,4 @@
-import { getSortedData } from "../../../shared/getDataSortedBy";
+import { getSortedData } from "../../../../../src/global/mixins";
 
 export const getRegions = state => {
   return state.regions;

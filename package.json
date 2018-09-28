@@ -18,9 +18,10 @@
   "dependencies": {
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
+    "flatpickr": "^4.5.2",
+    "inputmask": "^4.0.2",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
-    "vue-flatpickr-component": "^8.0.0",
     "vue-moment": "^4.0.0"
   },
   "devDependencies": {

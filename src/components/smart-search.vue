@@ -9,12 +9,18 @@
       <router-link class="bit-btn bit-btn-add" :to="{ name: routeName }">Add</router-link>
 
       <!-- Search icon -->
-      <bit-icon class="smart-search--action" icon-type="search" v-show="isHidden"
-                @click.native="toggle()"></bit-icon>
+      <bit-icon class="smart-search--action"
+                icon-type="search"
+                v-show="isHidden"
+                @click.native="toggle()">
+      </bit-icon>
 
       <!-- Exit icon -->
-      <bit-icon class="smart-search--action" icon-type="exit" v-show="!isHidden"
-                @click.native="toggle()"></bit-icon>
+      <bit-icon class="smart-search--action"
+                icon-type="exit"
+                v-show="!isHidden"
+                @click.native="toggle()">
+      </bit-icon>
     </header>
 
     <!-- Search fields container -->
@@ -22,23 +28,17 @@
       <div class="smart-search--toggleContainer">
 
         <!-- Fields -->
-        <bit-input
-            class="smart-search--field"
-            :disabled="isHidden"
-            input-type="text"
-            label-text="Find by ID/Name"
-            input-name="searchField">
-        </bit-input>
-        <bit-input
-            class="smart-search--field"
-            :disabled="isHidden"
-            input-type="number"
-            label-text="Number of Results Per Page"
-            input-name="pageNumber">
+        <bit-input class="smart-search--field"
+                   v-for="[modelProp, modelValue] in Object.entries(typedSearchModel)"
+                   :key="modelProp"
+                   :label-text="modelProp | toTitleCase"
+                   :input-type="getInputType(modelValue)"
+                   :input-name="modelProp"
+                   v-model="modelValue.value">
         </bit-input>
 
         <!-- Search button -->
-        <bit-btn :disabled="isHidden" type="submit" btn-style="search">Search</bit-btn>
+        <bit-btn :disabled="isHidden" type="button" btn-style="search" @click.native="submit">Search</bit-btn>
 
       </div>
     </div>
@@ -47,9 +47,11 @@
 </template>
 
 <script>
+import { getDefaultValue } from "../global/mixins/helpers";
 import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
 import BitIcon from "./bit-icon";
+import { getSmartSearchProps } from "./props/smartSearch";
 /**
  * A component that renders a mobile oriented search bar.
  * @author James Stanger, Washington State Patrol
@@ -67,44 +69,18 @@ export default {
       /**
        * Flag indicating that the search is hidden.
        */
-      isHidden: !this.isExpanded
+      isHidden: !this.isExpanded,
+      typedSearchModel: this.createSchema(this.searchModel)
     };
   },
   props: {
-    /**
-     * Indicates if the search should be expanded
-     */
-    isExpanded: {
-      type: Boolean,
-      default: false
-    },
-    /**
-     * Name of the route to navigate to when add button is clicked.
-     */
-    routeName: {
-      type: String,
-      required: true
-    },
-    /**
-     * Corresponds to the native HTML form attribute "method"
-     */
-    method: {
-      type: String,
-      required: true
-    },
-    /**
-     * The title that will display to the right of the search.
-     */
-    formTitle: {
-      type: String,
-      required: true
-    }
+    ...getSmartSearchProps()
   },
   methods: {
     /**
      * Toggles the search bar visibility.
      */
-    toggle: function() {
+    toggle() {
       if (this.isHidden) {
         this.isHidden = false;
         this.resize();
@@ -119,7 +95,7 @@ export default {
      * Event handler for the resize event. Dynamically set the height of the search container, and change
      * the style of the toggle buttons on smaller screens.
      */
-    resize: function() {
+    resize() {
       if (!this.isHidden) {
         let search = this.$el.querySelector(".smart-search--toggleContainer");
         let fieldContainer = this.$el.querySelector(
@@ -131,18 +107,61 @@ export default {
 
         fieldContainer.style.minHeight = `${searchHeight}px`;
       }
+    },
+    /**
+     * Reducing function that collects only values that have been filled out.
+     * @param accumulator
+     * @param key
+     * @returns {Object}
+     */
+    reduceToFilledOutValues(accumulator, key) {
+      let currentValue = this.typedSearchModel[key];
+      // If user fills in a number or date and removes it, the value will be an empty string.
+      // Ignore the empty value for these types.
+      if (
+        (currentValue.typeConstructor === Number ||
+          currentValue.typeConstructor === Date) &&
+        currentValue.value === ""
+      ) {
+        return accumulator;
+      }
+      // If the value is filled out, include the value in the filled out values.
+      // Note: A value is considered to be filled out if it is not equal to the
+      // default value for the corresponding type.
+      // Note: Booleans should always be included.
+      if (
+        currentValue.value !== getDefaultValue(currentValue.typeConstructor) ||
+        currentValue.typeConstructor === Boolean
+      ) {
+        return {
+          ...accumulator,
+          [key]: currentValue
+        };
+      }
+      return accumulator;
+    },
+    /**
+     * Calls the passed-in function "onSubmit" and passes the data
+     * from the fields on the form that have been filled out.
+     */
+    submit() {
+      let filledOutFieldValues = Object.keys(this.typedSearchModel).reduce(
+        this.reduceToFilledOutValues,
+        {}
+      );
+      this.onSubmit(filledOutFieldValues);
     }
   },
   /**
    * Sets up an event listener and the above handler for the "resize" event
    */
-  created: function() {
+  created() {
     window.addEventListener("resize", this.resize);
   },
   /**
    * Resize component when first mounted to ensure full size.
    */
-  mounted: function() {
+  mounted() {
     if (this.isExpanded) {
       this.resize();
     }
