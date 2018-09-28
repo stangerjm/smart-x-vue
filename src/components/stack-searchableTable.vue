@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import SmartTable from "./smart-table";
+import SmartSearch from "./smart-search";
 import { getSmartTableProps, getSmartSearchProps } from "./props/index";
 import { compare } from "../global/mixins";
 
@@ -28,10 +30,10 @@ import { compare } from "../global/mixins";
 const { onSubmit, ...smartSearchProps } = getSmartSearchProps();
 
 export default {
-  name: "stack-searchableTable",
+  name: "stack-searchable-table",
   components: {
-    SmartTable: () => import("./smart-table"),
-    SmartSearch: () => import("./smart-search")
+    SmartTable,
+    SmartSearch
   },
   props: {
     // Include all smart-table props

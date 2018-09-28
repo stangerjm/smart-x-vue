@@ -1,5 +1,5 @@
 <template>
-  <form class="smart-search">
+  <form class="smart-search" v-on:submit.prevent="submit">
 
     <header class="smart-search--heading">
       <!-- Search Title -->
@@ -70,7 +70,9 @@ export default {
        * Flag indicating that the search is hidden.
        */
       isHidden: !this.isExpanded,
-      typedSearchModel: this.createSchema(this.searchModel)
+      typedSearchModel: this.searchModel
+        ? this.createSchema(this.searchModel)
+        : {}
     };
   },
   props: {

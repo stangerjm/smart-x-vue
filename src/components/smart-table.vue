@@ -29,6 +29,7 @@
 <script>
 import BlockTableBody from "./block-tableBody";
 import BlockTableHeading from "./block-tableHeading";
+import BitMessage from "./bit-message";
 import { getSmartTableProps } from "./props/smartTable";
 import { getSortedData } from "../global/mixins";
 
@@ -42,7 +43,7 @@ export default {
   components: {
     BlockTableBody,
     BlockTableHeading,
-    BitMessage: () => import("./bit-message")
+    BitMessage
   },
   props: {
     ...getSmartTableProps()

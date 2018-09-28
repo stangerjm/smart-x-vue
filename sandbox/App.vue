@@ -5,8 +5,7 @@
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="getPeople"
-                            default-context="test"
-                            :search-model="searchModel">
+                            default-context="test">
     </stack-searchable-table>
     <!--<bit-input label-text="test" input-type="text" input-name="test" v-model="textModel"></bit-input>-->
     <!--<bit-input label-text="Date Test" input-type="date" input-name="dateTest" v-model="dateModel"></bit-input>-->
@@ -62,9 +61,7 @@ export default {
         birthday: Date
       },
       searchModel: {
-        name: String,
-        age: Number,
-        birthday: Date
+        name: String
       },
       textModel: "",
       dateModel: new Date()

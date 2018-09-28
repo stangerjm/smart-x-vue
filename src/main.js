@@ -33,6 +33,9 @@ import SmartSearch from "./components/smart-search";
 import SmartTable from "./components/smart-table";
 import SmartTabs from "./components/smart-tabs";
 
+// Stack Components
+import StackSearchableTable from "./components/stack-searchableTable";
+
 // Mixins
 import {
   parseDateString,
@@ -95,5 +98,6 @@ export {
   SmartNav,
   SmartSearch,
   SmartTable,
-  SmartTabs
+  SmartTabs,
+  StackSearchableTable
 };
