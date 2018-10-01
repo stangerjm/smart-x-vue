@@ -5,7 +5,8 @@
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="getPeople"
-                            default-context="test">
+                            default-context="test"
+                            :searchModel="searchModel">
     </stack-searchable-table>
     <!--<bit-input label-text="test" input-type="text" input-name="test" v-model="textModel"></bit-input>-->
     <!--<bit-input label-text="Date Test" input-type="date" input-name="dateTest" v-model="dateModel"></bit-input>-->
@@ -13,10 +14,11 @@
 </template>
 
 <script>
-import SmartForm from "../src/components/smart-form";
-import SmartTable from "../src/components/smart-table";
-import { createLinkToRecord } from "../src/global/mixins";
+import SmartForm from "../../src/components/smart-form";
+import SmartTable from "../../src/components/smart-table";
+import { createLinkToRecord } from "../../src/global/mixins";
 import { createNamespacedHelpers } from "vuex";
+import StackSearchableTable from "smart-x-vue";
 
 const { mapGetters } = createNamespacedHelpers("people");
 
@@ -25,9 +27,8 @@ export default {
   components: {
     SmartForm,
     SmartTable,
-    StackSearchableTable: () =>
-      import("../src/components/stack-searchableTable"),
-    BitInput: () => import("../src/components/bit-input")
+    StackSearchableTable,
+    BitInput: () => import("../../src/components/bit-input")
   },
   computed: {
     ...mapGetters(["getPeople"]),
