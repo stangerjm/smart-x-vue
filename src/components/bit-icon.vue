@@ -19,7 +19,7 @@ export default {
   props: {
     /**
      * Icon type options include:
-     * `user, sort`
+     * `user, sort, delete, details, edit, search, exit, next, previous`
      */
     iconType: {
       type: String,
@@ -52,7 +52,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/bit/icon/bit-icon";
 </style>

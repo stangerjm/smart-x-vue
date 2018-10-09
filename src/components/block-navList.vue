@@ -60,8 +60,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/bit/link/bit-link";
 @import "../styles/sass/components/block/navList/block-navList";
 </style>

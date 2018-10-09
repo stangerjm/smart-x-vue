@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import SmartForm from "../../src/components/smart-form";
-import SmartTable from "../../src/components/smart-table";
-import { createLinkToRecord } from "../../src/global/mixins";
+import SmartForm from "../src/components/smart-form";
+import SmartTable from "../src/components/smart-table";
+import { createLinkToRecord } from "../src/global/mixins";
 import { createNamespacedHelpers } from "vuex";
-import StackSearchableTable from "smart-x-vue";
+import StackSearchableTable from "../src/components/stack-searchableTable";
 
 const { mapGetters } = createNamespacedHelpers("people");
 
@@ -28,7 +28,7 @@ export default {
     SmartForm,
     SmartTable,
     StackSearchableTable,
-    BitInput: () => import("../../src/components/bit-input")
+    BitInput: () => import("../src/components/bit-input")
   },
   computed: {
     ...mapGetters(["getPeople"]),

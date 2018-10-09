@@ -205,7 +205,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/bit/input/bit-input";
 </style>

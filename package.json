@@ -43,21 +43,6 @@
     "vuex-persist": "^1.5.4",
     "webpack-bundle-analyzer": "^3.0.2"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
   "postcss": {
     "plugins": {
       "autoprefixer": {}

@@ -118,7 +118,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/block/actionContainer/block-actionContainer";
 @import "../styles/sass/components/bit/icon/bit-icon";
 </style>

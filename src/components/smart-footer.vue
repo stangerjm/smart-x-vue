@@ -21,7 +21,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/config";
 @import "../styles/sass/components/smart/footer/smart-footer";
 </style>

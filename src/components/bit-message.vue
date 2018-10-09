@@ -35,6 +35,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/bit/message/bit-message";
 </style>

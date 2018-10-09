@@ -119,7 +119,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/mixins";
-@import "../styles/sass/global/variables";
 @import "../styles/sass/components/smart/nav/smart-nav";
 </style>

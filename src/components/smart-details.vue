@@ -37,6 +37,7 @@
 
 <script>
 import { config } from "../../app.config.js";
+import { splitArrayIntoChunks } from "../global/mixins/helpers";
 
 /**
  * A component that renders a model as a list of details.
@@ -102,24 +103,6 @@ export default {
      */
     isHiddenField(value) {
       return value.startsWith("_");
-    },
-    /**
-     * Returns an array derived from the array passed in and split into chunks
-     * with the number of elements specified in each chunk.
-     */
-    splitArrayIntoChunks(array, elementsPerChunk) {
-      //Create an array with the number of chunks required
-      return (
-        Array(Math.ceil(array.length / elementsPerChunk))
-          //Fill the array with any value (no arguments will just fill with 'undefined')
-          .fill()
-          //Use Array.prototype.map to fill each chunk with the correct number of values from the original array
-          .map((_, idx) => {
-            const start = idx * elementsPerChunk;
-            let end = start + elementsPerChunk;
-            return array.slice(start, end);
-          })
-      );
     }
   },
   /**
@@ -142,7 +125,7 @@ export default {
     let filteredEntries = details.filter(filterOutOfScopeData);
 
     //Split the array into chunks with equal elements and assign it to detailColumns
-    this.detailColumns = this.splitArrayIntoChunks(
+    this.detailColumns = splitArrayIntoChunks(
       filteredEntries,
       this.detailsPerColumn
     );
@@ -151,7 +134,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/global/mixins";
 @import "../styles/sass/components/smart/details/smart-details";
 </style>

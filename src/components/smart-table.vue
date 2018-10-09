@@ -18,11 +18,13 @@
                       :include-action-container="dataHasIdProperty"
                       :props-to-link="propsToLink">
     </block-table-body>
+
   </table>
 
   <!-- If table data is empty, render an empty message. -->
-  <bit-message messageType="empty"
-               :message-text="tableEmptyMessage" v-else>
+  <bit-message v-else
+               messageType="empty"
+               :message-text="tableEmptyMessage">
   </bit-message>
 </template>
 
@@ -152,7 +154,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/mixins";
-@import "../styles/sass/global/variables";
 @import "../styles/sass/components/smart/table/smart-table";
 </style>

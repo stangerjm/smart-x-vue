@@ -31,8 +31,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/sass/global/variables";
-@import "../styles/sass/config";
 @import "../styles/sass/components/bit/link/bit-link";
 @import "../styles/sass/components/bit/dropList/bit-dropList";
 </style>

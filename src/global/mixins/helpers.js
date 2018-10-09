@@ -64,3 +64,28 @@ export function getType(value, returnConstructorType) {
   }
   return type.name;
 }
+
+/**
+ * Returns an array derived from the array passed in and split into chunks
+ * with the number of elements specified in each chunk.
+ */
+export function splitArrayIntoChunks(array, elementsPerChunk) {
+  if (array == null || elementsPerChunk == null) {
+    return [];
+  }
+  if (elementsPerChunk <= 0) {
+    return array;
+  }
+  //Create an array with the number of chunks required
+  return (
+    Array(Math.ceil(array.length / elementsPerChunk))
+      //Fill the array with any value (no arguments will just fill with 'undefined')
+      .fill()
+      //Use Array.prototype.map to fill each chunk with the correct number of values from the original array
+      .map((_, idx) => {
+        const start = idx * elementsPerChunk;
+        let end = start + elementsPerChunk;
+        return array.slice(start, end);
+      })
+  );
+}
