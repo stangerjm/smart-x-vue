@@ -1,13 +1,36 @@
 <template>
   <div id="app">
+    <layout-main>
+
+      <template slot="header">
+
+        <smart-nav :nav-items="nav"
+                   nav-title="Admin"
+                   usr="JMST225">
+        </smart-nav>
+
+      </template>
+
+      <template slot="content">
+
+        <stack-searchable-table form-title="Test"
+                                route-name="test"
+                                :table-data="getPeople"
+                                default-context="test"
+                                :searchModel="searchModel">
+        </stack-searchable-table>
+
+      </template>
+
+      <template slot="footer">
+
+        <smart-footer></smart-footer>
+
+      </template>
+
+    </layout-main>
     <!--<smart-form :form-data="formData" :on-submit="submitData"></smart-form>-->
     <!--<smart-table :table-data="devices" default-context="test" :props-to-link="propsToLink"></smart-table>-->
-    <stack-searchable-table form-title="Test"
-                            route-name="test"
-                            :table-data="getPeople"
-                            default-context="test"
-                            :searchModel="searchModel">
-    </stack-searchable-table>
     <!--<bit-input label-text="test" input-type="text" input-name="test" v-model="textModel"></bit-input>-->
     <!--<bit-input label-text="Date Test" input-type="date" input-name="dateTest" v-model="dateModel"></bit-input>-->
   </div>
@@ -19,12 +42,16 @@ import SmartTable from "../src/components/smart-table";
 import { createLinkToRecord } from "../src/global/mixins";
 import { createNamespacedHelpers } from "vuex";
 import StackSearchableTable from "../src/components/stack-searchableTable";
+import { config } from "../app.config.js";
 
 const { mapGetters } = createNamespacedHelpers("people");
 
 export default {
   name: "app",
   components: {
+    SmartNav: () => import("../src/components/smart-nav"),
+    SmartFooter: () => import("../src/components/smart-footer"),
+    LayoutMain: () => import("../src/components/layout-main"),
     SmartForm,
     SmartTable,
     StackSearchableTable,
@@ -65,7 +92,8 @@ export default {
         name: String
       },
       textModel: "",
-      dateModel: new Date()
+      dateModel: new Date(),
+      nav: config.nav
     };
   },
   created() {
