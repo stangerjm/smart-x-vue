@@ -13,12 +13,14 @@
 
       <template slot="content">
 
-        <stack-searchable-table form-title="Test"
-                                route-name="test"
-                                :table-data="getPeople"
-                                default-context="test"
-                                :searchModel="searchModel">
-        </stack-searchable-table>
+        <!--<stack-searchable-table form-title="Test"-->
+                                <!--route-name="test"-->
+                                <!--:table-data="getPeople"-->
+                                <!--default-context="test"-->
+                                <!--:searchModel="searchModel">-->
+        <!--</stack-searchable-table>-->
+
+        <smart-form :on-submit="submit" :form-data="{ name: String }" :validation-errors="errors" :form-loading="working"></smart-form>
 
       </template>
 
@@ -39,13 +41,9 @@
 <script>
 import SmartForm from "../src/components/smart-form";
 import SmartTable from "../src/components/smart-table";
-import { createLinkToRecord } from "../src/global/mixins";
-import { createNamespacedHelpers } from "vuex";
 import StackSearchableTable from "../src/components/stack-searchableTable";
 import { config } from "../app.config.js";
 import SmartSection from "../src/components/smart-section";
-
-const { mapGetters } = createNamespacedHelpers("people");
 
 export default {
   name: "app",
@@ -59,20 +57,19 @@ export default {
     StackSearchableTable,
     BitInput: () => import("../src/components/bit-input")
   },
-  computed: {
-    ...mapGetters(["getPeople"]),
-    propsToLink() {
-      return {
-        manufacturerName: createLinkToRecord({
-          linkContext: "Manufacturer",
-          linkAction: "Details",
-          destinationLookupKey: "name",
-          destinationTable: this.getPeople,
-          destinationIdKey: "_id"
-        })
-      };
-    }
-  },
+  // computed: {
+  //   propsToLink() {
+  //     return {
+  //       manufacturerName: createLinkToRecord({
+  //         linkContext: "Manufacturer",
+  //         linkAction: "Details",
+  //         destinationLookupKey: "name",
+  //         destinationTable: this.getPeople,
+  //         destinationIdKey: "_id"
+  //       })
+  //     };
+  //   }
+  // },
   data() {
     return {
       devices: [
@@ -83,6 +80,7 @@ export default {
         { id: 5, deviceModel: "Device 2", manufacturerName: "Smart Start" },
         { id: 6, deviceModel: "Device 3", manufacturerName: "Manufacturer 3" }
       ],
+      errors: [],
       formData: {
         name: String,
         age: Number,
@@ -95,16 +93,22 @@ export default {
       },
       textModel: "",
       dateModel: new Date(),
-      nav: config.nav
+      nav: config.nav,
+      working: false
     };
   },
   methods: {
-    submit(submittedData) {
-      console.log(submittedData);
+    async submit(submittedData) {
+      this.working = true;
+      await this.delay(3000);
+      this.errors = ["You fail", "Bad data"];
+      this.working = false;
+    },
+    delay(time, value) {
+      return new Promise(function(resolve) {
+        setTimeout(resolve.bind(null, value), time);
+      });
     }
-  },
-  created() {
-    this.$store.dispatch("people/fetchPeopleData");
   }
 };
 </script>

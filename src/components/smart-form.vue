@@ -41,6 +41,17 @@
         </bit-input>
       </template>
       <bit-btn @click.native="submit">Submit</bit-btn>
+
+      <!-- Only render loading spinner if form is loading -->
+      <bit-loading class="smart-form--spinner" v-if="formLoading"></bit-loading>
+
+      <!-- Render errors if any are passed in -->
+      <p class="smart-form--error"
+         v-if="hasErrors"
+         v-for="(error, key) in validationErrors"
+         :key="key">
+        {{error}}
+      </p>
     </section>
   </form>
 </template>
@@ -48,6 +59,7 @@
 import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
 import BitSelect from "./bit-select";
+import BitLoading from "./bit-loading";
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -57,6 +69,7 @@ import BitSelect from "./bit-select";
 export default {
   name: "smart-form",
   components: {
+    BitLoading,
     BitSelect,
     BitBtn,
     BitInput
@@ -125,6 +138,14 @@ export default {
     dateFormat: {
       type: String,
       default: "MM-dd-yyyy"
+    },
+    validationErrors: {
+      type: Array,
+      default: () => []
+    },
+    formLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -136,6 +157,11 @@ export default {
       masterData: masterData,
       selectData: this.getSelectData(masterData)
     };
+  },
+  computed: {
+    hasErrors() {
+      return this.validationErrors.length > 0;
+    }
   },
   methods: {
     /**
