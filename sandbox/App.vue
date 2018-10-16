@@ -43,12 +43,14 @@ import { createLinkToRecord } from "../src/global/mixins";
 import { createNamespacedHelpers } from "vuex";
 import StackSearchableTable from "../src/components/stack-searchableTable";
 import { config } from "../app.config.js";
+import SmartSection from "../src/components/smart-section";
 
 const { mapGetters } = createNamespacedHelpers("people");
 
 export default {
   name: "app",
   components: {
+    SmartSection,
     SmartNav: () => import("../src/components/smart-nav"),
     SmartFooter: () => import("../src/components/smart-footer"),
     LayoutMain: () => import("../src/components/layout-main"),
@@ -95,6 +97,11 @@ export default {
       dateModel: new Date(),
       nav: config.nav
     };
+  },
+  methods: {
+    submit(submittedData) {
+      console.log(submittedData);
+    }
   },
   created() {
     this.$store.dispatch("people/fetchPeopleData");

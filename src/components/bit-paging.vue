@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import BitIcon from "../bit-icon";
+import BitIcon from "./bit-icon";
 export default {
   name: "bit-paging",
   components: {
@@ -64,5 +64,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../styles/sass/components/bit/paging/bit-paging";
+@import "../styles/sass/components/bit/paging/bit-paging";
 </style>

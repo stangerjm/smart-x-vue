@@ -27,7 +27,7 @@
 <script>
 import SmartTable from "./smart-table";
 import SmartSearch from "./smart-search";
-import BitPaging from "./prototypes/bit-paging";
+import BitPaging from "./bit-paging";
 import { getSmartTableProps, getSmartSearchProps } from "./props/index";
 import { compare } from "../global/mixins";
 import { splitArrayIntoChunks } from "../global/mixins/helpers";
