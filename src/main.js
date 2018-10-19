@@ -7,7 +7,7 @@ import Vue from "vue";
 // Mixins
 import {
   parseDateString,
-  createSchema,
+  createViewModel,
   toTitleCase,
   getNonReactiveCopy,
   getItemId,
@@ -17,22 +17,25 @@ import {
   getInputType
 } from "./global/mixins";
 
+import ModelTypes from "./global/constants/ModelType";
+
 export {
   parseDateString,
-  createSchema,
+  createViewModel,
   toTitleCase,
   getNonReactiveCopy,
   getItemId,
   createLinkToRecord,
   getSortedData,
   compare,
-  getInputType
+  getInputType,
+  ModelTypes
 };
 
 // Include mixins
 Vue.mixin({
   methods: {
-    createSchema: createSchema,
+    createViewModel: createViewModel,
     getNonReactiveCopy: getNonReactiveCopy,
     getItemId: getItemId,
     createLinkToRecord: createLinkToRecord,

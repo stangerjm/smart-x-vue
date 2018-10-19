@@ -1,4 +1,5 @@
-import { InputTypes } from "../constants/inputTypes";
+import InputType from "../constants/InputType";
+import ModelTypes from "../constants/ModelType";
 
 /**
  * Gets the appropriate input type depending on the value's data type.
@@ -9,14 +10,18 @@ export function getInputType(item) {
   let type = item.type;
   switch (type) {
     case Array.name:
-      return InputTypes.SELECT;
+      return InputType.SELECT;
     case Boolean.name:
-      return InputTypes.CHECKBOX;
+      return InputType.CHECKBOX;
     case Number.name:
-      return InputTypes.NUMBER;
+      return InputType.NUMBER;
     case Date.name:
-      return InputTypes.DATE;
+      return InputType.DATE;
+    case ModelTypes.Password.name:
+      return InputType.PASSWORD;
+    case ModelTypes.PhoneNumber.name:
+      return InputType.PHONE;
     default:
-      return InputTypes.TEXT;
+      return InputType.TEXT;
   }
 }

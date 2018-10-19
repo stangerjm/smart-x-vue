@@ -2,6 +2,7 @@
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
     <label class="bit-input--label" :for="randomId">{{labelText}}</label>
     <select class="bit-input--field"
+            :class="[erroredField ? 'bit-input--error' : '']"
             :id="randomId"
             :name="inputName"
             v-bind="$attrs"
@@ -50,6 +51,13 @@ export default {
      * Flag to have input and label stack horizontally if set to true
      */
     stackElements: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Flag to indicate if the field has an error associated with it
+     */
+    erroredField: {
       type: Boolean,
       default: false
     }

@@ -12,7 +12,7 @@
     <!-- Tab content -->
     <article class="smart-tabs--content">
       <!-- @slot Slot for tab content. Each item here will be mapped to the corresponding tab above. -->
-      <slot name="tab-items"></slot>
+      <slot name="tab-content"></slot>
     </article>
   </section>
 </template>

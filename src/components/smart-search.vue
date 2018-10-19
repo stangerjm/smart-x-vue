@@ -71,7 +71,7 @@ export default {
        */
       isHidden: !this.isExpanded,
       typedSearchModel: this.searchModel
-        ? this.createSchema(this.searchModel)
+        ? this.createViewModel(this.searchModel)
         : {}
     };
   },

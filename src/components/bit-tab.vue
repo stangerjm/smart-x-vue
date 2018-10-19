@@ -1,5 +1,9 @@
 <template>
-  <li class="smart-tabs--tab" @click="switchTab">
+  <div class="smart-tabs--item" v-if="isTabContent">
+    <!-- @slot Placeholder for the content of the element. -->
+    <slot></slot>
+  </div>
+  <li class="smart-tabs--tab" @click="switchTab" v-else>
     <!-- @slot Placeholder for the tab title text -->
     <slot></slot>
   </li>
@@ -8,6 +12,12 @@
 <script>
 export default {
   name: "bit-tab",
+  props: {
+    isTabContent: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     /**
      * Event handler that switches from the previous tab to the clicked on tab

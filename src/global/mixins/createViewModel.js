@@ -6,18 +6,18 @@ import { isObject, getDefaultValue, getType } from "./helpers";
  * @param schema
  * @returns {object}
  */
-export function createSchema(schema) {
+export function createViewModel(schema) {
   let entries = Object.entries(schema);
-  let createSchemaFromEntries = getSchemaReductor();
+  let createViewModelFromEntries = getViewModelReductor();
 
-  return entries.reduce(createSchemaFromEntries, {});
+  return entries.reduce(createViewModelFromEntries, {});
 }
 
 /**
- * Returns a reducing function that will reduce an array of object entries into a typed schema object.
+ * Returns a reducing function that will reduce an array of object entries into a typed view model object.
  * @returns {function}
  */
-function getSchemaReductor() {
+function getViewModelReductor() {
   /**
    * Reverts the passed in object to an untyped model
    * @param obj
@@ -35,7 +35,7 @@ function getSchemaReductor() {
    * @returns {object}
    */
   function revertObjectToUntypedModel(accumulatorObj, [key, typedValue]) {
-    if (typedValue.value == null) {
+    if (typedValue.value == null || typedValue.value === "") {
       return accumulatorObj;
     }
     if (typedValue.type !== Object.name) {
@@ -75,7 +75,7 @@ function getSchemaReductor() {
    * @param value
    * @returns {object}
    */
-  function gatherIntoSchemaObject(accumulatorObj, [key, value]) {
+  function gatherIntoViewModelObject(accumulatorObj, [key, value]) {
     if (key === "__v") {
       // ignore null values and unwanted keys
       return accumulatorObj;
@@ -87,7 +87,8 @@ function getSchemaReductor() {
         [key]: {
           type: getType(value),
           typeConstructor: getType(value, true),
-          value: Object.entries(value).reduce(gatherIntoSchemaObject, {})
+          value: Object.entries(value).reduce(gatherIntoViewModelObject, {}),
+          errored: false
         }
       });
     } else if (typeof value === "function") {
@@ -96,7 +97,8 @@ function getSchemaReductor() {
         [key]: {
           type: value.name,
           typeConstructor: value,
-          value: getDefaultValue(value)
+          value: getDefaultValue(value),
+          errored: false
         }
       });
     } else {
@@ -105,13 +107,14 @@ function getSchemaReductor() {
         [key]: {
           type: getType(getValue(value)),
           typeConstructor: getType(getValue(value), true),
-          value: getValue(value)
+          value: getValue(value),
+          errored: false
         }
       });
     }
   }
 
-  return gatherIntoSchemaObject;
+  return gatherIntoViewModelObject;
 }
 
 /**

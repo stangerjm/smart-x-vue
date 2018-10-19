@@ -59,7 +59,7 @@ export default {
   props: {
     /**
      * Typed data to be rendered in the table.
-     * @see {mixin} createSchema
+     * @see {mixin} createViewModel
      */
     typedData: {
       type: Array,

@@ -15,5 +15,7 @@ export const config = {
     { linkTitle: "Contact", linkPath: "#" }
   ],
   dateFormat: "MM/DD/YYYY",
-  inputMask: "99/99/9999"
+  dateMask: "99/99/9999",
+  phoneFormat: "(___) ___-____",
+  phoneMask: "(999) 999-9999"
 };

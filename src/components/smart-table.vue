@@ -73,12 +73,12 @@ export default {
     /**
      * Maps each item in the "localData" property to an array
      * that holds a typed schema based off of the object passed into
-     * the "createSchema" method.
-     * @see createSchema
+     * the "createViewModel" method.
+     * @see createViewModel
      */
     typedData() {
       return this.localData.map(function(tableItem) {
-        return this.createSchema(tableItem);
+        return this.createViewModel(tableItem);
       }, this);
     }
   },

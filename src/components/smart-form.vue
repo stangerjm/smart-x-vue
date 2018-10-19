@@ -25,7 +25,8 @@
                     :readonly="readonlyInputs.includes(key)"
                     :select-data="item.value"
                     v-model="selectData[key]"
-                    :stack-elements="true">
+                    :stack-elements="true"
+                    :errored-field="item.errored">
         </bit-select>
 
         <!-- Render as a bit-input component if above conditions are false -->
@@ -37,7 +38,8 @@
                    :input-type="getInputType(item)"
                    :label-text="key | toTitleCase"
                    :readonly="readonlyInputs.includes(key)"
-                   v-model="item.value">
+                   v-model="item.value"
+                   :errored-field="item.errored">
         </bit-input>
       </template>
       <bit-btn @click.native="submit">Submit</bit-btn>
@@ -50,7 +52,7 @@
          v-if="hasErrors"
          v-for="(error, key) in validationErrors"
          :key="key">
-        {{error}}
+        {{error.message}}
       </p>
     </section>
   </form>
@@ -107,13 +109,6 @@ export default {
       default: () => []
     },
     /**
-     * A list of inputs that should be required.
-     */
-    requiredInputs: {
-      type: Array,
-      default: () => []
-    },
-    /**
      * Optional array of strings that represent properties that should be ignored.
      */
     ignoreFields: {
@@ -149,14 +144,25 @@ export default {
     }
   },
   data() {
-    let masterData = this.createSchema(this.formData);
+    let masterData = this.createViewModel(this.formData);
     return {
       /**
        * Will contain typed schema derived from the "formData" local property.
        */
       masterData: masterData,
+      /**
+       * Contains all of the data that should be rendered as select elements
+       */
       selectData: this.getSelectData(masterData)
     };
+  },
+  watch: {
+    /**
+     * Watch validation errors for changes and map them to the appropriate fields
+     */
+    validationErrors() {
+      this.mapErrors(this.masterData, this.validationErrors);
+    }
   },
   computed: {
     hasErrors() {
@@ -165,32 +171,39 @@ export default {
   },
   methods: {
     /**
+     * Maps errors to the corresponding fields in the passed in data
+     * @param masterData
+     * @param validationErrors
+     */
+    mapErrors(masterData, validationErrors) {
+      /**
+       * Sets the "errored" property of the data at the propName passed in to true if
+       * a corresponding error is found
+       * @param propName
+       */
+      function modifyMatchingField(propName) {
+        /**
+         * Finds the field name matching the error passed in
+         * @param error
+         * @returns {boolean}
+         */
+        function findMatchingField(error) {
+          return error.fieldName === propName;
+        }
+        // Find the matching field name
+        let key = validationErrors.find(findMatchingField);
+        // Set errored field to true if a matching field name was found, false if otherwise.
+        masterData[propName].errored = key != null;
+      }
+      // Map field names to corresponding errors
+      Object.keys(masterData).map(modifyMatchingField);
+    },
+    /**
      * Ensures that the item passed in is not an array, and that the key passed in
      * has not been marked to be ignored.
      */
     isValidField(item, key) {
       return !Array.isArray(item) && !this.ignoreFields.includes(key);
-    },
-    /**
-     * Sets the "required" attribute on any elements that correspond to values found in the
-     * "requiredInputs" local property.
-     */
-    setRequiredInputs() {
-      for (let requiredInput of this.requiredInputs) {
-        let domInput;
-
-        if (this.getInputType(this.masterData[requiredInput]) === "date") {
-          domInput = this.$el.querySelector(
-            `.el-date-editor > input[name=${requiredInput}]`
-          );
-        } else {
-          domInput = this.$el.querySelector(`input[name=${requiredInput}]`);
-        }
-
-        if (domInput != null) {
-          domInput.required = true;
-        }
-      }
     },
     /**
      * Checks the key to see if it is an id property.
@@ -256,12 +269,6 @@ export default {
     submit() {
       this.onSubmit(this.getSubmitData());
     }
-  },
-  /**
-   * Set each input specified in the requiredInputs array to have the native HTML attribute "required"
-   */
-  updated: function() {
-    this.setRequiredInputs();
   }
 };
 </script>

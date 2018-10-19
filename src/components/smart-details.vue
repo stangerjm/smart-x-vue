@@ -86,7 +86,7 @@ export default {
      * Typed schema object derived from the local "detailData" property.
      */
     typedDetails() {
-      return this.createSchema(this.detailData);
+      return this.createViewModel(this.detailData);
     }
   },
   methods: {

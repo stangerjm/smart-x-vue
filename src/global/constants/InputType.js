@@ -1,7 +1,9 @@
-export const InputTypes = {
+export default {
   SELECT: "select",
   CHECKBOX: "checkbox",
   NUMBER: "number",
   DATE: "date",
-  TEXT: "text"
+  TEXT: "text",
+  PASSWORD: "password",
+  PHONE: "phone"
 };
