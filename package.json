@@ -1,6 +1,6 @@
 {
   "name": "smart-x-vue",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name smart-x-vue ./src/main.js",

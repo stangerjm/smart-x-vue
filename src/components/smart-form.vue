@@ -1,14 +1,21 @@
 <template>
-  <form class="smart-form" v-if="formData">
+  <form :class="[
+          centerForm
+          ? 'smart-form-centered'
+          : 'smart-form'
+        ]"
+        v-if="formData">
+
+    <!-- Render title -->
     <header class="smart-form--titleSection" v-if="formTitle">
       <h3 class="smart-form--title">{{formTitle}}</h3>
     </header>
+
     <section class="smart-form--fieldSection">
-      <!-- @slot Area for extra inputs to be added. -->
-      <slot></slot>
 
       <!-- Render each item in the "masterData" array as an input field with a label. -->
       <template v-for="(item, key) in masterData">
+
         <!-- If the item is the object's id, render it as a hidden field. -->
         <input v-if="isObjectId(key)"
                :name="key"
@@ -18,6 +25,7 @@
 
         <!-- Render as a select element if value is a list of items -->
         <bit-select class="smart-form--field"
+                    :style="getFlexProp(item.span)"
                     :key="key"
                     v-else-if="Array.isArray(item.value)"
                     :input-name="key"
@@ -31,30 +39,39 @@
 
         <!-- Render as a bit-input component if above conditions are false -->
         <bit-input class="smart-form--field"
+                   :style="getFlexProp(item.span)"
                    :key="key"
                    v-else-if="isValidField(item, key)"
                    :stack-elements="true"
                    :input-name="key"
                    :input-type="getInputType(item)"
-                   :label-text="key | toTitleCase"
+                   :label-text="item.displayName ? item.displayName : key | toTitleCase"
                    :readonly="readonlyInputs.includes(key)"
                    v-model="item.value"
+                   :required-field="item.required"
                    :errored-field="item.errored">
         </bit-input>
+
       </template>
-      <bit-btn @click.native="submit">Submit</bit-btn>
 
-      <!-- Only render loading spinner if form is loading -->
-      <bit-loading class="smart-form--spinner" v-if="formLoading"></bit-loading>
-
-      <!-- Render errors if any are passed in -->
-      <p class="smart-form--error"
-         v-if="hasErrors"
-         v-for="(error, key) in validationErrors"
-         :key="key">
-        {{error.message}}
-      </p>
     </section>
+
+    <!-- Submit button -->
+    <bit-btn class="smart-form--submit" @click.native="submit">Submit</bit-btn>
+
+    <!-- Only render loading spinner if form is loading -->
+    <bit-loading class="smart-form--spinner" v-if="formLoading"></bit-loading>
+
+    <!-- @slot Placeholder for any additional form markup -->
+    <slot></slot>
+
+    <!-- Render errors if any are passed in -->
+    <p class="smart-form--error"
+       v-if="hasErrors"
+       v-for="(error, key) in validationErrors"
+       :key="key">
+      {{error.message}}
+    </p>
   </form>
 </template>
 <script>
@@ -98,7 +115,7 @@ export default {
      * Note: any properties containing arrays should only contain primitive values.
      */
     formData: {
-      type: Object,
+      type: [Object, Array],
       default: () => {}
     },
     /**
@@ -141,6 +158,10 @@ export default {
     formLoading: {
       type: Boolean,
       default: false
+    },
+    centerForm: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -170,6 +191,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * Calculates the flex width of an element based off of the span parameter
+     * @param span
+     * @returns {string}
+     */
+    getFlexProp(span) {
+      let flexBasis = span != null ? (span / 12) * 100 : 100;
+      return `flex: 1 1 ${flexBasis}%;`;
+    },
     /**
      * Maps errors to the corresponding fields in the passed in data
      * @param masterData

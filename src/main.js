@@ -14,10 +14,11 @@ import {
   createLinkToRecord,
   getSortedData,
   compare,
-  getInputType
+  getInputType,
+  transformIntoFormModel
 } from "./global/mixins";
 
-import ModelTypes from "./global/constants/ModelType";
+import ModelType from "./global/constants/ModelType";
 
 export {
   parseDateString,
@@ -29,7 +30,8 @@ export {
   getSortedData,
   compare,
   getInputType,
-  ModelTypes
+  transformIntoFormModel,
+  ModelType
 };
 
 // Include mixins

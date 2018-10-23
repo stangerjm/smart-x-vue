@@ -7,3 +7,4 @@ export { createLinkToRecord } from "./mixins/createLinkToRecord";
 export { getSortedData } from "./mixins/getSortedData";
 export { compare } from "./mixins/compare";
 export { getInputType } from "./mixins/getInputType";
+export { transformIntoFormModel } from "./mixins/transformIntoFormModel";

@@ -5,8 +5,7 @@
       <template slot="header">
 
         <smart-nav :nav-items="nav"
-                   nav-title="Admin"
-                   usr="JMST225">
+                   nav-title="Admin">
         </smart-nav>
 
       </template>
@@ -14,7 +13,10 @@
       <template slot="content">
 
         <smart-form :form-data="formModel"
-                    :on-submit="submit">
+                    :on-submit="submit"
+                    :validation-errors="getErrors"
+                    style="width: 60%; margin: 0 auto"
+                    :centerForm="true">
         </smart-form>
 
       </template>
@@ -32,7 +34,8 @@
 
 <script>
 import { config } from "../app.config.js";
-import ModelTypes from "../src/global/constants/ModelType";
+import ModelType from "../src/global/constants/ModelType";
+import { transformIntoFormModel } from "../src/global/mixins/transformIntoFormModel";
 
 export default {
   name: "app",
@@ -45,21 +48,79 @@ export default {
   data() {
     return {
       nav: config.nav,
-      formModel: {
-        name: String,
-        password: ModelTypes.Password,
-        age: Number,
-        birthday: Date,
-        phone: ModelTypes.PhoneNumber
-      }
+      formModel: transformIntoFormModel({
+        firstName: {
+          type: String,
+          required: true,
+          span: "5"
+        },
+        middleInitial: {
+          type: String,
+          required: false,
+          span: "2",
+          displayName: "M.I."
+        },
+        lastName: {
+          type: String,
+          required: true,
+          span: "5"
+        },
+        userName: {
+          type: String,
+          required: true,
+          span: "6"
+        },
+        email: {
+          type: String,
+          required: true,
+          span: "6"
+        },
+        dateOfBirth: {
+          type: Date,
+          required: true,
+          span: "6"
+        },
+        phone: {
+          type: ModelType.PhoneNumber,
+          required: true,
+          span: "6"
+        },
+        password: {
+          type: ModelType.Password,
+          required: true,
+          span: "6"
+        },
+        confirmPassword: {
+          type: ModelType.Password,
+          required: true,
+          span: "6"
+        }
+      }),
+      errorMessages: null
+      // formModel: {
+      //   name: String,
+      //   password: ModelType.Password,
+      //   age: Number,
+      //   birthday: Date,
+      //   phone: ModelType.PhoneNumber
+      // }
     };
+  },
+  computed: {
+    getErrors() {
+      return this.errorMessages;
+    }
   },
   methods: {
     submit(submittedData) {
-      let stuff = Object.entries(submittedData);
-      stuff.forEach((data) => {
-        console.table(data);
-      });
+      console.log(submittedData);
+      this.errorMessages = [
+        { fieldName: "firstName", message: "Name must be correct" }
+      ];
+      // let stuff = Object.entries(submittedData);
+      // stuff.forEach((data) => {
+      //   console.table(data);
+      // });
     }
   }
 };

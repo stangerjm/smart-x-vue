@@ -1,12 +1,41 @@
 import { parseDateString } from "./parseDateString";
 import { isObject, getDefaultValue, getType } from "./helpers";
 
+function createViewModelFromArray(arraySchema) {
+  let typedViewModel = arraySchema.reduce(function(accumulator, value) {
+    return {
+      ...accumulator,
+      [value.name]: value.type
+    };
+  }, {});
+
+  let entries = Object.entries(typedViewModel);
+  let createViewModelFromEntries = getViewModelReductor();
+  let partialViewModel = entries.reduce(createViewModelFromEntries, {});
+
+  return arraySchema.reduce(function(accumulator, value) {
+    // eslint-disable-next-line
+    const { name, type, ...restOfSchema } = value;
+
+    accumulator[name] = {
+      ...accumulator[name],
+      ...restOfSchema
+    };
+
+    return accumulator;
+  }, partialViewModel);
+}
+
 /**
  * Takes in an object and returns a typed schema based on the values
  * @param schema
  * @returns {object}
  */
 export function createViewModel(schema) {
+  if (Array.isArray(schema)) {
+    return createViewModelFromArray(schema);
+  }
+
   let entries = Object.entries(schema);
   let createViewModelFromEntries = getViewModelReductor();
 

@@ -9,7 +9,7 @@
       </main>
 
       <aside class="smart-nav--headerAside">
-        <span class="smart-nav--userTime">{{usr}} - {{currentDateTime}}</span>
+        <span class="smart-nav--userTime">{{getNavTimeDisplay(usr, currentDateTime)}}</span>
       </aside>
 
     </header>
@@ -40,22 +40,21 @@ export default {
      * Title to display at the top of the navigation.
      */
     navTitle: {
-      required: true,
-      type: String
-    },
-    /**
-     * The current user's username.
-     */
-    usr: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
     /**
      * List of items to render in the navigation.
      */
     navItems: {
-      required: true,
-      type: Array
+      type: Array,
+      required: true
+    },
+    /**
+     * The current user's username.
+     */
+    usr: {
+      type: String
     }
   },
   data() {
@@ -67,6 +66,9 @@ export default {
     };
   },
   methods: {
+    getNavTimeDisplay(usr, currentTime) {
+      return usr ? `${usr} - ${currentTime}` : currentTime;
+    },
     /**
      * Gets the current date and time in the format: "MM/DD/YY HH:MM:SS"
      * @param fromDate

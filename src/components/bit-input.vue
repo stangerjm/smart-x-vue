@@ -1,7 +1,7 @@
 <template>
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
     <!-- Render label regardless of input type -->
-    <label class="bit-input--label" :for="inputId ? inputId : randomId">{{labelText}}</label>
+    <label class="bit-input--label" :class="[ requiredField ? 'bit-input--required' : '' ]" :for="inputId ? inputId : randomId">{{labelText}}</label>
 
     <!-- Render as a checkbox if value is a boolean -->
     <template v-if="inputType === InputType.CHECKBOX">
@@ -90,6 +90,13 @@ export default {
      */
     inputId: {
       type: String
+    },
+    /**
+     * Flag to indicate if the field should be required or not
+     */
+    requiredField: {
+      type: Boolean,
+      default: false
     },
     /**
      * Allows v-model to return the altered input value
