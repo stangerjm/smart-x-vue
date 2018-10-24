@@ -60,7 +60,7 @@
     <bit-btn class="smart-form--submit" @click.native="submit">Submit</bit-btn>
 
     <!-- Only render loading spinner if form is loading -->
-    <bit-loading class="smart-form--spinner" v-if="formLoading"></bit-loading>
+    <bit-loading class="smart-form--spinner" v-if="working"></bit-loading>
 
     <!-- @slot Placeholder for any additional form markup -->
     <slot></slot>
@@ -174,7 +174,11 @@ export default {
       /**
        * Contains all of the data that should be rendered as select elements
        */
-      selectData: this.getSelectData(masterData)
+      selectData: this.getSelectData(masterData),
+      /**
+       * Local copy of formLoading component prop
+       */
+      working: this.formLoading
     };
   },
   watch: {
@@ -246,14 +250,14 @@ export default {
      */
     reduceArrayPropertiesIntoSelectedValues(accumulatorObj, [key, value]) {
       if (Object.keys(this.selectData).includes(key)) {
+        // Do not include select data if an item has not been selected
+        if (Array.isArray(this.selectData[key])) {
+          return accumulatorObj;
+        }
         // If property is a list, return an object with the selected list value
         return {
           ...accumulatorObj,
-          // If an item has been selected from the list, insert the value into the object.
-          // Insert null if nothing has been selected.
-          [key]: !Array.isArray(this.selectData[key])
-            ? this.selectData[key]
-            : null
+          [key]: this.selectData[key]
         };
       }
       //If value pair property is not a list, return the untransformed key
@@ -296,8 +300,10 @@ export default {
      * Execute the "onSubmit" function that was passed into the component and pass
      * properly formatted data to be submitted.
      */
-    submit() {
-      this.onSubmit(this.getSubmitData());
+    async submit() {
+      this.working = true;
+      await this.onSubmit(this.getSubmitData());
+      this.working = false;
     }
   }
 };

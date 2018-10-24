@@ -18,7 +18,7 @@
                     :on-submit="submit"
                     :validation-errors="getErrors"
                     style="width: 60%; margin: 0 auto"
-                    :centerForm="true">
+                    :centerForm="false">
         </smart-form>
 
       </template>
@@ -130,7 +130,13 @@ export default {
     }
   },
   methods: {
-    submit(submittedData) {
+    async submit(submittedData) {
+      function delay(time, value) {
+        return new Promise(function(resolve) {
+          setTimeout(resolve.bind(null, value), time);
+        });
+      }
+
       console.log(submittedData);
       this.errorMessages = [
         { fieldName: "firstName", message: "Name must be correct" }
