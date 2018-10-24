@@ -5,9 +5,10 @@
 
     <!-- Render as a checkbox if value is a boolean -->
     <template v-if="inputType === InputType.CHECKBOX">
+
       <input class="bit-input--field"
              :class="[erroredField ? 'bit-input--error' : '']"
-             :id="inputName"
+             :id="inputId ? inputId : randomId"
              :type="inputType"
              :name="inputName"
              :checked="checked"
@@ -27,9 +28,20 @@
              :type="inputType">
     </template>
 
+    <!--<template v-else-if="inputType === InputType.PHONE">-->
+      <!--<input class="bit-input&#45;&#45;field"-->
+             <!--:class="[erroredField ? 'bit-input&#45;&#45;error' : '']"-->
+             <!--:id="inputId ? inputId : randomId"-->
+             <!--:name="inputName"-->
+             <!--@input="updateValue"-->
+             <!--v-bind="$attrs"-->
+             <!--:type="getHtmlInputType(inputType)">-->
+    <!--</template>-->
+
     <!-- Render as an input box if value is any other type -->
     <template v-else>
       <input class="bit-input--field"
+             :value="value"
              :class="[erroredField ? 'bit-input--error' : '']"
              :id="inputId ? inputId : randomId"
              :name="inputName"
@@ -244,6 +256,13 @@ export default {
         placeholder: config.phoneFormat
       });
       inputMask.mask(phoneElement);
+
+      // Reset phone number if input mask is not satisfied
+      phoneElement.onblur = () => {
+        if (!phoneElement.inputmask.isComplete()) {
+          this.$emit("input", "");
+        }
+      };
     },
     /**
      * Updates the value passed in only if input mask is completed.
@@ -290,7 +309,6 @@ export default {
       const getEmitValue = inputType => {
         switch (inputType) {
           case InputType.DATE:
-          case InputType.PHONE:
             if (
               this.$el
                 .querySelector(this.elementSelectors[inputType])

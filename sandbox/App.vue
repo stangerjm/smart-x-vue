@@ -5,7 +5,9 @@
       <template slot="header">
 
         <smart-nav :nav-items="nav"
-                   nav-title="Admin">
+                   nav-title="Admin"
+                   usr="James"
+                   sign-out-path="/test">
         </smart-nav>
 
       </template>
@@ -94,15 +96,31 @@ export default {
           type: ModelType.Password,
           required: true,
           span: "6"
+        },
+        choices: {
+          type: ["test1", "test2", "test3"],
+          required: true,
+          span: 12
         }
-      }),
-      errorMessages: null
+      })
+      // errorMessages: null,
+      // formModel: {
+      //   name: "James",
+      //   password: ModelType.Password("test"),
+      //   age: 30,
+      //   birthday: new Date("10/12/2010"),
+      //   phone: ModelType.PhoneNumber("3604859925"),
+      //   isEmployee: true,
+      //   choices: ["test4", "test5", "test6"]
+      // },
       // formModel: {
       //   name: String,
       //   password: ModelType.Password,
       //   age: Number,
       //   birthday: Date,
-      //   phone: ModelType.PhoneNumber
+      //   phone: ModelType.PhoneNumber,
+      //   isEmployee: Boolean,
+      //   choices: ["test7", "test8", "test9"]
       // }
     };
   },

@@ -8,8 +8,9 @@
         <h4 class="smart-nav--title">{{navTitle}}</h4>
       </main>
 
-      <aside class="smart-nav--headerAside">
-        <span class="smart-nav--userTime">{{getNavTimeDisplay(usr, currentDateTime)}}</span>
+      <aside class="smart-nav--headerAside" v-if="usr != null">
+        <span class="smart-nav--userTime">{{getNavMessage(usr)}}</span>
+        <a class="bit-link" :href="signOutPath">Sign Out</a>
       </aside>
 
     </header>
@@ -55,6 +56,13 @@ export default {
      */
     usr: {
       type: String
+    },
+    /**
+     * The path attached to the sign out button
+     */
+    signOutPath: {
+      type: String,
+      default: "#"
     }
   },
   data() {
@@ -66,8 +74,8 @@ export default {
     };
   },
   methods: {
-    getNavTimeDisplay(usr, currentTime) {
-      return usr ? `${usr} - ${currentTime}` : currentTime;
+    getNavMessage(usr) {
+      return usr ? `Welcome, ${usr}!` : "";
     },
     /**
      * Gets the current date and time in the format: "MM/DD/YY HH:MM:SS"
@@ -122,4 +130,5 @@ export default {
 
 <style scoped lang="scss">
 @import "../styles/sass/components/smart/nav/smart-nav";
+@import "../styles/sass/components/bit/link/bit-link";
 </style>

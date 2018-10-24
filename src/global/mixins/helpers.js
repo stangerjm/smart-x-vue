@@ -1,3 +1,5 @@
+import ModelType from "../constants/ModelType";
+
 /**
  * Determines if the value passed in is an object.
  * @param value
@@ -17,6 +19,14 @@ export function isObject(value) {
  * @returns {*}
  */
 export function getDefaultValue(type) {
+  if (
+    type.name === ModelType.PhoneNumber.name ||
+    type.name === ModelType.Password.name
+  ) {
+    // Only return the value from type() call if it returns a value and not a function
+    return getType(type()) !== "Function" ? type() : "";
+  }
+
   switch (type) {
     case Number:
       return null;
