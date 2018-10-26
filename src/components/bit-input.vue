@@ -265,6 +265,11 @@ export default {
        * @returns {*}
        */
       function castValue(value, type) {
+        // Do not cast if value is empty
+        if (value === '') {
+          return value;
+        }
+
         switch (type) {
           case InputType.PHONE:
           case InputType.TEXT:

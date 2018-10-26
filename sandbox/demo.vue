@@ -18,7 +18,7 @@
                 :validation-errors="errors">
     </smart-form>
 
-    <!--<h1>Searchable Table</h1>-->
+    <h1>Searchable Table</h1>
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="[
@@ -29,15 +29,6 @@
                             default-context="test"
                             :searchModel="searchModel">
     </stack-searchable-table>
-
-    <!--<smart-search form-title="Test"-->
-                  <!--route-name="Test"-->
-                  <!--:search-model="{ name: String }"-->
-                  <!--:on-submit="function submit() {}">-->
-    <!--</smart-search>-->
-    <!--<smart-table :table-data="[ { id: 1, name: 'James', age: 25 } ]"-->
-                 <!--default-context="test">-->
-    <!--</smart-table>-->
 
     <h1>Section</h1>
     <smart-section section-title="Test">
@@ -69,14 +60,8 @@ export default {
     SmartAccordion: () => import('../src/components/smart-accordion'),
     BitLoading: () => import('../src/components/bit-loading'),
     SmartSection: () => import('../src/components/smart-section'),
-    SmartNav: () => import('../src/components/smart-nav'),
-    SmartFooter: () => import('../src/components/smart-footer'),
-    LayoutMain: () => import('../src/components/layout-main'),
     SmartForm: () => import('../src/components/smart-form'),
-    SmartTable: () => import('../src/components/smart-table'),
     StackSearchableTable: () => import('../src/components/stack-searchableTable'),
-    BitInput: () => import('../src/components/bit-input'),
-    SmartSearch: () => import('../src/components/smart-search'),
   },
   // computed: {
   //   propsToLink() {
