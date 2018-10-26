@@ -1,28 +1,28 @@
-import regionService from "../../../services/regionService";
+import regionService from '../../../services/regionService';
 
-export const fetchRegionData = async context => {
-  let response = await regionService.fetchRegions();
-  let regions = response.data.regions;
-  context.commit("updateRegions", regions);
+export const fetchRegionData = async (context) => {
+  const response = await regionService.fetchRegions();
+  const { data: { regions } } = response;
+  context.commit('updateRegions', regions);
 };
 
 export const addRegion = async (context, region) => {
-  let response = await regionService.addRegion(region);
-  let newRegion = response.data;
-  context.commit("addRegion", newRegion);
+  const response = await regionService.addRegion(region);
+  const newRegion = response.data;
+  context.commit('addRegion', newRegion);
 };
 
 export const deleteRegion = async (context, payload) => {
   await regionService.deleteRegion(payload.id);
-  context.commit("deleteRegion", payload.id);
+  context.commit('deleteRegion', payload.id);
 };
 
 export const editRegion = async (context, payload) => {
-  let response = await regionService.editRegion(payload.region, payload.id);
-  context.commit("editRegion", response.data);
+  const response = await regionService.editRegion(payload.region, payload.id);
+  context.commit('editRegion', response.data);
 };
 
 export const fetchRegion = async (context, id) => {
-  let response = await regionService.fetchRegion(id);
+  const response = await regionService.fetchRegion(id);
   return response.data;
 };

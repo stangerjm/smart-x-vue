@@ -1,36 +1,5 @@
-import moment from "moment";
-import { config } from "../../../app.config";
-
-/**
- * Parses a string date into a new Date object.
- * @param {string} date
- * @returns {Date | undefined}
- */
-export function parseDateString(date) {
-  if (typeof date !== "string") {
-    return undefined;
-  }
-
-  // Regular expression that matches .NET encoded JSON dates
-  let dateRegex = /\/Date\((\d+)(?:-\d+)?\)\//i;
-
-  // If date is earliest possible .NET encoded JSON date, return early date
-  if (date === "/Date(-62135568000000)/") {
-    return new Date("1/1/0001");
-  }
-  // If date is any .NET encoded JSON date, return a new date with the value
-  else if (dateRegex.test(date)) {
-    return new Date(parseInt(dateRegex.exec(date)[1], 10));
-  }
-  // If date is any other valid date, return new date with the value
-  else if (isValidDateString(date)) {
-    return new Date(date);
-  }
-  // If date is any other type, return undefined
-  else {
-    return undefined;
-  }
-}
+import moment from 'moment';
+import config from '../../../app.config';
 
 /**
  * Returns true if the passed in value is a valid date string
@@ -39,7 +8,7 @@ export function parseDateString(date) {
  */
 function isValidDateString(value) {
   // If value is not a string or a parseable date-string, return false
-  if (typeof value !== "string" || Number.isNaN(Date.parse(value))) {
+  if (typeof value !== 'string' || Number.isNaN(Date.parse(value))) {
     return false;
   }
 
@@ -48,4 +17,32 @@ function isValidDateString(value) {
     moment(value, moment.ISO_8601, true).isValid() ||
     moment.utc(value, config.dateFormat).isValid()
   );
+}
+
+/**
+ * Parses a string date into a new Date object.
+ * @param {string} date
+ * @returns {Date | undefined}
+ */
+export default function parseDateString(date) {
+  if (typeof date !== 'string') {
+    return undefined;
+  }
+
+  // Regular expression that matches .NET encoded JSON dates
+  const dateRegex = /\/Date\((\d+)(?:-\d+)?\)\//i;
+
+  // If date is earliest possible .NET encoded JSON date, return early date
+  if (date === '/Date(-62135568000000)/') {
+    return new Date('1/1/0001');
+  } else if (dateRegex.test(date)) {
+    // If date is any .NET encoded JSON date, return a new date with the value
+    return new Date(parseInt(dateRegex.exec(date)[1], 10));
+  } else if (isValidDateString(date)) {
+    // If date is any other valid date, return new date with the value
+    return new Date(date);
+  }
+
+  // If date is any other type, return undefined
+  return undefined;
 }

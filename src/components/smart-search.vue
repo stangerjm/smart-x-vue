@@ -38,7 +38,12 @@
         </bit-input>
 
         <!-- Search button -->
-        <bit-btn :disabled="isHidden" type="button" btn-style="search" @click.native="submit">Search</bit-btn>
+        <bit-btn :disabled="isHidden"
+                 type="button"
+                 btn-style="search"
+                 @click.native="submit">
+          Search
+        </bit-btn>
 
       </div>
     </div>
@@ -47,23 +52,20 @@
 </template>
 
 <script>
-import { getDefaultValue } from "../global/mixins/helpers";
-import { createViewModel, getInputType, toTitleCase } from "../global/mixins";
-import BitBtn from "./bit-btn";
-import BitInput from "./bit-input";
-import BitIcon from "./bit-icon";
-import { getSmartSearchProps } from "./props/smartSearch";
+import { getDefaultValue } from '../global/mixins/helpers';
+import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
+import { smartSearch } from './props';
 /**
  * A component that renders a mobile oriented search bar.
  * @author James Stanger, Washington State Patrol
  * @version 1.0
  */
 export default {
-  name: "smart-search",
+  name: 'smart-search',
   components: {
-    BitBtn,
-    BitInput,
-    BitIcon
+    BitBtn: () => import('./bit-btn'),
+    BitInput: () => import('./bit-input'),
+    BitIcon: () => import('./bit-icon'),
   },
   data() {
     return {
@@ -73,14 +75,14 @@ export default {
       isHidden: !this.isExpanded,
       typedSearchModel: this.searchModel
         ? createViewModel(this.searchModel)
-        : {}
+        : {},
     };
   },
   props: {
-    ...getSmartSearchProps()
+    ...smartSearch(),
   },
   filters: {
-    toTitleCase
+    toTitleCase,
   },
   methods: {
     getInputType,
@@ -93,24 +95,20 @@ export default {
         this.resize();
       } else {
         this.isHidden = true;
-        this.$el.querySelector(
-          ".smart-search--fieldContainer"
-        ).style.minHeight = 0;
+        this.$el.querySelector('.smart-search--fieldContainer').style.minHeight = '0';
       }
     },
     /**
-     * Event handler for the resize event. Dynamically set the height of the search container, and change
-     * the style of the toggle buttons on smaller screens.
+     * Event handler for the resize event. Dynamically set the height of the search container,
+     * and change the style of the toggle buttons on smaller screens.
      */
     resize() {
       if (!this.isHidden) {
-        let search = this.$el.querySelector(".smart-search--toggleContainer");
-        let fieldContainer = this.$el.querySelector(
-          ".smart-search--fieldContainer"
-        );
+        const search = this.$el.querySelector('.smart-search--toggleContainer');
+        const fieldContainer = this.$el.querySelector('.smart-search--fieldContainer');
 
-        //do not add search height if screen is less than breakpoint
-        let searchHeight = search.offsetHeight;
+        // do not add search height if screen is less than breakpoint
+        const searchHeight = search.offsetHeight;
 
         fieldContainer.style.minHeight = `${searchHeight}px`;
       }
@@ -122,13 +120,13 @@ export default {
      * @returns {Object}
      */
     reduceToFilledOutValues(accumulator, key) {
-      let currentValue = this.typedSearchModel[key];
+      const currentValue = this.typedSearchModel[key];
       // If user fills in a number or date and removes it, the value will be an empty string.
       // Ignore the empty value for these types.
       if (
         (currentValue.typeConstructor === Number ||
           currentValue.typeConstructor === Date) &&
-        currentValue.value === ""
+        currentValue.value === ''
       ) {
         return accumulator;
       }
@@ -142,28 +140,28 @@ export default {
       ) {
         return {
           ...accumulator,
-          [key]: currentValue
+          [key]: currentValue,
         };
       }
       return accumulator;
     },
     /**
-     * Calls the passed-in function "onSubmit" and passes the data
+     * Calls the passed-in function 'onSubmit' and passes the data
      * from the fields on the form that have been filled out.
      */
     submit() {
-      let filledOutFieldValues = Object.keys(this.typedSearchModel).reduce(
+      const filledOutFieldValues = Object.keys(this.typedSearchModel).reduce(
         this.reduceToFilledOutValues,
-        {}
+        {},
       );
       this.onSubmit(filledOutFieldValues);
-    }
+    },
   },
   /**
-   * Sets up an event listener and the above handler for the "resize" event
+   * Sets up an event listener and the above handler for the 'resize' event
    */
   created() {
-    window.addEventListener("resize", this.resize);
+    window.addEventListener('resize', this.resize);
   },
   /**
    * Resize component when first mounted to ensure full size.
@@ -172,11 +170,11 @@ export default {
     if (this.isExpanded) {
       this.resize();
     }
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/search/smart-search";
-@import "../styles/sass/components/bit/btn/bit-btn";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/search/smart-search';
+@import '../styles/sass/components/bit/btn/bit-btn';
 </style>

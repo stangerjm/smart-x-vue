@@ -8,18 +8,18 @@
 
 <script>
 export default {
-  name: "smart-footer",
+  name: 'smart-footer',
   data() {
     return {
       /**
        * The current year to be displayed in the footer.
        */
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
     };
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/footer/smart-footer";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/footer/smart-footer';
 </style>

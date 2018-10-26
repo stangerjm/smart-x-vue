@@ -8,5 +8,5 @@ export default {
     return function PhoneNumber() {
       return phoneNumber;
     };
-  }
+  },
 };

@@ -1,2 +1,7 @@
-export { getSmartSearchProps } from "./smartSearch";
-export { getSmartTableProps } from "./smartTable";
+import smartSearch from './smartSearch';
+import smartTable from './smartTable';
+
+export {
+  smartSearch,
+  smartTable,
+};

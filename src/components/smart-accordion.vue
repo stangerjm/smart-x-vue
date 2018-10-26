@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { fillCustomEvent } from "../polyfill/polyfill";
+import { fillCustomEvent } from '../polyfill/polyfill';
 
 fillCustomEvent();
 /**
@@ -22,15 +22,15 @@ fillCustomEvent();
  * @version 1.0
  */
 export default {
-  name: "smart-accordion",
+  name: 'smart-accordion',
   props: {
     /**
      * The title that will display before the accordion.
      */
     title: {
       type: String,
-      default: "Click to expand"
-    }
+      default: 'Click to expand',
+    },
   },
   data() {
     return {
@@ -45,14 +45,14 @@ export default {
       /**
        * Height of the previous rendering of the accordion
        */
-      previousHeight: 0
+      previousHeight: 0,
     };
   },
   methods: {
     /**
      * Toggles the accordion to expand or collapse.
      */
-    toggleExpand: function() {
+    toggleExpand() {
       if (!this.isExpanded) {
         this.isExpanded = true;
         this.expandData();
@@ -63,7 +63,7 @@ export default {
          * render short and the inner content is hidden.
          */
         setTimeout(() => {
-          window.dispatchEvent(new CustomEvent("resize"));
+          window.dispatchEvent(new CustomEvent('resize'));
         }, 500);
       } else {
         this.collapseData();
@@ -73,20 +73,20 @@ export default {
     /**
      * Expands the accordion relative to the combined height of each of its children.
      */
-    expandData: function() {
-      let contentContainer = this.contentContainer;
+    expandData() {
+      const { contentContainer } = this;
 
-      let totalHeight = 0;
-
-      //loop through each child and add the height of each
-      for (let contentItem of contentContainer.childNodes) {
-        let itemHeight = contentItem.offsetHeight;
-        if (itemHeight) {
-          totalHeight += itemHeight;
+      // loop through each child and add the height of each
+      const totalHeight = [...contentContainer.childNodes].reduce((accumulator, contentItem) => {
+        const itemHeight = contentItem.offsetHeight;
+        if (itemHeight != null) {
+          return accumulator + itemHeight;
         }
-      }
 
-      //do not update DOM unless the height needs to be updated
+        return accumulator;
+      }, 0);
+
+      // do not update DOM unless the height needs to be updated
       if (this.previousHeight !== totalHeight) {
         contentContainer.style.height = `${totalHeight}px`;
         this.previousHeight = totalHeight;
@@ -95,32 +95,32 @@ export default {
     /**
      * Collapses the accordion by setting the container to have no height.
      */
-    collapseData: function() {
-      let contentContainer = this.contentContainer;
-      contentContainer.style.height = "0px";
+    collapseData() {
+      const { contentContainer } = this;
+      contentContainer.style.height = '0px';
       this.previousHeight = 0;
     },
     /**
      * Event handler that will continually resize the container if it is expanded.
      */
-    handleResize: function() {
+    handleResize() {
       if (this.isExpanded) {
         this.expandData();
       }
-    }
+    },
   },
   /**
    * Setup an event listener on window resize to resize the UI if needed.
    */
-  created: function() {
-    window.addEventListener("resize", this.handleResize);
+  created() {
+    window.addEventListener('resize', this.handleResize);
   },
-  mounted: function() {
-    this.contentContainer = this.$el.querySelector(".smart-accordion--content");
-  }
+  mounted() {
+    this.contentContainer = this.$el.querySelector('.smart-accordion--content');
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/accordion/smart-accordion";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/accordion/smart-accordion';
 </style>

@@ -4,40 +4,42 @@
     <!-- Tabs -->
     <nav class="smart-tabs--nav">
       <ul class="smart-tabs--tabList">
-        <!-- @slot Slot for tab heading elements. Each tab will be mapped to the corresponding item below. -->
+        <!-- @slot Slot for tab heading elements.
+                   Each tab will be mapped to the corresponding item below. -->
         <slot name="tab-list"></slot>
       </ul>
     </nav>
 
     <!-- Tab content -->
     <article class="smart-tabs--content">
-      <!-- @slot Slot for tab content. Each item here will be mapped to the corresponding tab above. -->
+      <!-- @slot Slot for tab content. Each item
+                 here will be mapped to the corresponding tab above. -->
       <slot name="tab-content"></slot>
     </article>
   </section>
 </template>
 
 <script>
-import SmartTable from "./smart-table";
-
 export default {
-  name: "smart-tabs",
+  name: 'smart-tabs',
   components: {
-    SmartTable
+    SmartTable: () => import('./smart-table'),
   },
   /**
    * Add active class to the first tab and the corresponding item.
    */
   mounted() {
-    let firstItem = this.$el.querySelector(".smart-tabs--item");
-    firstItem.classList.add("smart-tabs--activeItem");
+    const firstItem = this.$el.querySelector('.smart-tabs--item');
+    const firstTab = this.$el.querySelector('.smart-tabs--tab');
 
-    let firstTab = this.$el.querySelector(".smart-tabs--tab");
-    firstTab.classList.add("smart-tabs--activeTab");
-  }
+    if (firstItem != null) {
+      firstItem.classList.add('smart-tabs--activeItem');
+      firstTab.classList.add('smart-tabs--activeTab');
+    }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/tabs/smart-tabs";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/tabs/smart-tabs';
 </style>

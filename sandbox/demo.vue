@@ -18,7 +18,7 @@
                 :validation-errors="errors">
     </smart-form>
 
-    <h1>Searchable Table</h1>
+    <!--<h1>Searchable Table</h1>-->
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="[
@@ -29,6 +29,15 @@
                             default-context="test"
                             :searchModel="searchModel">
     </stack-searchable-table>
+
+    <!--<smart-search form-title="Test"-->
+                  <!--route-name="Test"-->
+                  <!--:search-model="{ name: String }"-->
+                  <!--:on-submit="function submit() {}">-->
+    <!--</smart-search>-->
+    <!--<smart-table :table-data="[ { id: 1, name: 'James', age: 25 } ]"-->
+                 <!--default-context="test">-->
+    <!--</smart-table>-->
 
     <h1>Section</h1>
     <smart-section section-title="Test">
@@ -51,42 +60,33 @@
 </template>
 
 <script>
-import SmartSection from "../src/components/smart-section";
-import BitLoading from "../src/components/bit-loading";
-import SmartAccordion from "../src/components/smart-accordion";
-import SmartDetails from "../src/components/smart-details";
-import SmartTabs from "../src/components/smart-tabs";
-import BitTab from "../src/components/bit-tab";
-import SmartForm from "../src/components/smart-form";
-import SmartTable from "../src/components/smart-table";
-import StackSearchableTable from "../src/components/stack-searchableTable";
-
 export default {
-  name: "demo",
+  name: 'demo',
   components: {
-    BitTab,
-    SmartTabs,
-    SmartDetails,
-    SmartAccordion,
-    BitLoading,
-    SmartSection,
-    SmartNav: () => import("../src/components/smart-nav"),
-    SmartFooter: () => import("../src/components/smart-footer"),
-    LayoutMain: () => import("../src/components/layout-main"),
-    SmartForm,
-    SmartTable,
-    StackSearchableTable,
-    BitInput: () => import("../src/components/bit-input")
+    BitTab: () => import('../src/components/bit-tab'),
+    SmartTabs: () => import('../src/components/smart-tabs'),
+    SmartDetails: () => import('../src/components/smart-details'),
+    SmartAccordion: () => import('../src/components/smart-accordion'),
+    BitLoading: () => import('../src/components/bit-loading'),
+    SmartSection: () => import('../src/components/smart-section'),
+    SmartNav: () => import('../src/components/smart-nav'),
+    SmartFooter: () => import('../src/components/smart-footer'),
+    LayoutMain: () => import('../src/components/layout-main'),
+    SmartForm: () => import('../src/components/smart-form'),
+    SmartTable: () => import('../src/components/smart-table'),
+    StackSearchableTable: () => import('../src/components/stack-searchableTable'),
+    BitInput: () => import('../src/components/bit-input'),
+    SmartSearch: () => import('../src/components/smart-search'),
   },
   // computed: {
   //   propsToLink() {
   //     return {
   //       manufacturerName: createLinkToRecord({
-  //         linkContext: "Manufacturer",
-  //         linkAction: "Details",
-  //         destinationLookupKey: "name",
+  //         linkContext: 'Manufacturer',
+  //         linkAction: 'Details',
+  //         destinationLookupKey: 'name',
   //         destinationTable: this.getPeople,
-  //         destinationIdKey: "_id"
+  //         destinationIdKey: '_id'
   //       })
   //     };
   //   }
@@ -94,68 +94,69 @@ export default {
   data() {
     return {
       devices: [
-        { id: 1, deviceModel: "TEST", manufacturerName: "James" },
-        { id: 2, deviceModel: "ANOTHER", manufacturerName: "James" },
-        { id: 3, deviceModel: "More", manufacturerName: "Smart Start" },
-        { id: 4, deviceModel: "Device 1", manufacturerName: "Draeger" },
-        { id: 5, deviceModel: "Device 2", manufacturerName: "Smart Start" },
-        { id: 6, deviceModel: "Device 3", manufacturerName: "Manufacturer 3" }
+        { id: 1, deviceModel: 'TEST', manufacturerName: 'James' },
+        { id: 2, deviceModel: 'ANOTHER', manufacturerName: 'James' },
+        { id: 3, deviceModel: 'More', manufacturerName: 'Smart Start' },
+        { id: 4, deviceModel: 'Device 1', manufacturerName: 'Draeger' },
+        { id: 5, deviceModel: 'Device 2', manufacturerName: 'Smart Start' },
+        { id: 6, deviceModel: 'Device 3', manufacturerName: 'Manufacturer 3' },
       ],
       errors: [],
       formData: {
         name: String,
         age: Number,
-        child: ["James", "Jesse", "Jackson", "Jason"],
+        child: ['James', 'Jesse', 'Jackson', 'Jason'],
         isEmployee: Boolean,
-        birthday: Date
+        birthday: Date,
       },
       searchModel: {
         Name: String,
-        Age: Number
+        Age: Number,
       },
-      textModel: "",
+      textModel: '',
       dateModel: new Date(),
       working: false,
-      count: 0
+      count: 0,
     };
   },
   methods: {
     async submit(submittedData) {
+      console.log(submittedData);
       this.working = true;
       await this.delay(3000);
       if (this.count > 0) {
-        this.count--;
+        this.count -= 1;
         this.errors = [
           {
-            fieldName: "Name",
-            message: "Name must be ten million characters in length."
+            fieldName: 'Name',
+            message: 'Name must be ten million characters in length.',
           },
           {
-            fieldName: "Age",
-            message: "You must be this old to play the game"
+            fieldName: 'Age',
+            message: 'You must be this old to play the game',
           },
           {
             fieldName: null,
-            message: "Network Error"
-          }
+            message: 'Network Error',
+          },
         ];
       } else {
-        this.count++;
+        this.count += 1;
         this.errors = [
           {
-            fieldName: "Age",
-            message: "You must be this old to play the game"
-          }
+            fieldName: 'Age',
+            message: 'You must be this old to play the game',
+          },
         ];
       }
       this.working = false;
     },
     delay(time, value) {
-      return new Promise(function(resolve) {
+      return new Promise((resolve) => {
         setTimeout(resolve.bind(null, value), time);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

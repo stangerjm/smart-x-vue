@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "bit-loading"
+  name: 'bit-loading',
 };
 </script>
 

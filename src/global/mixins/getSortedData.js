@@ -1,42 +1,11 @@
 /**
- *
- * @param data
- * @param key
- * @param descending
- * @returns {*}
- */
-export function getSortedData(data, key, descending) {
-  // If all items are numbers, sort the opposite direction
-  if (isArrayOfNumbers(data, key)) {
-    descending = !descending;
-  }
-
-  // Sort the data
-  return data.slice().sort(function(item1, item2) {
-    let itemKey1;
-    let itemKey2;
-
-    // Set the keys to sort in the direction indicated
-    if (descending) {
-      itemKey1 = item1[key];
-      itemKey2 = item2[key];
-    } else {
-      itemKey1 = item2[key];
-      itemKey2 = item1[key];
-    }
-
-    return compareItems(itemKey1, itemKey2);
-  });
-}
-
-/**
  * Determines if the passed in is an array of numbers
  * @param array
  * @param key
  * @returns {boolean}
  */
 function isArrayOfNumbers(array, key) {
-  return array.every(item => !isNaN(Number(item[key])));
+  return array.every(item => !Number.isNaN(Number(item[key])));
 }
 
 /**
@@ -56,4 +25,35 @@ function compareItems(item1, item2) {
   }
 
   return 0;
+}
+
+/**
+ *
+ * @param data
+ * @param key
+ * @param descending
+ * @returns {*}
+ */
+export default function getSortedData(data, key, descending) {
+  // If all items are numbers, sort the opposite direction
+  if (isArrayOfNumbers(data, key)) {
+    descending = !descending;
+  }
+
+  // Sort the data
+  return data.slice().sort((item1, item2) => {
+    let itemKey1;
+    let itemKey2;
+
+    // Set the keys to sort in the direction indicated
+    if (descending) {
+      itemKey1 = item1[key];
+      itemKey2 = item2[key];
+    } else {
+      itemKey1 = item2[key];
+      itemKey2 = item1[key];
+    }
+
+    return compareItems(itemKey1, itemKey2);
+  });
 }

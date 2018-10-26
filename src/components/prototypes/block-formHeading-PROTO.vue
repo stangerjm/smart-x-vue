@@ -7,13 +7,13 @@
 
 <script>
 export default {
-  name: "block-form-heading"
+  name: 'block-form-heading',
 };
 </script>
 
-<style scoped lang="scss">
-@import "../../styles/sass/global/mixins";
-@import "../../styles/sass/global/variables";
+<style scoped lang='scss'>
+@import '../../styles/sass/global/mixins';
+@import '../../styles/sass/global/variables';
 
 .form-section--heading {
   border-radius: 10px 10px 0 0;

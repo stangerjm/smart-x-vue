@@ -24,17 +24,15 @@
 </template>
 
 <script>
-import BlockNavList from "./block-navList";
-
 /**
  * A component that renders a responsive navigation.
  * @author James Stanger, Washington State Patrol
  * @version 1.0
  */
 export default {
-  name: "smart-nav",
+  name: 'smart-nav',
   components: {
-    BlockNavList
+    BlockNavList: () => import('./block-navList'),
   },
   props: {
     /**
@@ -42,62 +40,62 @@ export default {
      */
     navTitle: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * List of items to render in the navigation.
      */
     navItems: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
      * The current user's username.
      */
     usr: {
-      type: String
+      type: String,
     },
     /**
      * The path attached to the sign out button
      */
     signOutPath: {
       type: String,
-      default: "#"
-    }
+      default: '#',
+    },
   },
   data() {
     return {
       /**
        * Current time and date
        */
-      currentDateTime: undefined
+      currentDateTime: undefined,
     };
   },
   methods: {
     getNavMessage(usr) {
-      return usr ? `Welcome, ${usr}!` : "";
+      return usr ? `Welcome, ${usr}!` : '';
     },
     /**
-     * Gets the current date and time in the format: "MM/DD/YY HH:MM:SS"
+     * Gets the current date and time in the format: 'MM/DD/YY HH:MM:SS'
      * @param fromDate
      * @returns {string}
      */
-    getTime: function(fromDate) {
-      let currentTime = fromDate ? fromDate : new Date();
-      let year = currentTime
+    getTime(fromDate) {
+      const currentTime = fromDate;
+      const year = currentTime
         .getFullYear()
         .toString()
         .slice(-2);
-      let day = this.formatTime(currentTime.getDate());
-      let month = this.formatTime(currentTime.getMonth() + 1);
+      const day = this.formatTime(currentTime.getDate());
+      const month = this.formatTime(currentTime.getMonth() + 1);
       let hours = this.formatTime(currentTime.getHours());
-      let minutes = this.formatTime(currentTime.getMinutes());
-      let seconds = this.formatTime(currentTime.getSeconds());
+      const minutes = this.formatTime(currentTime.getMinutes());
+      const seconds = this.formatTime(currentTime.getSeconds());
 
-      //format hours to reflect 12hr time
+      // format hours to reflect 12hr time
       if (hours > 12) {
         hours = this.formatTime(hours - 12);
-      } else if (hours == 0) {
+      } else if (hours === 0) {
         hours = this.formatTime(12);
       }
 
@@ -106,8 +104,8 @@ export default {
     /**
      * Starts the clock that will update every second.
      */
-    startClock: function() {
-      this.currentDateTime = this.getTime();
+    startClock() {
+      this.currentDateTime = this.getTime(new Date());
       setTimeout(this.startClock, 1000);
     },
     /**
@@ -115,20 +113,20 @@ export default {
      * @param value
      * @returns {string}
      */
-    formatTime: function(value) {
-      return (value < 10 ? "0" : "") + value;
-    }
+    formatTime(value) {
+      return (value < 10 ? '0' : '') + value;
+    },
   },
   /**
    * Start the clock when mounted.
    */
-  mounted: function() {
+  mounted() {
     this.startClock();
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/nav/smart-nav";
-@import "../styles/sass/components/bit/link/bit-link";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/nav/smart-nav';
+@import '../styles/sass/components/bit/link/bit-link';
 </style>

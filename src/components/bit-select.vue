@@ -24,57 +24,53 @@
 
 <script>
 export default {
-  name: "bit-select",
+  name: 'bit-select',
   props: {
     /**
      * Data that will be rendered as the select options.
      */
     selectData: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
-     * Corresponds to the native HTML input attribute "name"
+     * Corresponds to the native HTML input attribute 'name'
      */
     inputName: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Display text for the related input label
      */
     labelText: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Flag to have input and label stack horizontally if set to true
      */
     stackElements: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Flag to indicate if the field has an error associated with it
      */
     erroredField: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      selectedValue: "",
-      randomId:
-        "input-" +
-        Math.random()
-          .toString(36)
-          .substr(2, 9)
+      selectedValue: '',
+      randomId: `input-${Math.random().toString(36).substr(2, 9)}`,
     };
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/bit/input/bit-input";
+<style scoped lang='scss'>
+@import '../styles/sass/components/bit/input/bit-input';
 </style>

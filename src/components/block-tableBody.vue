@@ -45,17 +45,14 @@
 </template>
 
 <script>
-import BitTableCell from "./bit-tableCell";
-import BlockActionContainer from "./block-actionContainer";
-import BitBtn from "./bit-btn";
-import { getItemId } from "../global/mixins";
+import { getItemId } from '../global/mixins';
 
 export default {
-  name: "block-table-body",
+  name: 'block-table-body',
   components: {
-    BitTableCell,
-    BlockActionContainer,
-    BitBtn
+    BitTableCell: () => import('./bit-tableCell'),
+    BlockActionContainer: () => import('./block-actionContainer'),
+    BitBtn: () => import('./bit-btn'),
   },
   props: {
     /**
@@ -64,58 +61,58 @@ export default {
      */
     typedData: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
-     * Keys to the "typedData" object
+     * Keys to the 'typedData' object
      * @see typedData
      */
     dataKeys: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
      * Default context of the action container
      */
     defaultContext: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Flag to optionally render details button
      */
     allowDetails: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Flag to optionally render edit button
      */
     allowEdit: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Flag to optionally render delete button
      */
     allowDelete: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Flag to optionally include the action container
      */
     includeActionContainer: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Object containing the properties that should be rendered as a link to another record.
      */
     propsToLink: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   methods: {
     getItemId,
@@ -124,15 +121,15 @@ export default {
      * @param event
      */
     expandRecord(event) {
-      let btn = event.target;
-      let row = this.findAncestor(btn, "smart-table--row");
-      row.classList.toggle("record-is-expanded");
+      const btn = event.target;
+      const row = this.findAncestor(btn, 'smart-table--row');
+      row.classList.toggle('record-is-expanded');
       /**
        * Emit to parent that a record has been expanded so parent can resize appropriately.
        * @event recordExpanded
        * @type null
        */
-      this.$emit("recordExpanded");
+      this.$emit('recordExpanded');
     },
     /**
      * Finds the nearest ancestor that contains the specified class attribute.
@@ -141,6 +138,7 @@ export default {
      * @returns {object}
      */
     findAncestor(el, classSelector) {
+      // eslint-disable-next-line
       while ((el = el.parentElement) && !el.classList.contains(classSelector));
       return el;
     },
@@ -154,9 +152,7 @@ export default {
         return false;
       }
       return (
-        Object.keys(this.propsToLink).find(function(item) {
-          return item === key;
-        }) != null
+        Object.keys(this.propsToLink).find(item => item === key) != null
       );
     },
     /**
@@ -167,11 +163,11 @@ export default {
      */
     getLinkValue(key, lookupValue) {
       return this.propsToLink[key](lookupValue);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/table/smart-table";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/table/smart-table';
 </style>

@@ -11,12 +11,12 @@
 
 <script>
 export default {
-  name: "bit-tab",
+  name: 'bit-tab',
   props: {
     isTabContent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     /**
@@ -24,39 +24,37 @@ export default {
      * @param e
      */
     switchTab(e) {
-      let currentTab = e.target;
+      const currentTab = e.target;
 
-      if (currentTab.classList.contains("smart-tabs--activeTab")) {
-        //don't switch tabs if the current tab is already active
+      if (currentTab.classList.contains('smart-tabs--activeTab')) {
+        // don't switch tabs if the current tab is already active
         return;
       }
 
-      //deactivate previously active tab
-      this.deactivateItems("smart-tabs--activeTab");
+      // deactivate previously active tab
+      this.deactivateItems('smart-tabs--activeTab');
 
-      //activate current tab
-      currentTab.classList.add("smart-tabs--activeTab");
+      // activate current tab
+      currentTab.classList.add('smart-tabs--activeTab');
 
-      //look up index of current tab
-      let tabList = [...currentTab.parentNode.children];
-      let index = tabList.indexOf(currentTab);
+      // look up index of current tab
+      const tabList = [...currentTab.parentNode.children];
+      const index = tabList.indexOf(currentTab);
 
-      //deactivate previously active item
-      this.deactivateItems("smart-tabs--activeItem");
+      // deactivate previously active item
+      this.deactivateItems('smart-tabs--activeItem');
 
-      //find item at the same index as the current tab and activate it
-      let contentNodes = document.querySelectorAll(
-        ".smart-tabs--content > .smart-tabs--item"
-      );
-      let contentList = [...contentNodes];
-      contentList[index].classList.add("smart-tabs--activeItem");
+      // find item at the same index as the current tab and activate it
+      const contentNodes = document.querySelectorAll('.smart-tabs--content > .smart-tabs--item');
+      const contentList = [...contentNodes];
+      contentList[index].classList.add('smart-tabs--activeItem');
     },
     /**
      * Removes the active class from all the elements matching the class name passed in.
      * @param className
      */
     deactivateItems(className) {
-      let currentItems = document.querySelectorAll(`.${className}`);
+      const currentItems = document.querySelectorAll(`.${className}`);
       currentItems.forEach(this.deactivateItem(className));
     },
     /**
@@ -66,11 +64,11 @@ export default {
      * @returns {function}
      */
     deactivateItem(className) {
-      return function(item) {
+      return (item) => {
         item.classList.remove(className);
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

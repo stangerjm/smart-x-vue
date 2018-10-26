@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getClass } from "../global/mixins/helpers";
+import { getClass } from '../global/mixins/helpers';
 
 /**
  * A component that can render different types of icons.
@@ -15,7 +15,7 @@ import { getClass } from "../global/mixins/helpers";
  * @version 1.0
  */
 export default {
-  name: "bit-icon",
+  name: 'bit-icon',
   props: {
     /**
      * Icon type options include:
@@ -23,34 +23,34 @@ export default {
      */
     iconType: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Flag indicating that the element rendered should be a link
      */
     isLink: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data: function() {
+  data() {
     return {
       /**
        * The class attribute for the icon
        */
-      iconClass: getClass("bit-icon", this.iconType, [
-        "user",
-        "sort",
-        "delete",
-        "details",
-        "edit",
-        "search",
-        "exit"
-      ])
+      iconClass: getClass('bit-icon', this.iconType, [
+        'user',
+        'sort',
+        'delete',
+        'details',
+        'edit',
+        'search',
+        'exit',
+      ]),
     };
-  }
+  },
 };
 </script>
-<style scoped lang="scss">
-@import "../styles/sass/components/bit/icon/bit-icon";
+<style scoped lang='scss'>
+@import '../styles/sass/components/bit/icon/bit-icon';
 </style>

@@ -29,10 +29,10 @@
 
 <script>
 export default {
-  name: "layout-main"
+  name: 'layout-main',
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/layout/grid/grid";
+<style scoped lang='scss'>
+@import '../styles/sass/layout/grid/grid';
 </style>

@@ -25,49 +25,45 @@
 </template>
 
 <script>
-import SmartTable from "./smart-table";
-import SmartSearch from "./smart-search";
-import BitPaging from "./bit-paging";
-import { getSmartTableProps, getSmartSearchProps } from "./props/index";
-import { compare } from "../global/mixins";
-import { splitArrayIntoChunks } from "../global/mixins/helpers";
+import { smartTable, smartSearch } from './props';
+import { compare } from '../global/mixins';
+import { splitArrayIntoChunks } from '../global/mixins/helpers';
 
-// Use destructuring to ignore smart-search prop "onSubmit" as we will be providing that functionality here.
-// eslint-disable-next-line
-const { onSubmit, ...smartSearchProps } = getSmartSearchProps();
-
+// Use destructuring to ignore smart-search prop 'onSubmit'
+// as we will be providing that functionality here.
+const { onSubmit, ...smartSearchProps } = smartSearch();
 export default {
-  name: "stack-searchable-table",
+  name: 'stack-searchable-table',
   components: {
-    BitPaging,
-    SmartTable,
-    SmartSearch
+    BitPaging: () => import('./bit-paging'),
+    SmartTable: () => import('./smart-table'),
+    SmartSearch: () => import('./smart-search'),
   },
   props: {
     // Include all smart-table props
-    ...getSmartTableProps(),
+    ...smartTable(),
     // Include smart-search props
     ...smartSearchProps,
     resultsPerPage: {
       type: Number,
-      default: 10
-    }
+      default: 10,
+    },
   },
   data() {
     return {
       /**
-       * Local copy of component prop "tableData"
+       * Local copy of component prop 'tableData'
        */
       masterData: this.tableData,
       /**
-       * Index of the "pageData" array, representing the requested page
+       * Index of the 'pageData' array, representing the requested page
        */
       pageIdx: 0,
       numberOfResultsPerPage: this.resultsPerPage,
       modifiedSearchModel: {
         ...this.searchModel,
-        ResultsPerPage: Number
-      }
+        ResultsPerPage: Number,
+      },
     };
   },
   computed: {
@@ -78,14 +74,15 @@ export default {
       return splitArrayIntoChunks(this.masterData, this.numberOfResultsPerPage);
     },
     /**
-     * Item in the current index of the "pageData" computed property, representing the content of the current page
+     * Item in the current index of the 'pageData' computed property,
+     * representing the content of the current page
      */
     currentPage() {
       if (this.pageData == null) {
         return [];
       }
       return this.pageData.length > 0 ? this.pageData[this.pageIdx] : [];
-    }
+    },
   },
   methods: {
     handleSearchSubmit(submittedData) {
@@ -100,9 +97,7 @@ export default {
         submittedData.ResultsPerPage != null &&
         Number(submittedData.ResultsPerPage.value) > 0
       ) {
-        this.numberOfResultsPerPage = Number(
-          submittedData.ResultsPerPage.value
-        );
+        this.numberOfResultsPerPage = Number(submittedData.ResultsPerPage.value);
       } else {
         // Otherwise, reset the results per page.
         this.numberOfResultsPerPage = this.resultsPerPage;
@@ -125,29 +120,29 @@ export default {
      * @param formData
      */
     filterData(formData) {
-      let keys = Object.keys(formData);
+      const keys = Object.keys(formData);
       // If form data is empty, reset the search
       if (keys.length < 1) {
         this.resetData();
         return;
       }
       // Filter the data based off of the keys and values found in the formData
-      this.masterData = this.tableData.filter(item => {
+      this.masterData = this.tableData.filter((item) => {
         let found = true;
-        keys.forEach(key => {
+        keys.forEach((key) => {
           // Only continue searching if previous searches have ALL been successful
           if (found) {
             found = compare(
               item[key],
               formData[key].value,
-              formData[key].typeConstructor
+              formData[key].typeConstructor,
             );
           }
         });
         return found;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

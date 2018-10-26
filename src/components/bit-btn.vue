@@ -20,22 +20,22 @@
  * @version 1.0
  */
 export default {
-  name: "bit-btn",
+  name: 'bit-btn',
   props: {
     /**
      * Button style options include:
      * `add, datepicker, delete, details, edit, exit, expand, plainExit, plainSearch, reset, search`
      */
     btnStyle: {
-      type: String
+      type: String,
     },
     /**
      * Renders the button as a link if set to true
      */
     isLink: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     btnClass() {
@@ -43,18 +43,18 @@ export default {
        * Class attribute for the button or link
        */
       return `bit-btn ${this.getClass(this.btnStyle)}`;
-    }
+    },
   },
   data() {
     return {
       /**
        * Possible button types
        */
-      buttonTypes: ["add", "exit", "expand", "reset", "search"],
+      buttonTypes: ['add', 'exit', 'expand', 'reset', 'search'],
       /**
        * Default class attribute for the button
        */
-      defaultClass: "bit-btn-clickable"
+      defaultClass: 'bit-btn-clickable',
     };
   },
   methods: {
@@ -72,11 +72,11 @@ export default {
       }
 
       return this.defaultClass;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/bit/btn/bit-btn";
+<style scoped lang='scss'>
+@import '../styles/sass/components/bit/btn/bit-btn';
 </style>

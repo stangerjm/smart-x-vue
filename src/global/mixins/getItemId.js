@@ -3,11 +3,9 @@
  * @param {object} item
  * @returns {string | number}
  */
-export function getItemId(item) {
-  let keys = Object.keys(item);
-  let idKey = keys.find(
-    id => id.toLowerCase() === "id" || id.toLowerCase() === "_id"
-  );
+export default function getItemId(item) {
+  const keys = Object.keys(item);
+  const idKey = keys.find(id => id.toLowerCase() === 'id' || id.toLowerCase() === '_id');
 
   if (idKey != null) {
     return item[idKey].value;

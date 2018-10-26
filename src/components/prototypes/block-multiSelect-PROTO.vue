@@ -11,7 +11,9 @@
       <option disabled>
         Please select a {{ parentName | toTitleCase }}
       </option>
-      <option v-for="parentNode in selectData" :key="parentNode[parentDisplayKey]" :value="parentNode">
+      <option v-for="parentNode in selectData"
+              :key="parentNode[parentDisplayKey]"
+              :value="parentNode">
         {{parentNode[parentDisplayKey]}}
       </option>
     </select>
@@ -35,7 +37,7 @@
 </template>
 
 <script>
-import { toTitleCase } from "../../global/mixins";
+import { toTitleCase } from '../../global/mixins';
 
 /**
  * A component that renders two select elements that have a parent-child relationship.
@@ -43,50 +45,50 @@ import { toTitleCase } from "../../global/mixins";
  * @version 1.0
  */
 export default {
-  name: "block-multi-select",
+  name: 'block-multi-select',
   props: {
     /**
      * An array of objects that contains both the parent and child data. See object structure below.
      */
     optionsData: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * The title to display before the parent select element.
      */
     parentName: {
       required: true,
-      type: String
+      type: String,
     },
     /**
      * The title to display before the child select element.
      */
     childName: {
       required: true,
-      type: String
+      type: String,
     },
     /**
      * The object key to use for displaying the parent information.
      */
     parentDisplayKey: {
       required: true,
-      type: String
+      type: String,
     },
     /**
      * The object key to use for displaying the child information.
      */
     childDisplayKey: {
       required: true,
-      type: String
+      type: String,
     },
     /**
      * Flag indicating if the elements should be rendered horizontally or vertically
      */
     stackElements: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -107,32 +109,34 @@ export default {
       /**
        * Local copy of the options data passed into the component.
        */
-      selectData: this.optionsData
+      selectData: this.optionsData,
     };
   },
   filters: {
-    toTitleCase
+    toTitleCase,
   },
   computed: {
     /**
-     * Gets the key of the first array property in the "selectData" local prop
+     * Gets the key of the first array property in the 'selectData' local prop
      */
-    arrayKey: function() {
+    arrayKey() {
       if (this.selectData.length > 0) {
-        let firstData = this.selectData[0];
-        for (let option in firstData) {
-          if (Array.isArray(firstData[option])) {
-            return option;
-          }
-        }
+        // const firstData = this.selectData[0];
+        // Object.keys(firstData).forEach(option => {
+        //   if (Array.isArray(firstData[option])) {
+        //     return option;
+        //   }
+        // });
       }
-    }
-  }
+
+      return undefined;
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../../styles/sass/global/mixins";
-@import "../../styles/sass/global/variables";
-@import "../../styles/sass/components/block/multiSelect/block-multiSelect";
+<style scoped lang='scss'>
+@import '../../styles/sass/global/mixins';
+@import '../../styles/sass/global/variables';
+@import '../../styles/sass/components/block/multiSelect/block-multiSelect';
 </style>

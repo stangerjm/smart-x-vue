@@ -1,3 +1,4 @@
+/* eslint-disable */
 export function fillCustomEvent() {
   if (typeof window.CustomEvent === "function") return false;
 

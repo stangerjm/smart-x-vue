@@ -1,7 +1,3 @@
-if (process.env.NODE_ENV === "development") {
-  import("../sandbox").then(init => init.initSandbox());
-}
-
 // Mixins
 import {
   parseDateString,
@@ -13,10 +9,10 @@ import {
   getSortedData,
   compare,
   getInputType,
-  transformIntoFormModel
-} from "./global/mixins";
+  transformIntoFormModel,
+} from './global/mixins';
 
-import ModelType from "./global/constants/ModelType";
+import ModelType from './global/constants/ModelType';
 
 export {
   parseDateString,
@@ -29,5 +25,9 @@ export {
   compare,
   getInputType,
   transformIntoFormModel,
-  ModelType
+  ModelType,
 };
+
+if (process.env.NODE_ENV === 'development') {
+  import('../sandbox').then(init => init.initSandbox());
+}

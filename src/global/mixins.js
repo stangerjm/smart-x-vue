@@ -1,10 +1,23 @@
-export { parseDateString } from "./mixins/parseDateString";
-export { createViewModel } from "./mixins/createViewModel";
-export { toTitleCase } from "./mixins/toTitleCase";
-export { getNonReactiveCopy } from "./mixins/getNonReactiveCopy";
-export { getItemId } from "./mixins/getItemId";
-export { createLinkToRecord } from "./mixins/createLinkToRecord";
-export { getSortedData } from "./mixins/getSortedData";
-export { compare } from "./mixins/compare";
-export { getInputType } from "./mixins/getInputType";
-export { transformIntoFormModel } from "./mixins/transformIntoFormModel";
+import parseDateString from './mixins/parseDateString';
+import createViewModel from './mixins/createViewModel';
+import toTitleCase from './mixins/toTitleCase';
+import getNonReactiveCopy from './mixins/getNonReactiveCopy';
+import getItemId from './mixins/getItemId';
+import createLinkToRecord from './mixins/createLinkToRecord';
+import getSortedData from './mixins/getSortedData';
+import compare from './mixins/compare';
+import getInputType from './mixins/getInputType';
+import transformIntoFormModel from './mixins/transformIntoFormModel';
+
+export {
+  parseDateString,
+  createViewModel,
+  toTitleCase,
+  getNonReactiveCopy,
+  getItemId,
+  createLinkToRecord,
+  getSortedData,
+  compare,
+  getInputType,
+  transformIntoFormModel,
+};

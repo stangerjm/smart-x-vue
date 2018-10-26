@@ -16,7 +16,7 @@
  * @param model
  * @returns {[]}
  */
-export function transformIntoFormModel(model) {
+export default function transformIntoFormModel(model) {
   function includeNameInModelObject(accumulator, [key, value]) {
     return [...accumulator, { name: key, ...value }];
   }

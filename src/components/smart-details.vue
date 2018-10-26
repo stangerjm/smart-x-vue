@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import { config } from "../../app.config.js";
-import { splitArrayIntoChunks } from "../global/mixins/helpers";
-import { createViewModel, toTitleCase } from "../global/mixins";
-import Vue from "vue";
+import Vue from 'vue';
+import config from '../../app.config';
+import { splitArrayIntoChunks } from '../global/mixins/helpers';
+import { createViewModel, toTitleCase } from '../global/mixins';
 
-Vue.use(require("vue-moment"));
+Vue.use(require('vue-moment'));
 
 /**
  * A component that renders a model as a list of details.
@@ -49,52 +49,53 @@ Vue.use(require("vue-moment"));
  * @version 1.0
  */
 export default {
-  name: "smart-details",
+  name: 'smart-details',
   props: {
     /**
      * The object that will be displayed as a list of properties.
      */
     detailData: {
       type: Object,
-      required: true
+      required: true,
     },
     /**
      * The title to display before the details list.
      */
     title: {
-      type: String
+      type: String,
     },
     /**
-     * Number indicating how many details should display before forcing the next details to the next column.
+     * Number indicating how many details should display before forcing the next
+     * details to the next column.
      */
     detailsPerColumn: {
       type: Number,
-      default: 8
-    }
+      default: 8,
+    },
   },
   data() {
     return {
       /**
        * User-defined app configuration
        */
-      config: config,
+      config,
       /**
        * Array that will hold the objects containing
        * properties that have been broken up into columns.
        */
-      detailColumns: []
+      detailColumns: [],
     };
   },
   filters: {
-    toTitleCase
+    toTitleCase,
   },
   computed: {
     /**
-     * Typed schema object derived from the local "detailData" property.
+     * Typed schema object derived from the local 'detailData' property.
      */
     typedDetails() {
       return createViewModel(this.detailData);
-    }
+    },
   },
   methods: {
     /**
@@ -109,18 +110,18 @@ export default {
      * @param value
      */
     isHiddenField(value) {
-      return value.startsWith("_");
-    }
+      return value.startsWith('_');
+    },
   },
   /**
    * Filter out associated records and break main details object into objects representing columns.
    */
-  created: function() {
+  created() {
     const details = Object.entries(this.typedDetails);
 
-    //create filter to filter out objects and arrays
-    const filterOutOfScopeData = item => {
-      let [key, value] = item;
+    // create filter to filter out objects and arrays
+    const filterOutOfScopeData = (item) => {
+      const [key, value] = item;
       if (!this.isObjectOrArray(value.type)) {
         return !this.isHiddenField(key);
       }
@@ -128,18 +129,18 @@ export default {
       return false;
     };
 
-    //Filter data to exclude objects and arrays
-    let filteredEntries = details.filter(filterOutOfScopeData);
+    // Filter data to exclude objects and arrays
+    const filteredEntries = details.filter(filterOutOfScopeData);
 
-    //Split the array into chunks with equal elements and assign it to detailColumns
+    // Split the array into chunks with equal elements and assign it to detailColumns
     this.detailColumns = splitArrayIntoChunks(
       filteredEntries,
-      this.detailsPerColumn
+      this.detailsPerColumn,
     );
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/details/smart-details";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/details/smart-details';
 </style>

@@ -17,20 +17,20 @@
  * @version 1.0
  */
 export default {
-  name: "bit-drop-list",
+  name: 'bit-drop-list',
   props: {
     /**
      * The items to be rendered as part of the drop-down.
      */
     dropItems: {
       type: Array,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/bit/link/bit-link";
-@import "../styles/sass/components/bit/dropList/bit-dropList";
+<style scoped lang='scss'>
+@import '../styles/sass/components/bit/link/bit-link';
+@import '../styles/sass/components/bit/dropList/bit-dropList';
 </style>

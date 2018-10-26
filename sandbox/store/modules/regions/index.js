@@ -1,15 +1,15 @@
-import * as getters from "./lib/getters";
-import * as actions from "./lib/actions";
-import * as mutations from "./lib/mutations";
+import * as getters from './lib/getters';
+import * as actions from './lib/actions';
+import * as mutations from './lib/mutations';
 
 const regions = {
   namespaced: true,
   state: {
-    regions: []
+    regions: [],
   },
   getters,
   actions,
-  mutations
+  mutations,
 };
 
 export default regions;

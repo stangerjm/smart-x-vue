@@ -11,15 +11,15 @@
 
 <script>
 export default {
-  name: "smart-section",
+  name: 'smart-section',
   props: {
     sectionTitle: {
-      type: String
-    }
-  }
+      type: String,
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/section/smart-section";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/section/smart-section';
 </style>

@@ -64,7 +64,8 @@
       <!-- Submit button -->
       <bit-btn class="smart-form--button" @click.native="submit">Submit</bit-btn>
 
-      <!-- @slot Placeholder for additional markup after the submit button but before the loading spinner -->
+      <!-- @slot Placeholder for additional markup after
+                 the submit button but before the loading spinner -->
       <slot name="form-buttons"></slot>
 
     </section>
@@ -84,12 +85,9 @@
     </p>
   </form>
 </template>
+
 <script>
-import BitBtn from "./bit-btn";
-import BitInput from "./bit-input";
-import BitSelect from "./bit-select";
-import BitLoading from "./bit-loading";
-import { createViewModel, getInputType, toTitleCase } from "../global/mixins";
+import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -97,20 +95,20 @@ import { createViewModel, getInputType, toTitleCase } from "../global/mixins";
  * @version 1.0
  */
 export default {
-  name: "smart-form",
+  name: 'smart-form',
   components: {
-    BitLoading,
-    BitSelect,
-    BitBtn,
-    BitInput
+    BitLoading: () => import('./bit-loading'),
+    BitSelect: () => import('./bit-select'),
+    BitBtn: () => import('./bit-btn'),
+    BitInput: () => import('./bit-input'),
   },
   props: {
     /**
-     * Corresponds to the native HTML attribute "action"
+     * Corresponds to the native HTML attribute 'action'
      */
     formAction: {
       type: String,
-      default: "/"
+      default: '/',
     },
     /**
      * Function to be executed on form submit.
@@ -119,7 +117,7 @@ export default {
      */
     onSubmit: {
       type: Function,
-      required: true
+      required: true,
     },
     /**
      * The model that the form should use as a template.
@@ -127,57 +125,57 @@ export default {
      */
     formData: {
       type: [Object, Array],
-      default: () => {}
+      default: () => {},
     },
     /**
      * A list of inputs that should be readonly.
      */
     readonlyInputs: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Optional array of strings that represent properties that should be ignored.
      */
     ignoreFields: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * A title that will display at the top of the form.
      */
     formTitle: {
-      type: String
+      type: String,
     },
     /**
-     * Corresponds to the native HTML attribute "method"
+     * Corresponds to the native HTML attribute 'method'
      */
     formMethod: {
-      type: String
+      type: String,
     },
     /**
      * An optional format for the date-picker input field to use.
      */
     dateFormat: {
       type: String,
-      default: "MM-dd-yyyy"
+      default: 'MM-dd-yyyy',
     },
     validationErrors: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     centerForm: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
-    let masterData = createViewModel(this.formData);
+    const masterData = createViewModel(this.formData);
     return {
       /**
-       * Will contain typed schema derived from the "formData" local property.
+       * Will contain typed schema derived from the 'formData' local property.
        */
-      masterData: masterData,
+      masterData,
       /**
        * Contains all of the data that should be rendered as select elements
        */
@@ -185,7 +183,7 @@ export default {
       /**
        * Flag indicating that the form is loading
        */
-      working: false
+      working: false,
     };
   },
   watch: {
@@ -194,15 +192,15 @@ export default {
      */
     validationErrors() {
       this.mapErrors(this.masterData, this.validationErrors);
-    }
+    },
   },
   computed: {
     hasErrors() {
       return this.validationErrors.length > 0;
-    }
+    },
   },
   filters: {
-    toTitleCase
+    toTitleCase,
   },
   methods: {
     getInputType,
@@ -212,7 +210,7 @@ export default {
      * @returns {string}
      */
     getFlexProp(span) {
-      let flexBasis = span != null ? (span / 12) * 100 : 100;
+      const flexBasis = span != null ? (span / 12) * 100 : 100;
       return `flex: 1 1 ${flexBasis}%;`;
     },
     /**
@@ -222,7 +220,7 @@ export default {
      */
     mapErrors(masterData, validationErrors) {
       /**
-       * Sets the "errored" property of the data at the propName passed in to true if
+       * Sets the 'errored' property of the data at the propName passed in to true if
        * a corresponding error is found
        * @param propName
        */
@@ -236,7 +234,7 @@ export default {
           return error.fieldName === propName;
         }
         // Find the matching field name
-        let key = validationErrors.find(findMatchingField);
+        const key = validationErrors.find(findMatchingField);
         // Set errored field to true if a matching field name was found, false if otherwise.
         masterData[propName].errored = key != null;
       }
@@ -254,10 +252,11 @@ export default {
      * Checks the key to see if it is an id property.
      */
     isObjectId(key) {
-      return key.toLowerCase() === "id" || key.toLowerCase() === "_id";
+      return key.toLowerCase() === 'id' || key.toLowerCase() === '_id';
     },
     /**
-     * Reduces an array of entries into an object with the array properties reduced to the corresponding selected item.
+     * Reduces an array of entries into an object with the
+     * array properties reduced to the corresponding selected item.
      */
     reduceArrayPropertiesIntoSelectedValues(accumulatorObj, [key, value]) {
       if (Object.keys(this.selectData).includes(key)) {
@@ -268,13 +267,13 @@ export default {
         // If property is a list, return an object with the selected list value
         return {
           ...accumulatorObj,
-          [key]: this.selectData[key]
+          [key]: this.selectData[key],
         };
       }
-      //If value pair property is not a list, return the untransformed key
+      // If value pair property is not a list, return the untransformed key
       return {
         ...accumulatorObj,
-        [key]: value
+        [key]: value,
       };
     },
     /**
@@ -282,44 +281,47 @@ export default {
      * include reducing arrays into a single user-selected value.
      */
     getSubmitData() {
-      let data = this.masterData.untypedObject;
+      const data = this.masterData.untypedObject;
       if (this.selectData != null) {
         return Object.entries(data).reduce(
           this.reduceArrayPropertiesIntoSelectedValues,
-          {}
+          {},
         );
       }
       return data;
     },
     getSelectData(masterData) {
-      return Object.entries(masterData).reduce(function(
-        accumulator,
-        [formKey, formEntry]
-      ) {
-        //If property is an array, include in selectData.
+      const masterDataEntries = Object.entries(masterData);
+
+      if (masterData == null || masterDataEntries.length < 1) {
+        return [];
+      }
+
+      return masterDataEntries.reduce((accumulator, [formKey, formEntry]) => {
+        // If property is an array, include in selectData.
         if (Array.isArray(formEntry.value)) {
           return {
             ...accumulator,
-            [formKey]: formEntry.value
+            [formKey]: formEntry.value,
           };
         }
-        //Otherwise, ignore.
+        // Otherwise, ignore.
         return accumulator;
       });
     },
     /**
-     * Execute the "onSubmit" function that was passed into the component and pass
+     * Execute the 'onSubmit' function that was passed into the component and pass
      * properly formatted data to be submitted.
      */
     async submit() {
       this.working = true;
       await this.onSubmit(this.getSubmitData());
       this.working = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/form/smart-form";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/form/smart-form';
 </style>

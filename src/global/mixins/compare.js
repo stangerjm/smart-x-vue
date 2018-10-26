@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from 'moment';
 
 /**
  * Compare the two values passed in. Return true if values are equal.
@@ -7,7 +7,7 @@ import moment from "moment";
  * @param compareType
  * @returns {boolean}
  */
-export function compare(dataValue, compareValue, compareType) {
+export default function compare(dataValue, compareValue, compareType) {
   // Don't compare if values are null or undefined
   if (dataValue == null || compareType == null) {
     return false;
@@ -18,11 +18,9 @@ export function compare(dataValue, compareValue, compareType) {
       return String(dataValue)
         .trim()
         .toLowerCase()
-        .includes(
-          String(compareValue)
-            .trim()
-            .toLowerCase()
-        );
+        .includes(String(compareValue)
+          .trim()
+          .toLowerCase());
     case Number:
       // Coerce values to numbers then compare
       return Number(dataValue) === Number(compareValue);
@@ -31,16 +29,16 @@ export function compare(dataValue, compareValue, compareType) {
       // Compare only to the day (ignore time)
       return (
         moment(new Date(compareValue))
-          .startOf("day")
+          .startOf('day')
           .toString() ===
         moment(new Date(dataValue))
-          .startOf("day")
+          .startOf('day')
           .toString()
       );
     case Object:
     case Array:
     case Boolean:
+    default:
       return dataValue === compareValue;
   }
-  return false;
 }

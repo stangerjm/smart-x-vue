@@ -33,47 +33,47 @@
 </template>
 
 <script>
-import { config } from "../../app.config.js";
-import { toTitleCase } from "../global/mixins";
-import Vue from "vue";
+import Vue from 'vue';
+import config from '../../app.config';
+import { toTitleCase } from '../global/mixins';
 
-Vue.use(require("vue-moment"));
+Vue.use(require('vue-moment'));
 
 export default {
-  name: "bit-table-cell",
+  name: 'bit-table-cell',
   props: {
     /**
      * The value to be rendered in the cell
      */
     cellValue: {
       type: Object,
-      required: true
+      required: true,
     },
     /**
      * The title to be rendered as the inline, mobile title
      */
     cellTitle: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Flag indicating if the cell should be treated as a table key
      */
     isTableKey: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       /**
        * The user-defined application configuration
        */
-      config: config
+      config,
     };
   },
   filters: {
-    toTitleCase
+    toTitleCase,
   },
   methods: {
     /**
@@ -81,11 +81,11 @@ export default {
      */
     isCentered(value) {
       return value === Number.name || value === Boolean.name;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/table/smart-table";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/table/smart-table';
 </style>

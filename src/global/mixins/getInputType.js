@@ -1,13 +1,13 @@
-import InputType from "../constants/InputType";
-import ModelType from "../constants/ModelType";
+import InputType from '../constants/InputType';
+import ModelType from '../constants/ModelType';
 
 /**
  * Gets the appropriate input type depending on the value's data type.
  * @param item
  * @returns {string}
  */
-export function getInputType(item) {
-  let type = item.type;
+export default function getInputType(item) {
+  const { type } = item;
   switch (type) {
     case Array.name:
       return InputType.SELECT;

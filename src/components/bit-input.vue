@@ -1,7 +1,11 @@
 <template>
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
     <!-- Render label regardless of input type -->
-    <label class="bit-input--label" :class="[ requiredField ? 'bit-input--required' : '' ]" :for="inputId ? inputId : randomId">{{labelText}}</label>
+    <label class="bit-input--label"
+           :class="[ requiredField ? 'bit-input--required' : '' ]"
+           :for="inputId ? inputId : randomId">
+      {{labelText}}
+    </label>
 
     <!-- Render as a checkbox if value is a boolean -->
     <template v-if="inputType === InputType.CHECKBOX">
@@ -28,16 +32,6 @@
              :type="inputType">
     </template>
 
-    <!--<template v-else-if="inputType === InputType.PHONE">-->
-      <!--<input class="bit-input&#45;&#45;field"-->
-             <!--:class="[erroredField ? 'bit-input&#45;&#45;error' : '']"-->
-             <!--:id="inputId ? inputId : randomId"-->
-             <!--:name="inputName"-->
-             <!--@input="updateValue"-->
-             <!--v-bind="$attrs"-->
-             <!--:type="getHtmlInputType(inputType)">-->
-    <!--</template>-->
-
     <!-- Render as an input box if value is any other type -->
     <template v-else>
       <input class="bit-input--field"
@@ -53,13 +47,13 @@
 </template>
 
 <script>
-import FlatPickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
-import { config } from "../../app.config.js";
-import InputType from "../global/constants/InputType";
-import InputMask from "inputmask";
-import moment from "moment";
-import { parseDateString } from "../global/mixins";
+import FlatPickr from 'flatpickr';
+import InputMask from 'inputmask';
+import moment from 'moment';
+import 'flatpickr/dist/flatpickr.min.css';
+import config from '../../app.config';
+import InputType from '../global/constants/InputType';
+import { parseDateString } from '../global/mixins';
 
 /**
  * A component that can be rendered as a text, number, or datepicker input.
@@ -67,48 +61,48 @@ import { parseDateString } from "../global/mixins";
  * @version 1.0
  */
 export default {
-  name: "bit-input",
+  name: 'bit-input',
   props: {
     /**
-     * Corresponds to the native HTML input attribute "type"
+     * Corresponds to the native HTML input attribute 'type'
      */
     inputType: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Display text for the related input label
      */
     labelText: {
       type: String,
-      required: true
+      required: true,
     },
     /**
-     * Corresponds to the native HTML input attribute "name"
+     * Corresponds to the native HTML input attribute 'name'
      */
     inputName: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Flag to have input and label stack horizontally if set to true
      */
     stackElements: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
-     * Corresponds to the native HTML input attribute "id"
+     * Corresponds to the native HTML input attribute 'id'
      */
     inputId: {
-      type: String
+      type: String,
     },
     /**
      * Flag to indicate if the field should be required or not
      */
     requiredField: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Allows v-model to return the altered input value
@@ -119,43 +113,39 @@ export default {
      */
     erroredField: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       /**
        * Random id generated for input boxes and their corresponding labels
        */
-      randomId:
-        "input-" +
-        Math.random()
-          .toString(36)
-          .substr(2, 9),
+      randomId: `input-${Math.random().toString(36).substr(2, 9)}`,
       /**
        * Date-picker configuration
        */
       flatpickrConfig: {
         allowInput: true,
-        dateFormat: "m/d/Y",
-        minDate: "01/01/1900",
-        maxDate: "12/31/2099",
+        dateFormat: 'm/d/Y',
+        minDate: '01/01/1900',
+        maxDate: '12/31/2099',
         clickOpens: false,
-        onClose: this.validateField
+        onClose: this.validateField,
       },
       /**
        * Allow imported InputType constant to be accessible in the template.
        */
-      InputType: InputType,
+      InputType,
       /**
        * Flag that keeps track of the state of a checkbox
        */
       checked: this.value,
       elementSelectors: {
         [InputType.DATE]:
-          ".bit-input--field.bit-input--date:not([type=hidden])",
-        [InputType.PHONE]: ".bit-input--field"
-      }
+          '.bit-input--field.bit-input--date:not([type=hidden])',
+        [InputType.PHONE]: '.bit-input--field',
+      },
     };
   },
   methods: {
@@ -165,14 +155,14 @@ export default {
      * @returns {string}
      */
     getHtmlInputType(inputType) {
-      return inputType !== InputType.PHONE ? inputType : "text";
+      return inputType !== InputType.PHONE ? inputType : 'text';
     },
     /**
      * Event emitter that will update the v-model for a checkbox
      */
     updateCheckbox() {
       this.checked = !this.checked;
-      this.$emit("input", this.checked);
+      this.$emit('input', this.checked);
     },
     /**
      * Mounts a date-picker component
@@ -198,7 +188,7 @@ export default {
         // Create a copy of the inital value so as not to accidentally override an object property
         let value = initialValue;
         // If value is an empty string, convert into a date.
-        if (value === "") {
+        if (value === '') {
           value = new Date();
         }
 
@@ -217,16 +207,16 @@ export default {
           validator(
             datePicker.selectedDates,
             datePicker.element.value,
-            datePicker
+            datePicker,
           );
         };
       }
 
       // Transform date elements into date-pickers
-      let datePicker = FlatPickr(".bit-input--date", this.flatpickrConfig);
+      const datePicker = FlatPickr('.bit-input--date', this.flatpickrConfig);
       // If more than one date picker, set options for each.
       if (datePicker.length > 1) {
-        datePicker.forEach(function(picker) {
+        datePicker.forEach((picker) => {
           setDatepickerOptions(picker, this.value, this.validateField);
         });
       } else if (datePicker.element) {
@@ -235,12 +225,10 @@ export default {
       }
 
       // Apply input mask
-      let datePickerEl = this.$el.querySelector(
-        this.elementSelectors[InputType.DATE]
-      );
-      let inputMask = new InputMask({
+      const datePickerEl = this.$el.querySelector(this.elementSelectors[InputType.DATE]);
+      const inputMask = new InputMask({
         mask: config.dateMask,
-        placeholder: config.dateFormat
+        placeholder: config.dateFormat,
       });
       inputMask.mask(datePickerEl);
     },
@@ -248,19 +236,19 @@ export default {
      * Applies an phone input mask to the input element
      */
     applyPhoneMask() {
-      let phoneElement = this.$el.querySelector(
-        this.elementSelectors[InputType.PHONE]
-      );
-      let inputMask = new InputMask({
+      const phoneElement = this.$el.querySelector(this.elementSelectors[InputType.PHONE]);
+
+      const inputMask = new InputMask({
         mask: config.phoneMask,
-        placeholder: config.phoneFormat
+        placeholder: config.phoneFormat,
       });
+
       inputMask.mask(phoneElement);
 
       // Reset phone number if input mask is not satisfied
       phoneElement.onblur = () => {
         if (!phoneElement.inputmask.isComplete()) {
-          this.$emit("input", "");
+          this.$emit('input', '');
         }
       };
     },
@@ -285,11 +273,13 @@ export default {
           case InputType.CHECKBOX:
             return Boolean(value);
           case InputType.DATE:
-            return new Date(value).toString() !== "Invalid Date"
+            return new Date(value).toString() !== 'Invalid Date'
               ? new Date(value)
               : null;
           case InputType.NUMBER:
             return Number(value);
+          default:
+            return value;
         }
       }
       /**
@@ -297,8 +287,8 @@ export default {
        * in the component and emits value to parent
        * @param value
        */
-      const emit = value => {
-        this.$emit("input", castValue(value, this.inputType));
+      const emit = (value) => {
+        this.$emit('input', castValue(value, this.inputType));
       };
       /**
        * Gets the value to be emitted. Will actively ignore
@@ -306,7 +296,7 @@ export default {
        * @param inputType
        * @returns {*}
        */
-      const getEmitValue = inputType => {
+      const getEmitValue = (inputType) => {
         switch (inputType) {
           case InputType.DATE:
             if (
@@ -316,7 +306,7 @@ export default {
             ) {
               return e.target.value;
             }
-            return "";
+            return '';
           default:
             return e.target.value;
         }
@@ -334,7 +324,7 @@ export default {
       if (parseDateString(dateStr) == null) {
         instance._input.value = null;
       }
-    }
+    },
   },
   /**
    * If component should be a date-picker, mount a date picker to the element
@@ -346,10 +336,10 @@ export default {
     } else if (this.inputType === InputType.PHONE) {
       this.applyPhoneMask();
     }
-  }
+  },
 };
 </script>
 
-<style lang="scss">
-@import "../styles/sass/components/bit/input/bit-input";
+<style lang='scss'>
+@import '../styles/sass/components/bit/input/bit-input';
 </style>

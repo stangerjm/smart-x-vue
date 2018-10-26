@@ -14,26 +14,25 @@
 </template>
 
 <script>
-import BitIcon from "./bit-icon";
 export default {
-  name: "bit-paging",
+  name: 'bit-paging',
   components: {
-    BitIcon
+    BitIcon: () => import('./bit-icon'),
   },
   props: {
     pagedDataLength: {
       type: Number,
-      required: true
+      required: true,
     },
     pageIndex: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     currentPage() {
       return this.pageIndex + 1;
-    }
+    },
   },
   methods: {
     /**
@@ -41,7 +40,7 @@ export default {
      * @param pageIdx
      */
     setCurrentPage(pageIdx) {
-      this.$emit("input", pageIdx);
+      this.$emit('input', pageIdx);
     },
     /**
      * Moves the current page to the next page
@@ -58,11 +57,11 @@ export default {
       if (this.pageIndex > 0) {
         this.setCurrentPage(this.pageIndex - 1);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/bit/paging/bit-paging";
+<style scoped lang='scss'>
+@import '../styles/sass/components/bit/paging/bit-paging';
 </style>

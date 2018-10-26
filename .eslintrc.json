@@ -5,10 +5,12 @@
   },
   "extends": [
     "plugin:vue/essential",
-    "@vue/prettier",
-    "plugin:prettier/recommended"
+    "@vue/airbnb"
   ],
-  "rules": {},
+  "rules": {
+    "no-param-reassign": 0,
+    "no-underscore-dangle": ["error", { "allow": ["_id", "_input"] }]
+  },
   "parserOptions": {
     "parser": "babel-eslint"
   }

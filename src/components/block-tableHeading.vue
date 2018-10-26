@@ -3,7 +3,9 @@
   <tr class="smart-table--row smart-table--head">
 
     <!-- Render each heading -->
-    <th class="smart-table--heading smart-table--sortableHeading" v-for="heading in tableHeadings" :key="heading">
+    <th class="smart-table--heading smart-table--sortableHeading"
+        v-for="heading in tableHeadings"
+        :key="heading">
 
       <!-- Render the heading as a sort button if heading is not flagged to be unsearchable -->
       <template v-if="!unsearchableHeadings.includes(heading)">
@@ -27,13 +29,12 @@
 </template>
 
 <script>
-import BitIcon from "./bit-icon";
-import { toTitleCase } from "../global/mixins";
+import { toTitleCase } from '../global/mixins';
 
 export default {
-  name: "block-table-heading",
+  name: 'block-table-heading',
   components: {
-    BitIcon
+    BitIcon: () => import('./bit-icon'),
   },
   props: {
     /**
@@ -41,36 +42,36 @@ export default {
      */
     tableHeadings: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
      * List of headings that should not trigger a search
      */
     unsearchableHeadings: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Method that should be called as a result of clicking a sortable heading
      */
     sortMethod: {
       type: Function,
-      required: true
+      required: true,
     },
     /**
      * Flag to optionally include the action container
      */
     includeActionContainer: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   filters: {
-    toTitleCase
-  }
+    toTitleCase,
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../styles/sass/components/smart/table/smart-table";
+<style scoped lang='scss'>
+@import '../styles/sass/components/smart/table/smart-table';
 </style>

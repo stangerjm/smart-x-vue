@@ -1,17 +1,16 @@
-export function createLinkToRecord({
-  linkContext = "",
-  linkAction = "",
+export default function createLinkToRecord({
+  linkContext = '',
+  linkAction = '',
   destinationTable = [],
-  destinationLookupKey = "",
-  destinationIdKey = "id"
+  destinationLookupKey = '',
+  destinationIdKey = 'id',
 } = {}) {
-  return function(lookupValue) {
-    let targetCell = destinationTable.find(function(tableCell) {
-      return tableCell[destinationLookupKey] === lookupValue;
-    });
+  return function createLinks(lookupValue) {
+    const targetCell =
+      destinationTable.find(tableCell => tableCell[destinationLookupKey] === lookupValue);
 
     if (targetCell == null) {
-      return "/";
+      return '/';
     }
     return `/${linkContext}/${linkAction}/${targetCell[destinationIdKey]}`;
   };

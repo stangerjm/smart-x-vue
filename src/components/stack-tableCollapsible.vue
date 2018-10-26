@@ -12,9 +12,6 @@
 </template>
 
 <script>
-import SmartTable from "./smart-table";
-import SmartAccordion from "./smart-accordion";
-
 /**
  * A component that renders a smart-table inside of a smart-accordion.
  * @author James Stanger, Washington State Patrol
@@ -23,10 +20,10 @@ import SmartAccordion from "./smart-accordion";
  * @see See [smart-accordion](#smartaccordion)
  */
 export default {
-  name: "stack-table-collapsible",
+  name: 'stack-table-collapsible',
   components: {
-    SmartTable,
-    SmartAccordion
+    SmartTable: () => import('./smart-table'),
+    SmartAccordion: () => import('./smart-accordion'),
   },
   props: {
     /**
@@ -34,34 +31,34 @@ export default {
      */
     tableData: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
      * The default context to set for the smart-table.
      */
     defaultContext: {
       type: String,
-      required: true
+      required: true,
     },
     /**
      * Title for the smart-accordion.
      */
     title: {
       type: String,
-      default: "Associated Data"
-    }
+      default: 'Associated Data',
+    },
   },
   methods: {
     /**
      * Event handler for smart-table's recordExpanded event.
      */
-    updateAccordionHeight: function() {
-      //call the smart-accordion component's expandData method
+    updateAccordionHeight() {
+      // call the smart-accordion component's expandData method
       this.$children[0].expandData();
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang='scss'>
 </style>

@@ -7,13 +7,13 @@
 
 <script>
 export default {
-  name: "block-form-footer"
+  name: 'block-form-footer',
 };
 </script>
 
-<style scoped lang="scss">
-@import "../../styles/sass/global/mixins";
-@import "../../styles/sass/global/variables";
+<style scoped lang='scss'>
+@import '../../styles/sass/global/mixins';
+@import '../../styles/sass/global/variables';
 
 .form-section--footer {
   border-radius: 0 0 10px 10px;

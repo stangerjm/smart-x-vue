@@ -16,11 +16,11 @@
 
 <script>
 export default {
-  name: "smart-modal",
+  name: 'smart-modal',
   props: {
     modalTitle: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
@@ -28,36 +28,36 @@ export default {
       firstFocusableEl: undefined,
       lastFocusableEl: undefined,
       focusedElBeforeOpen: undefined,
-      selectData: []
+      selectData: [],
     };
   },
   methods: {
-    open: function() {
-      let Dialog = this;
+    open() {
+      const Dialog = this;
 
-      this.$el.removeAttribute("aria-hidden");
-      this.$el.removeAttribute("style");
+      this.$el.removeAttribute('aria-hidden');
+      this.$el.removeAttribute('style');
 
       this.focusedElBeforeOpen = document.activeElement;
 
-      this.$el.addEventListener("keydown", function(e) {
-        Dialog._handleKeyDown(e);
+      this.$el.addEventListener('keydown', (e) => {
+        Dialog.handleKeyDown(e);
       });
 
       this.firstFocusableEl.focus();
     },
-    close: function() {
-      this.$el.setAttribute("aria-hidden", true);
-      this.$el.setAttribute("style", "display: none");
+    close() {
+      this.$el.setAttribute('aria-hidden', true);
+      this.$el.setAttribute('style', 'display: none');
 
       if (this.focusedElBeforeOpen) {
         this.focusedElBeforeOpen.focus();
       }
     },
-    _handleKeyDown: function(e) {
-      let Dialog = this;
-      let KEY_TAB = 9;
-      let KEY_ESC = 27;
+    handleKeyDown(e) {
+      const Dialog = this;
+      const KEY_TAB = 9;
+      const KEY_ESC = 27;
 
       function handleBackwardTab() {
         if (document.activeElement === Dialog.firstFocusableEl) {
@@ -93,44 +93,43 @@ export default {
           break;
       }
     },
-    addEventListeners: function(openDialogSel, closeDialogSel) {
-      let Dialog = this;
+    addEventListeners(openDialogSel, closeDialogSel) {
+      const Dialog = this;
 
-      let openDialogEls = document.querySelectorAll(openDialogSel);
-      for (let i = 0; i < openDialogEls.length; i++) {
-        openDialogEls[i].addEventListener("click", function() {
+      const openDialogEls = document.querySelectorAll(openDialogSel);
+      for (let i = 0; i < openDialogEls.length; i += 1) {
+        openDialogEls[i].addEventListener('click', () => {
           Dialog.open();
         });
       }
 
-      let closeDialogEls = document.querySelectorAll(closeDialogSel);
-      for (let i = 0; i < closeDialogEls.length; i++) {
-        closeDialogEls[i].addEventListener("click", function() {
+      const closeDialogEls = document.querySelectorAll(closeDialogSel);
+      for (let i = 0; i < closeDialogEls.length; i += 1) {
+        closeDialogEls[i].addEventListener('click', () => {
           Dialog.close();
         });
       }
-    }
+    },
   },
-  mounted: function() {
-    let focusableEls = this.$el.querySelectorAll(
-      "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex='0']"
-    );
+  mounted() {
+    const focusableEls = this.$el.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
     this.focusableEls = Array.prototype.slice.call(focusableEls);
 
+    // eslint-disable-next-line
     this.firstFocusableEl = focusableEls[0];
     this.lastFocusableEl = this.focusableEls[this.focusableEls.length - 1];
 
-    let navDialogEl = this.$el;
+    const navDialogEl = this.$el;
 
     if (navDialogEl) {
-      this.addEventListeners(".open-dialog", ".smart-modal--close");
+      this.addEventListeners('.open-dialog', '.smart-modal--close');
     }
-  }
+  },
 };
 </script>
 
-<style scoped lang="scss">
-@import "../../styles/sass/global/mixins";
-@import "../../styles/sass/global/variables";
-@import "../../styles/sass/components/smart/modal/smart-modal";
+<style scoped lang='scss'>
+@import '../../styles/sass/global/mixins';
+@import '../../styles/sass/global/variables';
+@import '../../styles/sass/components/smart/modal/smart-modal';
 </style>

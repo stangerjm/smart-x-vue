@@ -1,4 +1,4 @@
-import ModelType from "../constants/ModelType";
+import ModelType from '../constants/ModelType';
 
 /**
  * Determines if the value passed in is an object.
@@ -10,7 +10,21 @@ export function isObject(value) {
     return false;
   }
 
-  return typeof value === "object" && value.constructor === Object;
+  return typeof value === 'object' && value.constructor === Object;
+}
+
+/**
+ * Returns the name of the type of the value passed in.
+ * @param value
+ * @param returnConstructorType
+ * @returns {string}
+ */
+export function getType(value, returnConstructorType) {
+  const type = Object.getPrototypeOf(Object(value)).constructor;
+  if (returnConstructorType) {
+    return type;
+  }
+  return type.name;
 }
 
 /**
@@ -24,14 +38,14 @@ export function getDefaultValue(type) {
     type.name === ModelType.Password.name
   ) {
     // Only return the value from type() call if it returns a value and not a function
-    return getType(type()) !== "Function" ? type() : "";
+    return getType(type()) !== 'Function' ? type() : '';
   }
 
   switch (type) {
     case Number:
       return null;
     case String:
-      return "";
+      return '';
     case Date:
       return null;
     case Object:
@@ -40,6 +54,8 @@ export function getDefaultValue(type) {
       return false;
     case Array:
       return [];
+    default:
+      return null;
   }
 }
 
@@ -56,23 +72,9 @@ export function getClass(baseClass, type, allowedTypes) {
     return `${baseClass}-error`;
   } else if (allowedTypes.includes(type)) {
     return `${baseClass}-${type}`;
-  } else {
-    return `${baseClass}-error`;
   }
-}
 
-/**
- * Returns the name of the type of the value passed in.
- * @param value
- * @param returnConstructorType
- * @returns {string}
- */
-export function getType(value, returnConstructorType) {
-  let type = Object.getPrototypeOf(Object(value)).constructor;
-  if (returnConstructorType) {
-    return type;
-  }
-  return type.name;
+  return `${baseClass}-error`;
 }
 
 /**
@@ -86,15 +88,16 @@ export function splitArrayIntoChunks(array, elementsPerChunk) {
   if (elementsPerChunk <= 0) {
     return array;
   }
-  //Create an array with the number of chunks required
+  // Create an array with the number of chunks required
   return (
     Array(Math.ceil(array.length / elementsPerChunk))
-      //Fill the array with any value (no arguments will just fill with 'undefined')
+      // Fill the array with any value (no arguments will just fill with 'undefined')
       .fill()
-      //Use Array.prototype.map to fill each chunk with the correct number of values from the original array
+      // Use Array.prototype.map to fill each chunk with the
+      // correct number of values from the original array
       .map((_, idx) => {
         const start = idx * elementsPerChunk;
-        let end = start + elementsPerChunk;
+        const end = start + elementsPerChunk;
         return array.slice(start, end);
       })
   );
