@@ -1,60 +1,66 @@
 <template>
   <div>
-    <h1>Loading</h1>
-    <bit-loading></bit-loading>
+    <!--<h1>Loading</h1>-->
+    <!--<bit-loading></bit-loading>-->
 
-    <h1>Accordion</h1>
-    <smart-accordion>
-      <h2>Hello</h2>
-    </smart-accordion>
+    <!--<h1>Accordion</h1>-->
+    <!--<smart-accordion>-->
+      <!--<h2>Hello</h2>-->
+    <!--</smart-accordion>-->
 
-    <h1>Details</h1>
-    <smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>
+    <!--<h1>Details</h1>-->
+    <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>-->
 
-    <h1>Form</h1>
-    <smart-form :form-data="{ Name: String, Age: Number }"
-                :form-loading="working"
-                :on-submit="submit"
-                :validation-errors="errors">
-    </smart-form>
+    <!--<h1>Form</h1>-->
+    <!--<smart-form :form-data="formData"-->
+                <!--:on-submit="submit"-->
+                <!--:validation-errors="errors">-->
+    <!--</smart-form>-->
 
-    <h1>Searchable Table</h1>
-    <stack-searchable-table form-title="Test"
-                            route-name="test"
-                            :table-data="[
-                                  { id: 1, Name: 'James', Age: 25, birthday: new Date() },
-                                  { id: 2, Name: 'Joel', Age: 20, birthday: new Date() },
-                                  { id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }
-                                ]"
-                            default-context="test"
-                            :searchModel="searchModel">
-    </stack-searchable-table>
+    <!--<h1>Searchable Table</h1>-->
+    <!--<stack-searchable-table form-title="Test"-->
+                            <!--route-name="test"-->
+                            <!--:table-data="[-->
+                                  <!--{ id: 1, Name: 'James', Age: 25, birthday: new Date() },-->
+                                  <!--{ id: 2, Name: 'Joel', Age: 20, birthday: new Date() },-->
+                                  <!--{ id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }-->
+                                <!--]"-->
+                            <!--default-context="test"-->
+                            <!--:searchModel="searchModel">-->
 
-    <h1>Section</h1>
-    <smart-section section-title="Test">
-      <h2>Hello</h2>
-    </smart-section>
+      <!--<router-link slot="search-action" to="/add">-->
+        <!--<bit-btn style="margin-right: 10px;">Add</bit-btn>-->
+      <!--</router-link>-->
+
+      <!--<router-link slot="search-action" to="/clear">-->
+        <!--<bit-btn>Clear</bit-btn>-->
+      <!--</router-link>-->
+
+    <!--</stack-searchable-table>-->
+
+    <!--<h1>Section</h1>-->
+    <!--<smart-section section-title="Test">-->
+      <!--<h2>Hello</h2>-->
+    <!--</smart-section>-->
 
     <h1>Tabs</h1>
-    <smart-tabs>
-
-      <bit-tab slot="tab-list">Tab 1</bit-tab>
-      <bit-tab slot="tab-list">Tab 2</bit-tab>
-
-      <bit-tab slot="tab-content" :is-tab-content="true">Asdf</bit-tab>
-      <bit-tab slot="tab-content" :is-tab-content="true">
+    <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
+      <p slot="TabOne">Asdf</p>
+      <p slot="TabTwo">
         <smart-details :detail-data="{ name: 'James' }"></smart-details>
-      </bit-tab>
-
+      </p>
+      <p slot="TabThree">Surprise!!!!</p>
     </smart-tabs>
   </div>
 </template>
 
 <script>
+import ModelType from '../src/global/constants/ModelType';
+
 export default {
   name: 'demo',
   components: {
-    BitTab: () => import('../src/components/bit-tab'),
+    BitBtn: () => import('../src/components/bit-btn'),
     SmartTabs: () => import('../src/components/smart-tabs'),
     SmartDetails: () => import('../src/components/smart-details'),
     SmartAccordion: () => import('../src/components/smart-accordion'),
@@ -88,11 +94,8 @@ export default {
       ],
       errors: [],
       formData: {
-        name: String,
-        age: Number,
-        child: ['James', 'Jesse', 'Jackson', 'Jason'],
-        isEmployee: Boolean,
-        birthday: Date,
+        userName: String,
+        password: ModelType.Password,
       },
       searchModel: {
         Name: String,

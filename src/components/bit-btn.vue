@@ -1,13 +1,13 @@
 <template>
 
   <!-- Render as a link -->
-  <a :class="btnClass" :href="path" v-if="isLink">
+  <a :class="btnClass" :href="path" v-if="isLink" v-bind="$attrs">
     <!-- @slot Link text -->
     <slot></slot>
   </a>
 
   <!-- Render as a button -->
-  <button type="button" :class="btnClass" v-else>
+  <button type="button" :class="btnClass" v-else v-bind="$attrs">
     <!-- @slot Button text -->
     <slot></slot>
   </button>

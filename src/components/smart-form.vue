@@ -62,7 +62,7 @@
     <section class="smart-form--buttonSection">
 
       <!-- Submit button -->
-      <bit-btn class="smart-form--button" @click.native="submit">Submit</bit-btn>
+      <bit-btn type="submit" class="smart-form--button" @click.native="submit">Submit</bit-btn>
 
       <!-- @slot Placeholder for additional markup after
                  the submit button but before the loading spinner -->
@@ -83,6 +83,7 @@
        :key="key">
       {{error.message}}
     </p>
+
   </form>
 </template>
 
@@ -313,9 +314,17 @@ export default {
      * Execute the 'onSubmit' function that was passed into the component and pass
      * properly formatted data to be submitted.
      */
-    async submit() {
+    async submit(e) {
+      // Prevent form from submitting
+      e.preventDefault();
+
+      // Flag the form as working
       this.working = true;
+
+      // Call the submit function passed into the component and pass in the form data
       await this.onSubmit(this.getSubmitData());
+
+      // Mark the form as having completed
       this.working = false;
     },
   },

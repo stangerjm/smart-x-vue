@@ -5,8 +5,8 @@
       <!-- Search Title -->
       <h2 class="smart-search--title">{{formTitle}}</h2>
 
-      <!-- Action -->
-      <router-link class="bit-btn bit-btn-add" :to="{ name: routeName }">Add</router-link>
+      <!-- Action Slot -->
+      <slot name="extra-action"></slot>
 
       <!-- Search icon -->
       <bit-icon class="smart-search--action"
@@ -176,5 +176,4 @@ export default {
 
 <style scoped lang='scss'>
 @import '../styles/sass/components/smart/search/smart-search';
-@import '../styles/sass/components/bit/btn/bit-btn';
 </style>

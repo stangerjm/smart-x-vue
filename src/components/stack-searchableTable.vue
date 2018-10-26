@@ -5,6 +5,7 @@
                   :search-model="modifiedSearchModel"
                   :on-submit="handleSearchSubmit"
                   :is-expanded="isExpanded">
+      <slot name="search-action" slot="extra-action"></slot>
     </smart-search>
     <smart-table :table-data="currentPage"
                  :default-context="defaultContext"
