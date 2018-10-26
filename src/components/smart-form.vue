@@ -2,7 +2,10 @@
   <form :class="[
           centerForm
           ? 'smart-form-centered'
-          : 'smart-form'
+          : 'smart-form',
+          working
+          ? 'smart-form--loading'
+          : ''
         ]"
         v-if="formData">
 
@@ -56,14 +59,21 @@
 
     </section>
 
-    <!-- Submit button -->
-    <bit-btn class="smart-form--submit" @click.native="submit">Submit</bit-btn>
+    <section class="smart-form--buttonSection">
+
+      <!-- Submit button -->
+      <bit-btn class="smart-form--button" @click.native="submit">Submit</bit-btn>
+
+      <!-- @slot Placeholder for additional markup after the submit button but before the loading spinner -->
+      <slot name="form-buttons"></slot>
+
+    </section>
 
     <!-- Only render loading spinner if form is loading -->
     <bit-loading class="smart-form--spinner" v-if="working"></bit-loading>
 
-    <!-- @slot Placeholder for any additional form markup -->
-    <slot></slot>
+    <!-- @slot Placeholder for any additional markup after the form -->
+    <slot name="form-end"></slot>
 
     <!-- Render errors if any are passed in -->
     <p class="smart-form--error"
@@ -79,6 +89,7 @@ import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
 import BitSelect from "./bit-select";
 import BitLoading from "./bit-loading";
+import { createViewModel, getInputType, toTitleCase } from "../global/mixins";
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -155,17 +166,13 @@ export default {
       type: Array,
       default: () => []
     },
-    formLoading: {
-      type: Boolean,
-      default: false
-    },
     centerForm: {
       type: Boolean,
       default: false
     }
   },
   data() {
-    let masterData = this.createViewModel(this.formData);
+    let masterData = createViewModel(this.formData);
     return {
       /**
        * Will contain typed schema derived from the "formData" local property.
@@ -176,9 +183,9 @@ export default {
        */
       selectData: this.getSelectData(masterData),
       /**
-       * Local copy of formLoading component prop
+       * Flag indicating that the form is loading
        */
-      working: this.formLoading
+      working: false
     };
   },
   watch: {
@@ -194,7 +201,11 @@ export default {
       return this.validationErrors.length > 0;
     }
   },
+  filters: {
+    toTitleCase
+  },
   methods: {
+    getInputType,
     /**
      * Calculates the flex width of an element based off of the span parameter
      * @param span

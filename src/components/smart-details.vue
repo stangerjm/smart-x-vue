@@ -38,6 +38,10 @@
 <script>
 import { config } from "../../app.config.js";
 import { splitArrayIntoChunks } from "../global/mixins/helpers";
+import { createViewModel, toTitleCase } from "../global/mixins";
+import Vue from "vue";
+
+Vue.use(require("vue-moment"));
 
 /**
  * A component that renders a model as a list of details.
@@ -81,12 +85,15 @@ export default {
       detailColumns: []
     };
   },
+  filters: {
+    toTitleCase
+  },
   computed: {
     /**
      * Typed schema object derived from the local "detailData" property.
      */
     typedDetails() {
-      return this.createViewModel(this.detailData);
+      return createViewModel(this.detailData);
     }
   },
   methods: {

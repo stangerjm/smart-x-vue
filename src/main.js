@@ -2,8 +2,6 @@ if (process.env.NODE_ENV === "development") {
   import("../sandbox").then(init => init.initSandbox());
 }
 
-import Vue from "vue";
-
 // Mixins
 import {
   parseDateString,
@@ -33,19 +31,3 @@ export {
   transformIntoFormModel,
   ModelType
 };
-
-// Include mixins
-Vue.mixin({
-  methods: {
-    createViewModel: createViewModel,
-    getNonReactiveCopy: getNonReactiveCopy,
-    getItemId: getItemId,
-    createLinkToRecord: createLinkToRecord,
-    getInputType: getInputType
-  },
-  filters: {
-    toTitleCase: toTitleCase
-  }
-});
-
-Vue.use(require("vue-moment"));

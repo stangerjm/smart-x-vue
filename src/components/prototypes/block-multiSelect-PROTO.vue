@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { toTitleCase } from "../../global/mixins";
+
 /**
  * A component that renders two select elements that have a parent-child relationship.
  * @author James Stanger, Washington State Patrol
@@ -107,6 +109,9 @@ export default {
        */
       selectData: this.optionsData
     };
+  },
+  filters: {
+    toTitleCase
   },
   computed: {
     /**

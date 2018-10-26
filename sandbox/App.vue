@@ -14,12 +14,19 @@
 
       <template slot="content">
 
-        <smart-form :form-data="formModel"
-                    :on-submit="submit"
-                    :validation-errors="getErrors"
-                    style="width: 60%; margin: 0 auto"
-                    :centerForm="false">
-        </smart-form>
+        <!--<smart-form :form-data="formModel"-->
+                    <!--:on-submit="submit"-->
+                    <!--:validation-errors="getErrors"-->
+                    <!--style="width: 60%; margin: 0 auto"-->
+                    <!--:centerForm="true">-->
+
+          <!--<bit-btn slot="form-buttons">Back</bit-btn>-->
+
+          <!--<p slot="form-end"><span style="color: red;">*</span> indicates a required field</p>-->
+
+        <!--</smart-form>-->
+
+        <demo></demo>
 
       </template>
 
@@ -38,14 +45,17 @@
 import { config } from "../app.config.js";
 import ModelType from "../src/global/constants/ModelType";
 import { transformIntoFormModel } from "../src/global/mixins/transformIntoFormModel";
+import BitBtn from "../src/components/bit-btn";
 
 export default {
   name: "app",
   components: {
+    BitBtn,
     SmartNav: () => import("../src/components/smart-nav"),
     SmartFooter: () => import("../src/components/smart-footer"),
     SmartForm: () => import("../src/components/smart-form"),
-    LayoutMain: () => import("../src/components/layout-main")
+    LayoutMain: () => import("../src/components/layout-main"),
+    Demo: () => import("./demo")
   },
   data() {
     return {
@@ -136,6 +146,8 @@ export default {
           setTimeout(resolve.bind(null, value), time);
         });
       }
+
+      await delay(2000);
 
       console.log(submittedData);
       this.errorMessages = [

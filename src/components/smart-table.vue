@@ -33,7 +33,7 @@ import BlockTableBody from "./block-tableBody";
 import BlockTableHeading from "./block-tableHeading";
 import BitMessage from "./bit-message";
 import { getSmartTableProps } from "./props/smartTable";
-import { getSortedData } from "../global/mixins";
+import { getSortedData, createViewModel, getItemId } from "../global/mixins";
 
 /**
  * A component that renders a responsive table from a data-set.
@@ -67,7 +67,7 @@ export default {
      */
     dataHasIdProperty() {
       if (this.typedData.length > 0) {
-        return this.getItemId(this.typedData[0]) != null;
+        return getItemId(this.typedData[0]) != null;
       }
     },
     /**
@@ -78,7 +78,7 @@ export default {
      */
     typedData() {
       return this.localData.map(function(tableItem) {
-        return this.createViewModel(tableItem);
+        return createViewModel(tableItem);
       }, this);
     }
   },

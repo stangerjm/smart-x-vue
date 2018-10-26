@@ -28,6 +28,8 @@
 
 <script>
 import BitIcon from "./bit-icon";
+import { toTitleCase } from "../global/mixins";
+
 export default {
   name: "block-table-heading",
   components: {
@@ -62,6 +64,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  filters: {
+    toTitleCase
   }
 };
 </script>

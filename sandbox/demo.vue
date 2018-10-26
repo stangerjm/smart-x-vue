@@ -9,7 +9,7 @@
     </smart-accordion>
 
     <h1>Details</h1>
-    <smart-details :detail-data="{ name: 'James' }"></smart-details>
+    <smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>
 
     <h1>Form</h1>
     <smart-form :form-data="{ Name: String, Age: Number }"
@@ -22,9 +22,9 @@
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="[
-                                  { id: 1, Name: 'James', Age: 25 },
-                                  { id: 2, Name: 'Joel', Age: 20 },
-                                  { id: 3, Name: 'Jenna', Age: 23 }
+                                  { id: 1, Name: 'James', Age: 25, birthday: new Date() },
+                                  { id: 2, Name: 'Joel', Age: 20, birthday: new Date() },
+                                  { id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }
                                 ]"
                             default-context="test"
                             :searchModel="searchModel">

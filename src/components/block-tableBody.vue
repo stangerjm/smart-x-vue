@@ -48,6 +48,7 @@
 import BitTableCell from "./bit-tableCell";
 import BlockActionContainer from "./block-actionContainer";
 import BitBtn from "./bit-btn";
+import { getItemId } from "../global/mixins";
 
 export default {
   name: "block-table-body",
@@ -117,6 +118,7 @@ export default {
     }
   },
   methods: {
+    getItemId,
     /**
      * Expands record on mobile screen.
      * @param event

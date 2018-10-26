@@ -48,6 +48,7 @@
 
 <script>
 import { getDefaultValue } from "../global/mixins/helpers";
+import { createViewModel, getInputType, toTitleCase } from "../global/mixins";
 import BitBtn from "./bit-btn";
 import BitInput from "./bit-input";
 import BitIcon from "./bit-icon";
@@ -71,14 +72,18 @@ export default {
        */
       isHidden: !this.isExpanded,
       typedSearchModel: this.searchModel
-        ? this.createViewModel(this.searchModel)
+        ? createViewModel(this.searchModel)
         : {}
     };
   },
   props: {
     ...getSmartSearchProps()
   },
+  filters: {
+    toTitleCase
+  },
   methods: {
+    getInputType,
     /**
      * Toggles the search bar visibility.
      */

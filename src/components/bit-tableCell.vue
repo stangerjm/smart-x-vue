@@ -34,6 +34,10 @@
 
 <script>
 import { config } from "../../app.config.js";
+import { toTitleCase } from "../global/mixins";
+import Vue from "vue";
+
+Vue.use(require("vue-moment"));
 
 export default {
   name: "bit-table-cell",
@@ -67,6 +71,9 @@ export default {
        */
       config: config
     };
+  },
+  filters: {
+    toTitleCase
   },
   methods: {
     /**
