@@ -8,7 +8,7 @@ import config from '../../../app.config';
  */
 function isValidDateString(value) {
   // If value is not a string or a parseable date-string, return false
-  if (typeof value !== 'string' || Number.isNaN(Date.parse(value))) {
+  if (typeof value !== 'string' || !moment(value, config.dateFormat, true).isValid()) {
     return false;
   }
 

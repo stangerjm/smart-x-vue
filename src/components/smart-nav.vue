@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import BlockNavList from './block-navList.vue';
+
 /**
  * A component that renders a responsive navigation.
  * @author James Stanger, Washington State Patrol
@@ -32,7 +34,7 @@
 export default {
   name: 'smart-nav',
   components: {
-    BlockNavList: () => import('./block-navList'),
+    BlockNavList,
   },
   props: {
     /**

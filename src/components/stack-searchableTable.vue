@@ -17,34 +17,40 @@
                  :props-to-link="propsToLink"
                  :table-empty-message="tableEmptyMessage">
     </smart-table>
-    <bit-paging v-model="pageIdx"
+      <bit-paging v-model="pageIdx"
                 class="stack-searchableTable--paging"
-                :page-index="pageIdx"
                 :paged-data-length="pageData.length">
     </bit-paging>
   </section>
 </template>
 
 <script>
-import { smartTable, smartSearch } from './props';
+import { stackSearchableTable } from './props';
 import { compare } from '../global/mixins';
 import { splitArrayIntoChunks } from '../global/mixins/helpers';
+import BitPaging from './bit-paging.vue';
+import SmartTable from './smart-table.vue';
+import SmartSearch from './smart-search.vue';
 
-// Use destructuring to ignore smart-search prop 'onSubmit'
-// as we will be providing that functionality here.
-const { onSubmit, ...smartSearchProps } = smartSearch();
+const getStackSearchableTableProps = stackSearchableTable || function searchableTableProps() {};
+const propsMixin = {
+  props: {
+    ...getStackSearchableTableProps(),
+  },
+};
+
 export default {
   name: 'stack-searchable-table',
   components: {
-    BitPaging: () => import('./bit-paging'),
-    SmartTable: () => import('./smart-table'),
-    SmartSearch: () => import('./smart-search'),
+    BitPaging,
+    SmartTable,
+    SmartSearch,
   },
+  mixins: [propsMixin],
   props: {
-    // Include all smart-table props
-    ...smartTable(),
-    // Include smart-search props
-    ...smartSearchProps,
+    /**
+     * Number of results that should be displayed for each page
+     */
     resultsPerPage: {
       type: Number,
       default: 10,

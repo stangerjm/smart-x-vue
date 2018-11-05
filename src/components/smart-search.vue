@@ -34,7 +34,8 @@
                    :label-text="modelProp | toTitleCase"
                    :input-type="getInputType(modelValue)"
                    :input-name="modelProp"
-                   v-model="modelValue.value">
+                   v-model="modelValue.value"
+                   line-up>
         </bit-input>
 
         <!-- Search button -->
@@ -55,6 +56,17 @@
 import { getDefaultValue } from '../global/mixins/helpers';
 import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
 import { smartSearch } from './props';
+import BitBtn from './bit-btn.vue';
+import BitInput from './bit-input.vue';
+import BitIcon from './bit-icon.vue';
+
+const getSmartSearchProps = smartSearch || function smartSearchProps() {};
+const propsMixin = {
+  props: {
+    ...getSmartSearchProps(),
+  },
+};
+
 /**
  * A component that renders a mobile oriented search bar.
  * @author James Stanger, Washington State Patrol
@@ -63,9 +75,9 @@ import { smartSearch } from './props';
 export default {
   name: 'smart-search',
   components: {
-    BitBtn: () => import('./bit-btn'),
-    BitInput: () => import('./bit-input'),
-    BitIcon: () => import('./bit-icon'),
+    BitBtn,
+    BitInput,
+    BitIcon,
   },
   data() {
     return {
@@ -78,9 +90,7 @@ export default {
         : {},
     };
   },
-  props: {
-    ...smartSearch(),
-  },
+  mixins: [propsMixin],
   filters: {
     toTitleCase,
   },

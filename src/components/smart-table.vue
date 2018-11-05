@@ -23,7 +23,7 @@
 
   <!-- If table data is empty, render an empty message. -->
   <bit-message v-else
-               messageType="empty"
+               messageType="notice"
                :message-text="tableEmptyMessage">
   </bit-message>
 </template>
@@ -31,6 +31,16 @@
 <script>
 import { smartTable } from './props';
 import { getSortedData, createViewModel, getItemId } from '../global/mixins';
+import BlockTableBody from './block-tableBody.vue';
+import BlockTableHeading from './block-tableHeading.vue';
+import BitMessage from './bit-message.vue';
+
+const getSmartTableProps = smartTable || function smartTableProps() {};
+const propsMixin = {
+  props: {
+    ...getSmartTableProps(),
+  },
+};
 
 /**
  * A component that renders a responsive table from a data-set.
@@ -40,13 +50,11 @@ import { getSortedData, createViewModel, getItemId } from '../global/mixins';
 export default {
   name: 'smart-table',
   components: {
-    BlockTableBody: () => import('./block-tableBody'),
-    BlockTableHeading: () => import('./block-tableHeading'),
-    BitMessage: () => import('./bit-message'),
+    BlockTableBody,
+    BlockTableHeading,
+    BitMessage,
   },
-  props: {
-    ...smartTable(),
-  },
+  mixins: [propsMixin],
   computed: {
     /**
      * Retrieves the keys of the first object in the 'typedData' local

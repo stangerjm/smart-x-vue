@@ -1,5 +1,7 @@
 <template>
-  <div class="smart-details-outlined">
+  <div :class="[
+    outlined ? 'smart-details-outlined' : 'smart-details'
+  ]">
     <header class="smart-details--header">
       <h3 class="smart-details--heading">{{title ? title : 'Details'}}</h3>
     </header>
@@ -71,6 +73,10 @@ export default {
     detailsPerColumn: {
       type: Number,
       default: 8,
+    },
+    outlined: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

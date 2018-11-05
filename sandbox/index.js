@@ -15,5 +15,8 @@ export function initSandbox() {
     }),
     store: Store,
     render: h => h(App),
+    created() {
+      // this.$store.dispatch('people/fetchPeopleData');
+    },
   }).$mount('#app');
 }

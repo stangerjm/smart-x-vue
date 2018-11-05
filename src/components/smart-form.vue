@@ -46,7 +46,7 @@
                    :key="key"
                    v-else-if="isValidField(item, key)"
                    :stack-elements="true"
-                   :input-name="key"
+                   :name="key"
                    :input-type="getInputType(item)"
                    :label-text="item.displayName ? item.displayName : key | toTitleCase"
                    :readonly="readonlyInputs.includes(key)"
@@ -89,6 +89,10 @@
 
 <script>
 import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
+import BitLoading from './bit-loading.vue';
+import BitSelect from './bit-select.vue';
+import BitBtn from './bit-btn.vue';
+import BitInput from './bit-input.vue';
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -98,10 +102,10 @@ import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
 export default {
   name: 'smart-form',
   components: {
-    BitLoading: () => import('./bit-loading'),
-    BitSelect: () => import('./bit-select'),
-    BitBtn: () => import('./bit-btn'),
-    BitInput: () => import('./bit-input'),
+    BitLoading,
+    BitSelect,
+    BitBtn,
+    BitInput,
   },
   props: {
     /**

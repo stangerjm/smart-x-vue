@@ -1,6 +1,10 @@
 <template>
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
+
+    <!-- Select label -->
     <label class="bit-input--label" :for="randomId">{{labelText}}</label>
+
+    <!-- Select element -->
     <select class="bit-input--field"
             :class="[erroredField ? 'bit-input--error' : '']"
             :id="randomId"
@@ -23,6 +27,12 @@
 </template>
 
 <script>
+/**
+ * A dynamic select element that will render options based off of an array passed in
+ * @author James Stanger, Washington State Patrol
+ * @example ./documentation/bit-select.md
+ * @version 1.0
+ */
 export default {
   name: 'bit-select',
   props: {

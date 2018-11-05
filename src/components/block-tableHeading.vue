@@ -30,11 +30,12 @@
 
 <script>
 import { toTitleCase } from '../global/mixins';
+import BitIcon from './bit-icon.vue';
 
 export default {
   name: 'block-table-heading',
   components: {
-    BitIcon: () => import('./bit-icon'),
+    BitIcon,
   },
   props: {
     /**

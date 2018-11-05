@@ -28,9 +28,12 @@
 </template>
 
 <script>
+import BitDropList from './bit-dropList.vue';
+
 /**
  * A component that renders a flexible and mobile responsive list with drop-down capability.
  * @author James Stanger
+ * @example ./documentation/block-navList.md
  * @version 1.0
  */
 export default {
@@ -45,7 +48,7 @@ export default {
     },
   },
   components: {
-    BitDropList: () => import('./bit-dropList'),
+    BitDropList,
   },
   data() {
     return {

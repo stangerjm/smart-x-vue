@@ -1,22 +1,17 @@
 {
   "name": "smart-x-vue",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name smart-x-vue ./src/main.js",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit",
-    "test-build": "npm run build && npm pack"
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build",
+    "test-build": "npm run build && npm pack",
+    "test:unit": "vue-cli-service test:unit"
   },
-  "main": "./dist/smart-x-vue.common.js",
-  "files": [
-    "dist/*",
-    "src/*",
-    "public/*",
-    "*.json",
-    "*.js"
-  ],
   "dependencies": {
+    "axios": "^0.18.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
     "flatpickr": "^4.5.2",
@@ -24,10 +19,9 @@
     "moment": "^2.22.2",
     "vue": "^2.5.17",
     "vue-moment": "^4.0.0",
+    "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-persist": "^1.5.4",
-    "axios": "^0.18.0",
-    "vue-router": "^3.0.1",
     "webpack-bundle-analyzer": "^3.0.2"
   },
   "devDependencies": {
@@ -40,8 +34,11 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
+    "babel-polyfill": "^6.26.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
+    "vue-cli-plugin-styleguidist": "^0.1.8",
+    "vue-styleguidist": "^1.8.10",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
@@ -76,5 +73,13 @@
       "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/"
-  }
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "main": "./dist/smart-x-vue.common.js"
 }

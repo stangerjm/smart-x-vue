@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import SmartTable from './smart-table.vue';
+import SmartAccordion from './smart-accordion.vue';
+
 /**
  * A component that renders a smart-table inside of a smart-accordion.
  * @author James Stanger, Washington State Patrol
@@ -22,8 +25,8 @@
 export default {
   name: 'stack-table-collapsible',
   components: {
-    SmartTable: () => import('./smart-table'),
-    SmartAccordion: () => import('./smart-accordion'),
+    SmartTable,
+    SmartAccordion,
   },
   props: {
     /**

@@ -14,6 +14,7 @@
 /**
  * A component that renders a drop-down list to be part of a navigation.
  * @author James Stanger, Washington State Patrol
+ * @example ./documentation/bit-dropList.md
  * @version 1.0
  */
 export default {

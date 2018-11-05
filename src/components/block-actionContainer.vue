@@ -27,10 +27,10 @@
 
 <script>
 /**
- * A component that renders an action container to be part of a table or other such structure.
- * The action container should be linked to a record or item in a table-like structure.
+ * A component that renders an action container to be part of a table or other similar structure.
  * Contains action links that handle details, edit, and delete actions.
  * @author James Stanger, Washington State Patrol
+ * @example ./documentation/block-actionContainer.md
  * @version 1.0
  */
 export default {

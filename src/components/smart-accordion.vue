@@ -1,21 +1,35 @@
 <template>
   <section class="smart-accordion">
-    <button :class="['smart-accordion--toggle', isExpanded ? 'is-expanded' : '']"
+    <button :class="[
+              'smart-accordion--toggle',
+              centerTitle ? 'smart-accordion--centerToggle' : '',
+              isExpanded ? 'is-expanded' : '',
+            ]"
             type="button"
             @click="toggleExpand">
       {{title}}
     </button>
-    <article class="smart-accordion--content">
-      <!-- @slot Allows content to be passed into the expanded portion. -->
+    <block-expandable-section class="smart-accordion--content"
+                              :is-expanded="isExpanded"
+                              :watch-resize="watchResize">
       <slot></slot>
-    </article>
+    </block-expandable-section>
   </section>
 </template>
 
 <script>
-import { fillCustomEvent } from '../polyfill/polyfill';
-
-fillCustomEvent();
+// import { fillCustomEvent } from '../polyfill';
+// const fill = fillCustomEvent || function fillEvent() {};
+// fill();
+/* Force page to re-render height. This prevents a bug on
+ * small screens where the width causes the scroll bar to
+ * interfere with the height. This causes the container to
+ * render short and the inner content is hidden.
+ */
+// setTimeout(() => {
+//   window.dispatchEvent(new CustomEvent('resize'));
+// }, 500);
+import BlockExpandableSection from './block-expandableSection.vue';
 /**
  * A component that renders a responsive accordion that can contain any HTML content.
  * @author James Stanger, Washington State Patrol
@@ -23,6 +37,9 @@ fillCustomEvent();
  */
 export default {
   name: 'smart-accordion',
+  components: {
+    BlockExpandableSection,
+  },
   props: {
     /**
      * The title that will display before the accordion.
@@ -31,21 +48,24 @@ export default {
       type: String,
       default: 'Click to expand',
     },
+    /**
+     * Flag to optionally center title
+     */
+    centerTitle: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Flag indicating that the content container should watch for resize
+     */
+    watchResize: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      /**
-       * Flag indicating if the accordion is expanded
-       */
       isExpanded: false,
-      /**
-       * Reference to the accordion's content container element
-       */
-      contentContainer: undefined,
-      /**
-       * Height of the previous rendering of the accordion
-       */
-      previousHeight: 0,
     };
   },
   methods: {
@@ -53,70 +73,8 @@ export default {
      * Toggles the accordion to expand or collapse.
      */
     toggleExpand() {
-      if (!this.isExpanded) {
-        this.isExpanded = true;
-        this.expandData();
-
-        /* Force page to re-render height. This prevents a bug on
-         * small screens where the width causes the scroll bar to
-         * interfere with the height. This causes the container to
-         * render short and the inner content is hidden.
-         */
-        setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('resize'));
-        }, 500);
-      } else {
-        this.collapseData();
-        this.isExpanded = false;
-      }
+      this.isExpanded = !this.isExpanded;
     },
-    /**
-     * Expands the accordion relative to the combined height of each of its children.
-     */
-    expandData() {
-      const { contentContainer } = this;
-
-      // loop through each child and add the height of each
-      const totalHeight = [...contentContainer.childNodes].reduce((accumulator, contentItem) => {
-        const itemHeight = contentItem.offsetHeight;
-        if (itemHeight != null) {
-          return accumulator + itemHeight;
-        }
-
-        return accumulator;
-      }, 0);
-
-      // do not update DOM unless the height needs to be updated
-      if (this.previousHeight !== totalHeight) {
-        contentContainer.style.height = `${totalHeight}px`;
-        this.previousHeight = totalHeight;
-      }
-    },
-    /**
-     * Collapses the accordion by setting the container to have no height.
-     */
-    collapseData() {
-      const { contentContainer } = this;
-      contentContainer.style.height = '0px';
-      this.previousHeight = 0;
-    },
-    /**
-     * Event handler that will continually resize the container if it is expanded.
-     */
-    handleResize() {
-      if (this.isExpanded) {
-        this.expandData();
-      }
-    },
-  },
-  /**
-   * Setup an event listener on window resize to resize the UI if needed.
-   */
-  created() {
-    window.addEventListener('resize', this.handleResize);
-  },
-  mounted() {
-    this.contentContainer = this.$el.querySelector('.smart-accordion--content');
   },
 };
 </script>

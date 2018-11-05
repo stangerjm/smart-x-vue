@@ -46,13 +46,17 @@
 
 <script>
 import { getItemId } from '../global/mixins';
+import BitTableCell from './bit-tableCell.vue';
+import BlockActionContainer from './block-actionContainer.vue';
+import BitBtn from './bit-btn.vue';
+import EventBus from '../global/EventCenter/EventBus';
 
 export default {
   name: 'block-table-body',
   components: {
-    BitTableCell: () => import('./bit-tableCell'),
-    BlockActionContainer: () => import('./block-actionContainer'),
-    BitBtn: () => import('./bit-btn'),
+    BitTableCell,
+    BlockActionContainer,
+    BitBtn,
   },
   props: {
     /**
@@ -129,7 +133,7 @@ export default {
        * @event recordExpanded
        * @type null
        */
-      this.$emit('recordExpanded');
+      EventBus.$emit('elementResize');
     },
     /**
      * Finds the nearest ancestor that contains the specified class attribute.

@@ -39,6 +39,12 @@ import { toTitleCase } from '../global/mixins';
 
 Vue.use(require('vue-moment'));
 
+/**
+ * A dynamic table cell that will display data in a uniform way
+ * @author James Stanger, Washington State Patrol
+ * @example ./documentation/bit-tableCell.md
+ * @version 1.0
+ */
 export default {
   name: 'bit-table-cell',
   props: {
@@ -58,6 +64,7 @@ export default {
     },
     /**
      * Flag indicating if the cell should be treated as a table key
+     * and displayed on all screen sizes
      */
     isTableKey: {
       type: Boolean,

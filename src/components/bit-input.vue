@@ -2,7 +2,9 @@
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
     <!-- Render label regardless of input type -->
     <label class="bit-input--label"
-           :class="[ requiredField ? 'bit-input--required' : '' ]"
+           :class="[
+              requiredField ? 'bit-input--required' : '',
+              lineUp ? 'bit-input--neatLabel' : '']"
            :for="inputId ? inputId : randomId">
       {{labelText}}
     </label>
@@ -14,34 +16,38 @@
              :class="[erroredField ? 'bit-input--error' : '']"
              :id="inputId ? inputId : randomId"
              :type="inputType"
-             :name="inputName"
              :checked="checked"
              @change="updateCheckbox"
              v-bind="$attrs">
       <!-- Hidden checkbox for .NET MVC applications -->
-      <input type="hidden" value="false" :name="inputName">
+      <input type="hidden" value="false">
+
     </template>
 
     <template v-else-if="inputType === InputType.DATE">
+
       <input class="bit-input--field bit-input--date"
+             :ref="InputType.DATE"
              :class="[erroredField ? 'bit-input--error' : '']"
              :id="inputId ? inputId : randomId"
-             :name="inputName"
              @input="updateValue"
              v-bind="$attrs"
              :type="inputType">
+
     </template>
 
     <!-- Render as an input box if value is any other type -->
     <template v-else>
+
       <input class="bit-input--field"
+             :ref="InputType.PHONE"
              :value="value"
              :class="[erroredField ? 'bit-input--error' : '']"
              :id="inputId ? inputId : randomId"
-             :name="inputName"
              @input="updateValue"
              v-bind="$attrs"
              :type="getHtmlInputType(inputType)">
+
     </template>
   </div>
 </template>
@@ -56,15 +62,19 @@ import InputType from '../global/constants/InputType';
 import { parseDateString } from '../global/mixins';
 
 /**
- * A component that can be rendered as a text, number, or datepicker input.
+ * A flexible input and label that can be rendered as a text field,
+ * number, date-picker, checkbox, password field, or phone number field.
  * @author James Stanger, Washington State Patrol
+ * @example ./documentation/bit-input.md
  * @version 1.0
  */
 export default {
   name: 'bit-input',
   props: {
     /**
-     * Corresponds to the native HTML input attribute 'type'
+     * The type the input should render as.
+     * For example: 'checkbox' will render a checkbox,
+     * 'date' will render a date-picker, 'password' will render a password input, etc.
      */
     inputType: {
       type: String,
@@ -74,13 +84,6 @@ export default {
      * Display text for the related input label
      */
     labelText: {
-      type: String,
-      required: true,
-    },
-    /**
-     * Corresponds to the native HTML input attribute 'name'
-     */
-    inputName: {
       type: String,
       required: true,
     },
@@ -105,13 +108,22 @@ export default {
       default: false,
     },
     /**
-     * Allows v-model to return the altered input value
+     * Allows component to return the user-updated input value.
+     * Value will be cast to specified type before being emitted back to parent.
      */
     value: {},
     /**
      * Flag to indicate if the field has an error associated with it
      */
     erroredField: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Lines up the input label to a uniform position to be in line with other inputs
+     * <br>*Note: if stackElements flag is set, this will have no effect.
+     */
+    lineUp: {
       type: Boolean,
       default: false,
     },
@@ -141,11 +153,6 @@ export default {
        * Flag that keeps track of the state of a checkbox
        */
       checked: this.value,
-      elementSelectors: {
-        [InputType.DATE]:
-          '.bit-input--field.bit-input--date:not([type=hidden])',
-        [InputType.PHONE]: '.bit-input--field',
-      },
     };
   },
   methods: {
@@ -225,7 +232,7 @@ export default {
       }
 
       // Apply input mask
-      const datePickerEl = this.$el.querySelector(this.elementSelectors[InputType.DATE]);
+      const datePickerEl = this.$refs[InputType.DATE];
       const inputMask = new InputMask({
         mask: config.dateMask,
         placeholder: config.dateFormat,
@@ -236,7 +243,7 @@ export default {
      * Applies an phone input mask to the input element
      */
     applyPhoneMask() {
-      const phoneElement = this.$el.querySelector(this.elementSelectors[InputType.PHONE]);
+      const phoneElement = this.$refs[InputType.PHONE];
 
       const inputMask = new InputMask({
         mask: config.phoneMask,
@@ -305,8 +312,7 @@ export default {
         switch (inputType) {
           case InputType.DATE:
             if (
-              this.$el
-                .querySelector(this.elementSelectors[inputType])
+              this.$refs[inputType]
                 .inputmask.isComplete()
             ) {
               return e.target.value;

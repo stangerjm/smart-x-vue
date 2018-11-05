@@ -1,38 +1,42 @@
 <template>
 
-  <!-- Render as a link -->
-  <a :class="btnClass" :href="path" v-if="isLink" v-bind="$attrs">
-    <!-- @slot Link text -->
-    <slot></slot>
-  </a>
+  <button type="button" :class="btnClass" v-if="btnStyle === 'expand'" @click="toggle">
+    {{ expanded ? '-' : '+' }}
+  </button>
 
   <!-- Render as a button -->
-  <button type="button" :class="btnClass" v-else v-bind="$attrs">
+  <button type="button" :class="btnClass" v-bind="$attrs" v-else>
     <!-- @slot Button text -->
     <slot></slot>
   </button>
+
 </template>
 
 <script>
 /**
- * A dynamic button that can be used as an various types of buttons and links.
+ * A dynamic button that can be used to render various types of buttons.
  * @author James Stanger, Washington State Patrol
  * @version 1.0
+ * @example ./documentation/bit-btn.md
  */
 export default {
   name: 'bit-btn',
   props: {
     /**
-     * Button style options include:
-     * `add, datepicker, delete, details, edit, exit, expand, plainExit, plainSearch, reset, search`
+     * Indicates the type of button that should be rendered. Options include:
+     * `add, exit, expand, reset, search`
      */
     btnStyle: {
       type: String,
     },
     /**
-     * Renders the button as a link if set to true
+     * Size of the button. Acceptable button sizes: 'small,' 'medium,' and 'large'
      */
-    isLink: {
+    btnSize: {
+      type: String,
+      default: '',
+    },
+    isExpanded: {
       type: Boolean,
       default: false,
     },
@@ -55,23 +59,42 @@ export default {
        * Default class attribute for the button
        */
       defaultClass: 'bit-btn-clickable',
+      expanded: this.isExpanded,
     };
   },
   methods: {
     /**
      * Returns the correct class for the string passed into the btnStyle property
      * @param {string} type - button style
+     * @returns {string} class for button
      */
     getClass(type) {
+      const defaultClass = `${this.defaultClass} ${this.getSize(this.btnSize)}`;
+
       if (type == null) {
-        return this.defaultClass;
+        return defaultClass;
       }
 
       if (this.buttonTypes.includes(type)) {
-        return `bit-btn-${type}`;
+        return `bit-btn-${type} ${this.getSize(this.btnSize)}`;
       }
 
-      return this.defaultClass;
+      return defaultClass;
+    },
+    /**
+     * Returns the size corresponding to the size passed in
+     * @param {string} size - the size of the button
+     * @returns {string}
+     */
+    getSize(size) {
+      if (size == null) {
+        return '';
+      }
+
+      return `bit-btn-${size}`;
+    },
+    toggle() {
+      this.expanded = !this.expanded;
     },
   },
 };
