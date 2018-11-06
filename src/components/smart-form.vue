@@ -62,7 +62,12 @@
     <section class="smart-form--buttonSection">
 
       <!-- Submit button -->
-      <bit-btn type="submit" class="smart-form--button" @click.native="submit">Submit</bit-btn>
+      <bit-btn type="submit"
+               class="smart-form--button"
+               @click.native="submit"
+               :btn-size="submitBtnSize">
+        Submit
+      </bit-btn>
 
       <!-- @slot Placeholder for additional markup after
                  the submit button but before the loading spinner -->
@@ -165,13 +170,26 @@ export default {
       type: String,
       default: 'MM-dd-yyyy',
     },
+    /**
+     * List of validation errors
+     */
     validationErrors: {
       type: Array,
       default: () => [],
     },
+    /**
+     * Flag that will optionally center the form
+     */
     centerForm: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * Size of the submit button. Accepts 'small', 'medium', or 'large'
+     */
+    submitBtnSize: {
+      type: String,
+      default: 'medium',
     },
   },
   data() {

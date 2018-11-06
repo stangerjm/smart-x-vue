@@ -35,5 +35,12 @@ export default function smartSearch() {
       type: Boolean,
       default: false,
     },
+    /**
+     * Sets the size of the search button. Accepted values are 'small', 'medium', and 'large'
+     */
+    searchBtnSize: {
+      type: Boolean,
+      default: 'medium',
+    },
   };
 }

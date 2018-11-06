@@ -1,60 +1,67 @@
 <template>
   <div>
-    <!--<h1>Loading</h1>-->
-    <!--<bit-loading></bit-loading>-->
+    <h1>Loading</h1>
+    <bit-loading></bit-loading>
 
     <!--<h1>Accordion</h1>-->
-    <!--<smart-accordion title="Hello">-->
-      <!--<h2 style="padding: 10px;">World!</h2>-->
-    <!--</smart-accordion>-->
+    <smart-accordion title="Devices">
+      <smart-table :table-data="getDevices"
+                   default-context="test">
+      </smart-table>
+    </smart-accordion>
 
-    <!--<h1>Details</h1>-->
-    <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>-->
+    <h1>Details</h1>
+    <smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>
 
-    <!--<h1>Form</h1>-->
-    <!--<smart-form :form-data="formData"-->
-                <!--:on-submit="submit"-->
-                <!--:validation-errors="errors">-->
-    <!--</smart-form>-->
+    <h2>Details: Outlined</h2>
+    <smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>
 
-    <!--<h1>Searchable Table</h1>-->
-    <!--<stack-searchable-table form-title="Test"-->
-                            <!--route-name="test"-->
-                            <!--:table-data="[-->
-                                  <!--{ id: 1, Name: 'James', Age: 25, birthday: new Date() },-->
-                                  <!--{ id: 2, Name: 'Joel', Age: 20, birthday: new Date() },-->
-                                  <!--{ id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }-->
-                                <!--]"-->
-                            <!--default-context="test"-->
-                            <!--:searchModel="searchModel">-->
+    <h1>Form</h1>
+    <smart-form :form-data="formData"
+                :on-submit="submit"
+                :validation-errors="errors">
+    </smart-form>
 
-      <!--<router-link slot="search-action" to="/add">-->
-        <!--<bit-btn btn-size="large" style="margin-right: 10px;">Add</bit-btn>-->
-      <!--</router-link>-->
+    <h1>Searchable Table</h1>
+    <stack-searchable-table form-title="Test"
+                            route-name="test"
+                            :table-data="[
+                                  { id: 1, Name: 'James', Age: 25, birthday: new Date() },
+                                  { id: 2, Name: 'Joel', Age: 20, birthday: new Date() },
+                                  { id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }
+                                ]"
+                            default-context="test"
+                            :searchModel="searchModel">
 
-      <!--<router-link slot="search-action" to="/clear">-->
-        <!--<bit-btn btn-size="large">Clear</bit-btn>-->
-      <!--</router-link>-->
+      <router-link slot="search-action" to="/add">
+        <bit-btn btn-size="large" style="margin-right: 10px;">Add</bit-btn>
+      </router-link>
 
-    <!--</stack-searchable-table>-->
+      <router-link slot="search-action" to="/clear">
+        <bit-btn btn-size="large">Clear</bit-btn>
+      </router-link>
 
-    <!--<h1>Section</h1>-->
-    <!--<smart-section section-title="Test">-->
-      <!--<h2>Hello</h2>-->
-    <!--</smart-section>-->
+    </stack-searchable-table>
 
-    <!--<h1>Table</h1>-->
-    <!--<smart-table :table-data="devices"-->
-                 <!--default-context="test"-->
-                 <!--:props-to-link="propsToLink">-->
-    <!--</smart-table>-->
+    <h1>Section</h1>
+    <smart-section section-title="Test">
+      <h2>Hello</h2>
+    </smart-section>
 
-    <!--<h1>Tabs</h1>-->
-    <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->
-      <!--<smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>-->
-      <!--<smart-details slot="TabTwo" :detail-data="james"></smart-details>-->
-      <!--<smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>-->
-    <!--</smart-tabs>-->
+    <h1>Table</h1>
+    <smart-table :table-data="devices"
+                 default-context="test"
+                 :props-to-link="propsToLink">
+    </smart-table>
+
+    <h1>Tabs</h1>
+    <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
+      <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
+      <smart-details slot="TabTwo" :detail-data="james"></smart-details>
+      <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
+    </smart-tabs>
+
+    <h1>Cards</h1>
     <div class="demo-grid">
       <smart-card card-title="ITS3"
                   card-description="He is a developer."
@@ -87,12 +94,6 @@
         </template>
       </smart-card>
     </div>
-
-    <!--<smart-accordion title="Devices" style="width: 1000px">-->
-      <!--<smart-table :table-data="getDevices"-->
-                   <!--default-context="test">-->
-      <!--</smart-table>-->
-    <!--</smart-accordion>-->
   </div>
 </template>
 

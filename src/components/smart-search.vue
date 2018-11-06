@@ -42,6 +42,7 @@
         <bit-btn :disabled="isHidden"
                  type="button"
                  btn-style="search"
+                 btn-size="medium"
                  @click.native="submit">
           Search
         </bit-btn>
