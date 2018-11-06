@@ -11,7 +11,22 @@
     </smart-accordion>
 
     <h1>Details</h1>
-    <smart-details :detail-data="{ name: 'James', birthday: new Date() }"></smart-details>
+    <smart-details :detail-data="{
+        date: new Date(),
+        utcDate: new Date().toUTCString(),
+        isoDate: new Date().toISOString(),
+        validDateString: '01/01/2001',
+        invalidDateString: '01-01-2001',
+        wordThenNumber: 'Device 21',
+        stringLikeYear: '2001',
+        numberLikeYear: 2001,
+        numberLikeDate: 1541539613000,
+        dotNetMVCJsonDate: '/Date(1541539613000)',
+        dotNetAPIJsonDate: '2002-02-02T00:00:00',
+        stringLikeYearThenWords: '2014 units of paper',
+        wordsThenStringLikeYear: 'more words 2014'
+      }"
+      :details-per-column="20"></smart-details>
 
     <h2>Details: Outlined</h2>
     <smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>

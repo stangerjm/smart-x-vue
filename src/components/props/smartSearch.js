@@ -39,7 +39,7 @@ export default function smartSearch() {
      * Sets the size of the search button. Accepted values are 'small', 'medium', and 'large'
      */
     searchBtnSize: {
-      type: Boolean,
+      type: String,
       default: 'medium',
     },
   };
