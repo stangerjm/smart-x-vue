@@ -24,7 +24,7 @@ export default {
   props: {
     /**
      * Indicates the type of button that should be rendered. Options include:
-     * `add, exit, expand, reset, search`
+     * `add, exit, expand, reset, search, clear`
      */
     btnStyle: {
       type: String,
@@ -54,7 +54,7 @@ export default {
       /**
        * Possible button types
        */
-      buttonTypes: ['add', 'exit', 'expand', 'reset', 'search'],
+      buttonTypes: ['add', 'exit', 'expand', 'reset', 'search', 'clear'],
       /**
        * Default class attribute for the button
        */

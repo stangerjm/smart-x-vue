@@ -17,7 +17,7 @@ export default {
   props: {
     /**
      * Icon type options include:
-     * `user, sort, delete, details, edit, search, exit`
+     * `user, sort, delete, details, edit, search, exit, logout`
      */
     iconType: {
       type: String,
@@ -37,6 +37,7 @@ export default {
         'edit',
         'search',
         'exit',
+        'logout',
       ]),
     };
   },

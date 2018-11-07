@@ -10,7 +10,11 @@
 
       <aside class="smart-nav--headerAside" v-if="usr != null">
         <span class="smart-nav--userTime">{{getNavMessage(usr)}}</span>
-        <a class="bit-link" :href="signOutPath">Sign Out</a>
+        <bit-btn btn-style="clear"
+                 class="smart-nav--signOut"
+                 @click.native="onSignOut">
+          <bit-icon icon-type="logout"></bit-icon>&nbsp;Sign Out
+        </bit-btn>
       </aside>
 
     </header>
@@ -25,6 +29,8 @@
 
 <script>
 import BlockNavList from './block-navList.vue';
+import BitBtn from './bit-btn.vue';
+import BitIcon from './bit-icon.vue';
 
 /**
  * A component that renders a responsive navigation.
@@ -35,6 +41,8 @@ export default {
   name: 'smart-nav',
   components: {
     BlockNavList,
+    BitBtn,
+    BitIcon,
   },
   props: {
     /**
@@ -60,9 +68,9 @@ export default {
     /**
      * The path attached to the sign out button
      */
-    signOutPath: {
-      type: String,
-      default: '#',
+    onSignOut: {
+      type: Function,
+      default: () => {},
     },
   },
   data() {

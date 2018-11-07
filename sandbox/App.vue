@@ -7,7 +7,7 @@
         <smart-nav :nav-items="nav"
                    nav-title="Admin"
                    usr="James"
-                   sign-out-path="/test">
+                   :on-sign-out="signOut">
         </smart-nav>
 
       </template>
@@ -158,6 +158,9 @@ export default {
       // stuff.forEach((data) => {
       //   console.table(data);
       // });
+    },
+    signOut() {
+      this.$router.push('/test');
     },
   },
 };
