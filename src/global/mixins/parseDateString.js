@@ -1,5 +1,12 @@
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import isValid from 'date-fns/isValid';
 import config from '../../../app.config';
+
+function getDateValidator(dateString) {
+  return function validateWithFormat(format) {
+    return isValid(parse(dateString, format, new Date(), { awareOfUnicodeTokens: true }));
+  };
+}
 
 /**
  * Returns true if the passed in value is a valid date string
@@ -13,11 +20,20 @@ function isValidDateString(value) {
     return false;
   }
 
+  const shortISOFormat = "YYYY-MM-DD'T'HH:mm:ss";
+  const longISOFormat = "YYYY-MM-DD'T'HH:mm:ss.SSS'Z'";
+  const utcFormat = "ccc, DD MMM YYYY HH:mm:ss 'GMT'";
+  const validDate = config.dateFormat;
+
+  const validateDateString = getDateValidator(value);
+
   // Return whether or not the date string can be parsed
   // Check normally formatted dates, ISO formatted dates
   return (
-    moment(value, config.dateFormat, true).isValid() ||
-    moment(value, moment.ISO_8601, true).isValid()
+    validateDateString(shortISOFormat) ||
+    validateDateString(longISOFormat) ||
+    validateDateString(utcFormat) ||
+    validateDateString(validDate)
   );
 }
 

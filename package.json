@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "date-fns": "^2.0.0-alpha.25",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
     "flatpickr": "^4.5.2",
@@ -37,8 +38,6 @@
     "babel-polyfill": "^6.26.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
-    "vue-cli-plugin-styleguidist": "^0.1.8",
-    "vue-styleguidist": "^1.8.10",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
