@@ -18,7 +18,7 @@
 
     <!-- Render as date if cellValue is a date -->
     <template v-else-if="cellValue.type === Date.name">
-      {{ cellValue.value | moment(config.dateFormat) }}
+      {{ cellValue.value | formatDate }}
     </template>
 
     <template v-else-if="cellValue.type === Object.name">
@@ -33,11 +33,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import config from '../../app.config';
-import { toTitleCase } from '../global/mixins';
+import { toTitleCase, formatDate } from '../global/mixins';
 
-Vue.use(require('vue-moment'));
 
 /**
  * A dynamic table cell that will display data in a uniform way
@@ -71,16 +68,9 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      /**
-       * The user-defined application configuration
-       */
-      config,
-    };
-  },
   filters: {
     toTitleCase,
+    formatDate,
   },
   methods: {
     /**

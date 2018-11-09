@@ -31,7 +31,7 @@
                     :style="getFlexProp(item.span)"
                     :key="key"
                     v-else-if="Array.isArray(item.value)"
-                    :input-name="key"
+                    :name="key"
                     :label-text="key | toTitleCase"
                     :readonly="readonlyInputs.includes(key)"
                     :select-data="item.value"
@@ -162,13 +162,6 @@ export default {
      */
     formMethod: {
       type: String,
-    },
-    /**
-     * An optional format for the date-picker input field to use.
-     */
-    dateFormat: {
-      type: String,
-      default: 'MM-dd-yyyy',
     },
     /**
      * List of validation errors

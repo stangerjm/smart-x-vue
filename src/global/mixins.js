@@ -8,6 +8,7 @@ import getSortedData from './mixins/getSortedData';
 import compare from './mixins/compare';
 import getInputType from './mixins/getInputType';
 import transformIntoFormModel from './mixins/transformIntoFormModel';
+import formatDate from './mixins/formatDate';
 
 export {
   parseDateString,
@@ -20,4 +21,5 @@ export {
   compare,
   getInputType,
   transformIntoFormModel,
+  formatDate,
 };

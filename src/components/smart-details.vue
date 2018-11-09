@@ -23,7 +23,7 @@
 
           <!-- Render as date if detail is a date -->
           <dd class="smart-details--detailValue" v-else-if="detail.type === Date.name">
-            {{ detail.value | moment(config.dateFormat) }}
+            {{ detail.value | formatDate }}
           </dd>
 
           <!-- Render value as text if anything else -->
@@ -38,12 +38,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import config from '../../app.config';
 import { splitArrayIntoChunks } from '../global/mixins/helpers';
-import { createViewModel, toTitleCase } from '../global/mixins';
-
-Vue.use(require('vue-moment'));
+import { createViewModel, toTitleCase, formatDate } from '../global/mixins';
 
 /**
  * A component that renders a model as a list of details.
@@ -82,10 +78,6 @@ export default {
   data() {
     return {
       /**
-       * User-defined app configuration
-       */
-      config,
-      /**
        * Array that will hold the objects containing
        * properties that have been broken up into columns.
        */
@@ -94,6 +86,7 @@ export default {
   },
   filters: {
     toTitleCase,
+    formatDate,
   },
   computed: {
     /**

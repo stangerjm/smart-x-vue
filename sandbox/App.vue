@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import config from '../app.config';
 import ModelType from '../src/global/constants/ModelType';
 import { transformIntoFormModel } from '../src/global/mixins';
 
@@ -60,7 +59,21 @@ export default {
   },
   data() {
     return {
-      nav: config.nav,
+      nav: [
+        { linkTitle: 'Home', linkPath: '/' },
+        { linkTitle: 'People', linkPath: '/person' },
+        { linkTitle: 'Region', linkPath: '/region' },
+        {
+          linkTitle: 'Links',
+          linkPath: '#',
+          inlineItems: [
+            { linkTitle: 'breathtest', linkPath: '#' },
+            { linkTitle: 'wsp.wa.gov', linkPath: '#' },
+            { linkTitle: 'Google', linkPath: '#' },
+          ],
+        },
+        { linkTitle: 'Contact', linkPath: '#' },
+      ],
       formModel: transformIntoFormModel({
         firstName: {
           type: String,

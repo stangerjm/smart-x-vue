@@ -55,7 +55,6 @@
 <script>
 import FlatPickr from 'flatpickr';
 import InputMask from 'inputmask';
-import moment from 'moment';
 import 'flatpickr/dist/flatpickr.min.css';
 import config from '../../app.config';
 import InputType from '../global/constants/InputType';
@@ -190,20 +189,17 @@ export default {
        * Initializes a flatpickr component by setting options and initial values.
        * @param datePicker
        * @param initialValue
+       * @param validator
        */
       function setDatepickerOptions(datePicker, initialValue, validator) {
-        // Create a copy of the inital value so as not to accidentally override an object property
+        // Create a copy of the initial value so as not to accidentally override an object property
         let value = initialValue;
+
         // If value is an empty string, convert into a date.
         if (value === '') {
           value = new Date();
         }
 
-        // Check if value is not null, so that a constructor can be accessed.
-        // If the value's constructor is a date, convert to string.
-        if (value != null && value.constructor === Date) {
-          value = moment(value).format(config.dateFormat);
-        }
         // Set the flatpickr input element's date value
         datePicker.setDate(value);
         // Add a click listener so that the date picker will always open on click.
@@ -220,7 +216,8 @@ export default {
       }
 
       // Transform date elements into date-pickers
-      const datePicker = FlatPickr('.bit-input--date', this.flatpickrConfig);
+      const datePicker = FlatPickr(this.$refs[InputType.DATE], this.flatpickrConfig);
+      // const datePicker = FlatPickr('.bit-input--date', this.flatpickrConfig);
       // If more than one date picker, set options for each.
       if (datePicker.length > 1) {
         datePicker.forEach((picker) => {
@@ -234,8 +231,8 @@ export default {
       // Apply input mask
       const datePickerEl = this.$refs[InputType.DATE];
       const inputMask = new InputMask({
-        mask: config.dateMask,
-        placeholder: config.dateFormat,
+        mask: config.dateInputMask,
+        placeholder: config.dateInputPlaceholder,
       });
       inputMask.mask(datePickerEl);
     },
@@ -246,8 +243,8 @@ export default {
       const phoneElement = this.$refs[InputType.PHONE];
 
       const inputMask = new InputMask({
-        mask: config.phoneMask,
-        placeholder: config.phoneFormat,
+        mask: config.phoneInputMask,
+        placeholder: config.phoneInputPlaceholder,
       });
 
       inputMask.mask(phoneElement);

@@ -1,4 +1,5 @@
-import moment from 'moment';
+import compareAsc from 'date-fns/compareAsc';
+import parseDateString from './parseDateString';
 
 /**
  * Compare the two values passed in. Return true if values are equal.
@@ -25,15 +26,9 @@ export default function compare(dataValue, compareValue, compareType) {
       // Coerce values to numbers then compare
       return Number(dataValue) === Number(compareValue);
     case Date:
-      // Coerce values into Date objects before comparison
-      // Compare only to the day (ignore time)
+      // Compare the compareValue and the parsed data value as dates
       return (
-        moment(new Date(compareValue))
-          .startOf('day')
-          .toString() ===
-        moment(new Date(dataValue))
-          .startOf('day')
-          .toString()
+        compareAsc(compareValue, parseDateString(dataValue)) === 0
       );
     case Object:
     case Array:

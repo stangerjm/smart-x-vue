@@ -33,7 +33,7 @@
                    :key="modelProp"
                    :label-text="modelProp | toTitleCase"
                    :input-type="getInputType(modelValue)"
-                   :input-name="modelProp"
+                   :name="modelProp"
                    v-model="modelValue.value"
                    line-up>
         </bit-input>

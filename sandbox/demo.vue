@@ -10,7 +10,7 @@
       <!--</smart-table>-->
     <!--</smart-accordion>-->
 
-    <h1>Details</h1>
+    <!--<h1>Details</h1>-->
     <smart-details :detail-data="{
         date: new Date(),
         utcDate: new Date().toUTCString(),
@@ -32,31 +32,31 @@
     <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>-->
 
     <!--<h1>Form</h1>-->
-    <!--<smart-form :form-data="formData"-->
-                <!--:on-submit="submit"-->
-                <!--:validation-errors="errors">-->
-    <!--</smart-form>-->
+    <smart-form :form-data="formData"
+                :on-submit="submit"
+                :validation-errors="errors">
+    </smart-form>
 
     <!--<h1>Searchable Table</h1>-->
-    <!--<stack-searchable-table form-title="Test"-->
-                            <!--route-name="test"-->
-                            <!--:table-data="[-->
-                                  <!--{ id: 1, Name: 'James', Age: 25, birthday: new Date() },-->
-                                  <!--{ id: 2, Name: 'Joel', Age: 20, birthday: new Date() },-->
-                                  <!--{ id: 3, Name: 'Jenna', Age: 23, birthday: new Date() }-->
-                                <!--]"-->
-                            <!--default-context="test"-->
-                            <!--:searchModel="searchModel">-->
+    <stack-searchable-table form-title="Test"
+                            route-name="test"
+                            :table-data="[
+                                  { id: 1, Name: 'James', Age: 25, birthday: '01/01/2001' },
+                                  { id: 2, Name: 'Joel', Age: 20, birthday: '01/01/2003' },
+                                  { id: 3, Name: 'Jenna', Age: 23, birthday: '01/01/2002' }
+                                ]"
+                            default-context="test"
+                            :searchModel="searchModel">
 
-      <!--<router-link slot="search-action" to="/add">-->
-        <!--<bit-btn btn-size="large" style="margin-right: 10px;">Add</bit-btn>-->
-      <!--</router-link>-->
+      <router-link slot="search-action" to="/add">
+        <bit-btn btn-size="large" style="margin-right: 10px;">Add</bit-btn>
+      </router-link>
 
-      <!--<router-link slot="search-action" to="/clear">-->
-        <!--<bit-btn btn-size="large">Clear</bit-btn>-->
-      <!--</router-link>-->
+      <router-link slot="search-action" to="/clear">
+        <bit-btn btn-size="large">Clear</bit-btn>
+      </router-link>
 
-    <!--</stack-searchable-table>-->
+    </stack-searchable-table>
 
     <!--<h1>Section</h1>-->
     <!--<smart-section section-title="Test">-->
@@ -158,10 +158,13 @@ export default {
       formData: {
         userName: String,
         password: ModelType.Password,
+        phoneNumber: ModelType.PhoneNumber,
+        birthday: '01/01/2001',
       },
       searchModel: {
         Name: String,
         Age: Number,
+        birthday: Date,
       },
       textModel: '',
       dateModel: new Date(),

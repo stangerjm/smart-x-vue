@@ -127,27 +127,34 @@ export default {
      * @param formData
      */
     filterData(formData) {
-      const keys = Object.keys(formData);
+      /**
+       * Filters list and excludes rows in the table that do not match the data in the search form
+       * @param tableRow
+       * @returns {boolean}
+       */
+      function excludeMismatchedData(tableRow) {
+        /**
+         * Compares the table row at the key passed in with the form data at the key passed
+         * in and returns true if the same
+         * @param key
+         * @returns {boolean}
+         */
+        function tableRowValueMatchesFormValue(key) {
+          return compare(tableRow[key], formData[key].value, formData[key].typeConstructor);
+        }
+
+        // Return true if every value in the form matches the corresponding table cell
+        return Object.keys(formData).every(tableRowValueMatchesFormValue);
+      }
+
       // If form data is empty, reset the search
-      if (keys.length < 1) {
+      if (Object.keys(formData).length < 1) {
         this.resetData();
         return;
       }
+
       // Filter the data based off of the keys and values found in the formData
-      this.masterData = this.tableData.filter((item) => {
-        let found = true;
-        keys.forEach((key) => {
-          // Only continue searching if previous searches have ALL been successful
-          if (found) {
-            found = compare(
-              item[key],
-              formData[key].value,
-              formData[key].typeConstructor,
-            );
-          }
-        });
-        return found;
-      });
+      this.masterData = this.tableData.filter(excludeMismatchedData);
     },
   },
 };

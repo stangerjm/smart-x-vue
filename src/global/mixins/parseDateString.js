@@ -23,7 +23,7 @@ function isValidDateString(value) {
   const shortISOFormat = "YYYY-MM-DD'T'HH:mm:ss";
   const longISOFormat = "YYYY-MM-DD'T'HH:mm:ss.SSS'Z'";
   const utcFormat = "ccc, DD MMM YYYY HH:mm:ss 'GMT'";
-  const validDate = config.dateFormat;
+  const validDate = config.dateParseFormat;
 
   const validateDateString = getDateValidator(value);
 
