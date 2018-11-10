@@ -64,10 +64,10 @@
     <!--</smart-section>-->
 
     <!--<h1>Table</h1>-->
-    <!--<smart-table :table-data="devices"-->
-                 <!--default-context="test"-->
-                 <!--:props-to-link="propsToLink">-->
-    <!--</smart-table>-->
+    <smart-table :table-data="devices"
+                 default-context="test"
+                 :props-to-link="propsToLink">
+    </smart-table>
 
     <!--<h1>Tabs</h1>-->
     <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->
@@ -225,12 +225,12 @@ export default {
     async populateDevices() {
       await this.delay(1000);
       this.devices = [
-        { id: 1, deviceModel: 'TEST', manufacturerName: 'James' },
-        { id: 2, deviceModel: 'ANOTHER', manufacturerName: 'James' },
-        { id: 3, deviceModel: 'More', manufacturerName: 'Smart Start' },
-        { id: 4, deviceModel: 'Device 1', manufacturerName: 'Draeger' },
-        { id: 5, deviceModel: 'Device 2', manufacturerName: 'Smart Start' },
-        { id: 6, deviceModel: 'Device 3', manufacturerName: 'Manufacturer 3' },
+        { id: 1, deviceModel: 'TEST', manufacturerName: 'James', registerDate: new Date().toUTCString() },
+        { id: 2, deviceModel: 'ANOTHER', manufacturerName: 'James', registerDate: new Date().toUTCString() },
+        { id: 3, deviceModel: 'More', manufacturerName: 'Smart Start', registerDate: new Date().toUTCString() },
+        { id: 4, deviceModel: 'Device 1', manufacturerName: 'Draeger', registerDate: new Date().toUTCString() },
+        { id: 5, deviceModel: 'Device 2', manufacturerName: 'Smart Start', registerDate: new Date().toUTCString() },
+        { id: 6, deviceModel: 'Device 3', manufacturerName: 'Manufacturer 3', registerDate: new Date().toUTCString() },
       ];
     },
     delay(time, value) {

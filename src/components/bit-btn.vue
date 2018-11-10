@@ -1,5 +1,6 @@
 <template>
 
+  <!-- Render a button that tracks an expanded state -->
   <button type="button" :class="btnClass" v-if="btnStyle === 'expand'" @click="toggle">
     {{ expanded ? '-' : '+' }}
   </button>
@@ -34,8 +35,11 @@ export default {
      */
     btnSize: {
       type: String,
-      default: '',
+      default: 'small',
     },
+    /**
+     * Flag indicating if the button should reflect an expanded state or not
+     */
     isExpanded: {
       type: Boolean,
       default: false,
@@ -59,6 +63,9 @@ export default {
        * Default class attribute for the button
        */
       defaultClass: 'bit-btn-clickable',
+      /**
+       * Local copy of "isExpanded" prop
+       */
       expanded: this.isExpanded,
     };
   },
@@ -93,6 +100,9 @@ export default {
 
       return `bit-btn-${size}`;
     },
+    /**
+     * Toggles the "expanded" data property
+     */
     toggle() {
       this.expanded = !this.expanded;
     },
