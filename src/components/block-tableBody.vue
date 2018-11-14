@@ -1,6 +1,6 @@
 <template>
   <tbody>
-  <tr class="smart-table--row" v-for="item in typedData" :key="getItemId(item)">
+  <tr class="smart-table--row" v-for="item in typedData" :key="itemId(item)">
     <!-- Render a cell for each item in the table data -->
     <template v-for="(key, index) in dataKeys">
       <bit-table-cell v-if="!isLinkedProperty(key)"
@@ -29,7 +29,7 @@
     <td class="smart-table--cell" v-if="includeActionContainer">
       <block-action-container
           :default-ctx="defaultContext"
-          :item-id="getItemId(item)"
+          :item-id="itemId(item)"
           :details-btn="allowDetails"
           :edit-btn="allowEdit"
           :delete-btn="allowDelete">
@@ -119,7 +119,9 @@ export default {
     },
   },
   methods: {
-    getItemId,
+    itemId(item) {
+      return getItemId(item).value;
+    },
     /**
      * Expands record on mobile screen.
      * @param event

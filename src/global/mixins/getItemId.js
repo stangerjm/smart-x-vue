@@ -8,7 +8,7 @@ export default function getItemId(item) {
   const idKey = keys.find(id => id.toLowerCase() === 'id' || id.toLowerCase() === '_id');
 
   if (idKey != null) {
-    return item[idKey].value;
+    return item[idKey];
   }
 
   // return undefined if no valid id is found
