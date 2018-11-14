@@ -47,7 +47,7 @@
                    v-else-if="isValidField(item, key)"
                    :stack-elements="true"
                    :name="key"
-                   :input-type="getInputType(item)"
+                   :input-type="getInputType(item.typeConstructor)"
                    :label-text="item.displayName ? item.displayName : key | toTitleCase"
                    :readonly="readonlyInputs.includes(key)"
                    v-model="item.value"

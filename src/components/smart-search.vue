@@ -32,7 +32,7 @@
                    v-for="[modelProp, modelValue] in Object.entries(typedSearchModel)"
                    :key="modelProp"
                    :label-text="modelProp | toTitleCase"
-                   :input-type="getInputType(modelValue)"
+                   :input-type="getInputType(modelValue.typeConstructor)"
                    :name="modelProp"
                    v-model="modelValue.value"
                    line-up>
