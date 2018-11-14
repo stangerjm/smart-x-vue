@@ -1,4 +1,5 @@
 import ModelType from '../constants/ModelType';
+import parseDateString from './parseDateString';
 
 /**
  * Determines if the value passed in is an object.
@@ -17,7 +18,7 @@ export function isObject(value) {
  * Returns the name of the type of the value passed in.
  * @param value
  * @param returnConstructorType
- * @returns {string}
+ * @returns {string | Function}
  */
 export function getType(value, returnConstructorType) {
   const type = Object.getPrototypeOf(Object(value)).constructor;
@@ -103,4 +104,23 @@ export function splitArrayIntoChunks(array, elementsPerChunk) {
         return array.slice(start, end);
       })
   );
+}
+
+export function coerceToDate(date) {
+  if (date == null) {
+    return undefined;
+  }
+
+  const type = getType(date, true);
+
+  switch (type) {
+    case Date:
+      return date;
+    case String:
+      return parseDateString(date);
+    case Number:
+      return new Date(date);
+    default:
+      return undefined;
+  }
 }

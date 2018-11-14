@@ -1,5 +1,5 @@
 import compareAsc from 'date-fns/compareAsc';
-import parseDateString from './parseDateString';
+import { coerceToDate } from './helpers';
 
 /**
  * Compare the two values passed in. Return true if values are equal.
@@ -28,7 +28,7 @@ export default function compare(dataValue, compareValue, compareType) {
     case Date:
       // Compare the compareValue and the parsed data value as dates
       return (
-        compareAsc(compareValue, parseDateString(dataValue)) === 0
+        compareAsc(coerceToDate(compareValue), coerceToDate(dataValue)) === 0
       );
     case Object:
     case Array:

@@ -43,6 +43,10 @@ function isValidDateString(value) {
  * @returns {Date | undefined}
  */
 export default function parseDateString(dateString) {
+  if (dateString == null) {
+    return undefined;
+  }
+
   if (typeof dateString !== 'string') {
     return undefined;
   }
