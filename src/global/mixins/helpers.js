@@ -35,7 +35,9 @@ export function getType(value, returnConstructorType) {
 export function getDefaultValue(type) {
   if (
     type.name === ModelType.PhoneNumber.name ||
-    type.name === ModelType.Password.name
+    type.name === ModelType.PhoneNumber().name ||
+    type.name === ModelType.Password.name ||
+    type.name === ModelType.Password().name
   ) {
     // Only return the value from type() call if it returns a value and not a function
     return getType(type()) !== 'Function' ? type() : '';

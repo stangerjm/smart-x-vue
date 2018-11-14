@@ -1,5 +1,5 @@
-import { createWrapperGenerator } from './helpers';
-import BitBtn from '../../src/components/bit-btn.vue';
+import { createWrapperGenerator } from '../helpers/index';
+import BitBtn from '../../../src/components/bit-btn.vue';
 
 const mountBtn = createWrapperGenerator(BitBtn);
 

@@ -39,7 +39,7 @@ function isValidDateString(value) {
 
 /**
  * Parses a string date into a new Date object.
- * @param {string} dateString
+ * @param {*} dateString
  * @returns {Date | undefined}
  */
 export default function parseDateString(dateString) {

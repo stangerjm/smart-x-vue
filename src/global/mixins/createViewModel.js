@@ -1,5 +1,6 @@
 import parseDateString from './parseDateString';
 import { isObject, getDefaultValue, getType } from './helpers';
+import ModelType from '../constants/ModelType';
 
 /**
  * Parses value if needed and returns raw or parsed value.
@@ -28,7 +29,7 @@ function getViewModelReductor() {
    * @param value
    * @returns {object}
    */
-  function revertObjectToUntypedModel(accumulatorObj, [key, typedValue]) {
+  function simplifyObjectToOriginalModel(accumulatorObj, [key, typedValue]) {
     if (typedValue.value == null || typedValue.value === '') {
       return accumulatorObj;
     }
@@ -42,32 +43,34 @@ function getViewModelReductor() {
     return {
       ...accumulatorObj,
       [key]: Object.entries(typedValue.value).reduce(
-        revertObjectToUntypedModel,
+        simplifyObjectToOriginalModel,
         {},
       ),
     };
   }
 
   /**
-   * Reverts the passed in object to an untyped model
+   * Simplifies the passed in object to just basic keys and values,
+   * ignoring the rest of the view model
    * @param obj
    * @returns {object}
    */
-  function revert(obj) {
-    return Object.entries(obj).reduce(revertObjectToUntypedModel, {});
+  function simplify(obj) {
+    return Object.entries(obj).reduce(simplifyObjectToOriginalModel, {});
   }
 
   /**
-   * Defines an 'untypedObject' property on the passed in object
-   * which will get the untyped version of the object
+   * Defines an 'simpleVersion' property on the passed in object
+   * which will transform the object into simple key value pairs,
+   * ignoring the rest of the view model
    * @param obj
    * @returns {object}
    */
-  function getRevertableObject(obj) {
-    return Object.defineProperty(obj, 'untypedObject', {
+  function getSimplifyableObject(obj) {
+    return Object.defineProperty(obj, 'simpleVersion', {
       enumerable: false,
       get() {
-        return revert(obj);
+        return simplify(obj);
       },
     });
   }
@@ -80,13 +83,20 @@ function getViewModelReductor() {
    * @returns {object}
    */
   function gatherIntoViewModelObject(accumulatorObj, [key, value]) {
-    if (key === '__v') {
-      // ignore null values and unwanted keys
-      return accumulatorObj;
+    function accumulateFunctionType(type) {
+      return getSimplifyableObject({
+        ...accumulatorObj,
+        [key]: {
+          type: type.name,
+          typeConstructor: type,
+          value: getDefaultValue(value),
+          errored: false,
+        },
+      });
     }
 
     if (isObject(value)) {
-      return getRevertableObject({
+      return getSimplifyableObject({
         ...accumulatorObj,
         [key]: {
           type: getType(value),
@@ -96,18 +106,18 @@ function getViewModelReductor() {
         },
       });
     } else if (typeof value === 'function') {
-      return getRevertableObject({
-        ...accumulatorObj,
-        [key]: {
-          type: value.name,
-          typeConstructor: value,
-          value: getDefaultValue(value),
-          errored: false,
-        },
-      });
+      if (value.name === ModelType.PhoneNumber().name) {
+        return accumulateFunctionType(ModelType.PhoneNumber);
+      }
+
+      if (value.name === ModelType.Password().name) {
+        return accumulateFunctionType(ModelType.Password);
+      }
+
+      return accumulateFunctionType(value);
     }
 
-    return getRevertableObject({
+    return getSimplifyableObject({
       ...accumulatorObj,
       [key]: {
         type: getType(getValue(value)),
@@ -123,9 +133,10 @@ function getViewModelReductor() {
 
 function createViewModelFromArray(arraySchema) {
   function createTypedViewModel(accumulator, value) {
+    const type = value.type || value.value;
     return {
       ...accumulator,
-      [value.name]: value.type,
+      [value.name]: type,
     };
   }
 
@@ -133,10 +144,13 @@ function createViewModelFromArray(arraySchema) {
 
   const entries = Object.entries(typedViewModel);
   const createViewModelFromEntries = getViewModelReductor();
+
   const partialViewModel = entries.reduce(createViewModelFromEntries, {});
 
-  return arraySchema.reduce((accumulator, value) => {
-    const { name, type, ...restOfSchema } = value;
+  return arraySchema.reduce((accumulator, partialEntry) => {
+    const {
+      name, type, value, ...restOfSchema
+    } = partialEntry;
 
     accumulator[name] = {
       ...accumulator[name],

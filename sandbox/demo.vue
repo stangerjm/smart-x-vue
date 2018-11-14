@@ -225,12 +225,42 @@ export default {
     async populateDevices() {
       await this.delay(1000);
       this.devices = [
-        { id: 1, deviceModel: 'TEST', manufacturerName: 'James', registerDate: new Date().toUTCString() },
-        { id: 2, deviceModel: 'ANOTHER', manufacturerName: 'James', registerDate: new Date().toUTCString() },
-        { id: 3, deviceModel: 'More', manufacturerName: 'Smart Start', registerDate: new Date().toUTCString() },
-        { id: 4, deviceModel: 'Device 1', manufacturerName: 'Draeger', registerDate: new Date().toUTCString() },
-        { id: 5, deviceModel: 'Device 2', manufacturerName: 'Smart Start', registerDate: new Date().toUTCString() },
-        { id: 6, deviceModel: 'Device 3', manufacturerName: 'Manufacturer 3', registerDate: new Date().toUTCString() },
+        {
+          id: 1,
+          deviceModel: 'TEST',
+          manufacturerName: 'James',
+          registerDate: new Date().toUTCString(),
+        },
+        {
+          id: 2,
+          deviceModel: 'ANOTHER',
+          manufacturerName: 'James',
+          registerDate: new Date().toUTCString(),
+        },
+        {
+          id: 3,
+          deviceModel: 'More',
+          manufacturerName: 'Smart Start',
+          registerDate: new Date().toUTCString(),
+        },
+        {
+          id: 4,
+          deviceModel: 'Device 1',
+          manufacturerName: 'Draeger',
+          registerDate: new Date().toUTCString(),
+        },
+        {
+          id: 5,
+          deviceModel: 'Device 2',
+          manufacturerName: 'Smart Start',
+          registerDate: new Date().toUTCString(),
+        },
+        {
+          id: 6,
+          deviceModel: 'Device 3',
+          manufacturerName: 'Manufacturer 3',
+          registerDate: new Date().toUTCString(),
+        },
       ];
     },
     delay(time, value) {

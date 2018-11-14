@@ -297,7 +297,7 @@ export default {
      * include reducing arrays into a single user-selected value.
      */
     getSubmitData() {
-      const data = this.masterData.untypedObject;
+      const data = this.masterData.simpleVersion;
       if (this.selectData != null) {
         return Object.entries(data).reduce(
           this.reduceArrayPropertiesIntoSelectedValues,

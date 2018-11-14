@@ -1,11 +1,11 @@
 export default {
   Password(password) {
-    return function Password() {
+    return function GetPassword() {
       return password;
     };
   },
   PhoneNumber(phoneNumber) {
-    return function PhoneNumber() {
+    return function GetPhoneNumber() {
       return phoneNumber;
     };
   },

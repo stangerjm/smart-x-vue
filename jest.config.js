@@ -13,6 +13,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  setupTestFrameworkScriptFile: 'jest-expect-message',
   snapshotSerializers: [
     'jest-serializer-vue',
   ],
