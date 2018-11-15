@@ -297,7 +297,9 @@ export default {
        * @param value
        */
       const emit = (value) => {
-        this.$emit('input', castValue(value, this.inputType));
+        if (value != null) {
+          this.$emit('input', castValue(value, this.inputType));
+        }
       };
       /**
        * Gets the value to be emitted. Will actively ignore
@@ -307,18 +309,17 @@ export default {
        */
       const getEmitValue = (inputType) => {
         switch (inputType) {
+          case InputType.PHONE:
           case InputType.DATE:
-            if (
-              this.$refs[inputType]
-                .inputmask.isComplete()
-            ) {
+            if (this.$refs[inputType].inputmask.isComplete()) {
               return e.target.value;
             }
-            return '';
+            return undefined;
           default:
             return e.target.value;
         }
       };
+
       emit(getEmitValue(this.inputType));
     },
     /**

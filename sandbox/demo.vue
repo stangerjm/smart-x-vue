@@ -1,16 +1,16 @@
 <template>
   <div>
-    <!--<h1>Loading</h1>-->
-    <!--<bit-loading></bit-loading>-->
+    <h1>Loading</h1>
+    <bit-loading></bit-loading>
 
-    <!--&lt;!&ndash;<h1>Accordion</h1>&ndash;&gt;-->
-    <!--<smart-accordion title="Devices">-->
-      <!--<smart-table :table-data="getDevices"-->
-                   <!--default-context="test">-->
-      <!--</smart-table>-->
-    <!--</smart-accordion>-->
+    <h1>Accordion</h1>
+    <smart-accordion title="Devices">
+      <smart-table :table-data="getDevices"
+                   default-context="test">
+      </smart-table>
+    </smart-accordion>
 
-    <!--<h1>Details</h1>-->
+    <h1>Details</h1>
     <smart-details :detail-data="{
         date: new Date(),
         utcDate: new Date().toUTCString(),
@@ -28,16 +28,16 @@
       }"
       :details-per-column="20"></smart-details>
 
-    <!--<h2>Details: Outlined</h2>-->
-    <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>-->
+    <h2>Details: Outlined</h2>
+    <smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>
 
-    <!--<h1>Form</h1>-->
+    <h1>Form</h1>
     <smart-form :form-data="formData"
                 :on-submit="submit"
                 :validation-errors="errors">
     </smart-form>
 
-    <!--<h1>Searchable Table</h1>-->
+    <h1>Searchable Table</h1>
     <stack-searchable-table form-title="Test"
                             route-name="test"
                             :table-data="[
@@ -58,57 +58,57 @@
 
     </stack-searchable-table>
 
-    <!--<h1>Section</h1>-->
-    <!--<smart-section section-title="Test">-->
-      <!--<h2>Hello</h2>-->
-    <!--</smart-section>-->
+    <h1>Section</h1>
+    <smart-section section-title="Test">
+      <h2>Hello</h2>
+    </smart-section>
 
-    <!--<h1>Table</h1>-->
+    <h1>Table</h1>
     <smart-table :table-data="devices"
                  default-context="test"
                  :props-to-link="propsToLink">
     </smart-table>
 
-    <!--<h1>Tabs</h1>-->
-    <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->
-      <!--<smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>-->
-      <!--<smart-details slot="TabTwo" :detail-data="james"></smart-details>-->
-      <!--<smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>-->
-    <!--</smart-tabs>-->
+    <h1>Tabs</h1>
+    <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
+      <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
+      <smart-details slot="TabTwo" :detail-data="james"></smart-details>
+      <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
+    </smart-tabs>
 
-    <!--<h1>Cards</h1>-->
-    <!--<div class="demo-grid">-->
-      <!--<smart-card card-title="ITS3"-->
-                  <!--card-description="He is a developer."-->
-                  <!--is-expanded>-->
-        <!--<template slot="card-content">-->
-          <!--<smart-details title="James"-->
-                         <!--:detail-data="{ name: 'James', birthday: new Date() }">-->
-          <!--</smart-details>-->
-        <!--</template>-->
-        <!--<bit-icon slot="card-actions" icon-type="delete"></bit-icon>-->
-        <!--<bit-icon slot="card-actions" icon-type="edit"></bit-icon>-->
-      <!--</smart-card>-->
+    <h1>Cards</h1>
+    <div class="demo-grid">
+      <smart-card card-title="ITS3"
+                  card-description="He is a developer."
+                  is-expanded>
+        <template slot="card-content">
+          <smart-details title="James"
+                         :detail-data="{ name: 'James', birthday: new Date() }">
+          </smart-details>
+        </template>
+        <bit-icon slot="card-actions" icon-type="delete"></bit-icon>
+        <bit-icon slot="card-actions" icon-type="edit"></bit-icon>
+      </smart-card>
 
-      <!--<smart-card card-title="Logo"-->
-                  <!--card-description="This is the WSP Logo."-->
-                  <!--is-expanded-->
-                  <!--watch-resize>-->
-        <!--<template slot="card-content">-->
-          <!--<img src="../src/styles/assets/wspLogo.svg" alt="test">-->
-        <!--</template>-->
-      <!--</smart-card>-->
-      <!--<smart-card card-title="Devices"-->
-                  <!--card-description="A list of all the devices."-->
-                  <!--is-expanded-->
-                  <!--style="grid-column: 1 / -1;">-->
-        <!--<template slot="card-content">-->
-          <!--<smart-table :table-data="getDevices"-->
-                       <!--default-context="test">-->
-          <!--</smart-table>-->
-        <!--</template>-->
-      <!--</smart-card>-->
-    <!--</div>-->
+      <smart-card card-title="Logo"
+                  card-description="This is the WSP Logo."
+                  is-expanded
+                  watch-resize>
+        <template slot="card-content">
+          <img src="../src/styles/assets/wspLogo.svg" alt="test">
+        </template>
+      </smart-card>
+      <smart-card card-title="Devices"
+                  card-description="A list of all the devices."
+                  is-expanded
+                  style="grid-column: 1 / -1;">
+        <template slot="card-content">
+          <smart-table :table-data="getDevices"
+                       default-context="test">
+          </smart-table>
+        </template>
+      </smart-card>
+    </div>
   </div>
 </template>
 
