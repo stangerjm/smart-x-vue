@@ -21,6 +21,10 @@ export function isObject(value) {
  * @returns {string | Function}
  */
 export function getType(value, returnConstructorType) {
+  if (value == null) {
+    return value;
+  }
+
   const type = Object.getPrototypeOf(Object(value)).constructor;
   if (returnConstructorType) {
     return type;
@@ -34,6 +38,10 @@ export function getType(value, returnConstructorType) {
  * @returns {*}
  */
 export function getDefaultValue(type) {
+  if (type == null) {
+    return type;
+  }
+
   if (
     type.name === ModelType.PhoneNumber.name ||
     type.name === ModelType.PhoneNumber().name ||

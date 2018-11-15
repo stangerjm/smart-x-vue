@@ -30,7 +30,7 @@
 
 <script>
 import { smartTable } from './props';
-import { getSortedData, createViewModel, getItemId } from '../global/mixins';
+import { getDataSortedByColumn, createViewModel, getItemId } from '../global/mixins';
 import BlockTableBody from './block-tableBody.vue';
 import BlockTableHeading from './block-tableHeading.vue';
 import BitMessage from './bit-message.vue';
@@ -154,8 +154,8 @@ export default {
       }
 
       this.currentKey = key;
-      // Use 'getSortedData' mixin to sort data
-      this.localData = getSortedData(this.localData, key, this.descending);
+      // Use 'getDataSortedByColumn' mixin to sort data
+      this.localData = getDataSortedByColumn(this.localData, key, this.descending);
     },
   },
 };
