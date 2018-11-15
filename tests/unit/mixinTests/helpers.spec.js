@@ -1,4 +1,4 @@
-import { isObject, getType, getDefaultValue } from '../../../src/global/mixins/helpers';
+import { isObject, getType, getDefaultValue, getClass, splitArrayIntoChunks, coerceToDate } from '../../../src/global/mixins/helpers';
 
 function test() {}
 
@@ -55,5 +55,32 @@ describe('helpers.js', () => {
     expect(getDefaultValue(Function)).toEqual(null);
     expect(getDefaultValue(null)).toEqual(null);
     expect(getDefaultValue(undefined)).toEqual(undefined);
+  });
+
+  it('contains a function "getClass" that retrieves a class based off of the type passed in', () => {
+    const allowedTypes = ['add', 'exit', 'expand', 'reset', 'search', 'clear'];
+    const baseClass = 'bit-btn';
+
+    allowedTypes.every((type) => {
+      expect(getClass(baseClass, type, allowedTypes)).toEqual(`${baseClass}-${type}`);
+      return true;
+    });
+
+    expect(getClass(baseClass, 'badValue', allowedTypes)).toEqual(`${baseClass}-error`);
+  });
+
+  it('contains a function "splitArrayIntoChunks" that splits a given array into chunks', () => {
+    const list = [1, 2, 3, 4, 5, 6];
+    const expectedList = [[1, 2], [3, 4], [5, 6]];
+
+    expect(splitArrayIntoChunks(list, 2)).toEqual(expectedList);
+  });
+
+  it('contains a function "coerceToDate" that attempts to coerce a given value into a date', () => {
+    const dateString = '01/01/2001';
+
+    expect(coerceToDate(dateString)).toEqual(new Date(dateString));
+    expect(coerceToDate(new Date(dateString))).toEqual(new Date(dateString));
+    expect(coerceToDate(Date.parse(dateString))).toEqual(new Date(dateString));
   });
 });
