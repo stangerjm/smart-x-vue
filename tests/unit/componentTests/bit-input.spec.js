@@ -22,6 +22,31 @@ describe('bit-input.vue', () => {
     expect(label.attributes('for')).toEqual(input.attributes('id'));
   });
 
+  it('applies the class "bit-input--error" when an error is indicated', () => {
+    const wrapper = mountBitInput({
+      propsData: {
+        inputType: 'text',
+        labelText: 'test',
+        erroredField: true,
+      },
+    });
+
+    const input = wrapper.find('.bit-input--field');
+    expect(input.classes()).toContain('bit-input--error');
+  });
+
+  it('applies the class "bit-input--stacked" when the element is flagged to stack', () => {
+    const wrapper = mountBitInput({
+      propsData: {
+        inputType: 'text',
+        labelText: 'test',
+        stackElements: true,
+      },
+    });
+
+    expect(wrapper.classes()).toContain('bit-input-stacked');
+  });
+
   it('renders a text input element that tracks user input', () => {
     const wrapper = mountBitInput({
       propsData: {
