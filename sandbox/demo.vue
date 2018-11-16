@@ -160,6 +160,7 @@ export default {
         password: ModelType.Password,
         phoneNumber: ModelType.PhoneNumber,
         birthday: '01/01/2001',
+        options: ['Washington', 'California', 'Oregon'],
       },
       searchModel: {
         Name: String,
