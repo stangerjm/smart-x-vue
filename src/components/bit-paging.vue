@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import BitIcon from './bit-icon.vue';
-
 /**
  * A paging component that manages the index of a paged list of data
  * @author James Stanger, Washington State Patrol
@@ -33,9 +31,6 @@ import BitIcon from './bit-icon.vue';
  */
 export default {
   name: 'bit-paging',
-  components: {
-    BitIcon,
-  },
   props: {
     /**
      * Length of the paged data
@@ -90,17 +85,13 @@ export default {
      * Moves the current page to the next page
      */
     goToNextPage() {
-      if (this.value < this.pagedDataLength - 1) {
-        this.setCurrentIndex(this.value + 1);
-      }
+      this.setCurrentIndex(this.value + 1);
     },
     /**
      * Moves the current page to the previous page
      */
     goToPreviousPage() {
-      if (this.value > 0) {
-        this.setCurrentIndex(this.value - 1);
-      }
+      this.setCurrentIndex(this.value - 1);
     },
   },
 };
