@@ -1,4 +1,4 @@
-import { createWrapperGenerator } from '../helpers';
+import { createComponentGenerator } from '../helpers';
 import BitTableCell from '../../../src/components/bit-tableCell.vue';
 
 function getBitTableCell({
@@ -11,9 +11,11 @@ function getBitTableCell({
   cellTitle = 'Test',
   isTableKey = true,
 } = {}) {
-  const wrapperGenerator = createWrapperGenerator(BitTableCell);
-  return wrapperGenerator({
-    propsData: { cellValue, cellTitle, isTableKey },
+  const componentGenerator = createComponentGenerator(BitTableCell);
+  return componentGenerator({
+    cellValue,
+    cellTitle,
+    isTableKey,
   });
 }
 
