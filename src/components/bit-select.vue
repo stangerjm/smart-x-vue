@@ -8,7 +8,6 @@
     <select class="bit-input--field"
             :class="[erroredField ? 'bit-input--error' : '']"
             :id="randomId"
-            :name="inputName"
             v-bind="$attrs"
             @input="$emit('input', $event.target.value)">
 
@@ -41,13 +40,6 @@ export default {
      */
     selectData: {
       type: Array,
-      required: true,
-    },
-    /**
-     * Corresponds to the native HTML input attribute 'name'
-     */
-    inputName: {
-      type: String,
       required: true,
     },
     /**
