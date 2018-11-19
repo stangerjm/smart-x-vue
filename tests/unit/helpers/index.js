@@ -1,8 +1,8 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 
 export function createWrapperGenerator(component) {
   return function wrapperGenerator(props) {
-    return shallowMount(component, props);
+    return mount(component, props);
   };
 }
 
