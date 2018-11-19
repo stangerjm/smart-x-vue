@@ -16,7 +16,7 @@
                         type: 'Object',
                         value: { link: getLinkValue(key, item[key].value) }
                       }"
-                      cell-title="test">
+                      :cell-title="key">
         <template slot-scope="{ obj }">
           <router-link :to="obj.link">
             {{item[key].value}}
