@@ -1,5 +1,10 @@
 <template>
   <div>
+    <h1>Expandable Section</h1>
+    <block-expandable-section is-expanded>
+      <h1>Hello there</h1>
+    </block-expandable-section>
+
     <h1>Loading</h1>
     <bit-loading></bit-loading>
 
@@ -122,6 +127,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('people');
 export default {
   name: 'demo',
   components: {
+    BlockExpandableSection: () => import('../src/components/block-expandableSection'),
     BitBtn: () => import('../src/components/bit-btn'),
     BitIcon: () => import('../src/components/bit-icon'),
     SmartTabs: () => import('../src/components/smart-tabs'),
