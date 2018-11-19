@@ -83,6 +83,11 @@ export default {
       }
 
       if (this.buttonTypes.includes(type)) {
+        // Do not include size with the expand button
+        if (type === 'expand') {
+          return `bit-btn-${type}`;
+        }
+
         return `bit-btn-${type} ${this.getSize(this.btnSize)}`;
       }
 

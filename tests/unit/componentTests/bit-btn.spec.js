@@ -39,7 +39,7 @@ describe('bit-btn.vue', () => {
   });
 
   // bit-btn-expand
-  it('manages an expanded variable when rendered as an expand button', () => {
+  it('manages an expanded variable when rendered as an expand button, and does NOT have a size attached to it', () => {
     const wrapper = mountBtn({ propsData: { btnStyle: 'expand' } });
     const button = wrapper.find('button');
 
@@ -54,5 +54,7 @@ describe('bit-btn.vue', () => {
     button.trigger('click');
     expect(wrapper.vm.expanded).toBeFalsy();
     expect(wrapper.text()).toEqual('+');
+
+    expect(wrapper.classes()).not.toContain('bit-btn-small');
   });
 });
