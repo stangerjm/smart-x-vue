@@ -62,10 +62,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    /**
+     * Flag indicating that the accordion should be expanded
+     */
+    expanded: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isExpanded: false,
+      isExpanded: this.expanded,
     };
   },
   methods: {
