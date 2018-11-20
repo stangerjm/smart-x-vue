@@ -1,30 +1,31 @@
 <template>
   <thead>
-  <tr class="smart-table--row smart-table--head">
+      <tr class="smart-table--row smart-table--head">
 
-    <!-- Render each heading -->
-    <th class="smart-table--heading smart-table--sortableHeading"
-        v-for="heading in tableHeadings"
-        :key="heading">
+        <!-- Render each heading -->
+        <th class="smart-table--heading"
+            v-for="heading in tableHeadings"
+            :key="heading">
 
-      <!-- Render the heading as a sort button if heading is not flagged to be unsearchable -->
-      <template v-if="!unsearchableHeadings.includes(heading)">
-        <a class="smart-table--link" @click="sortMethod(heading)" :title="`Sort by ${heading}`">
-          {{ heading | toTitleCase }}
-          <bit-icon icon-type="sort"></bit-icon>
-        </a>
-      </template>
+          <!-- Render the heading as a sort button if heading is not flagged to be unsearchable -->
+          <template v-if="!unsearchableHeadings.includes(heading)">
+            <a class="smart-table--link" @click="sortMethod(heading)" :title="`Sort by ${heading}`">
+              {{ heading | toTitleCase }}
+              <bit-icon icon-type="sort"></bit-icon>
+            </a>
+          </template>
 
-      <!-- Otherwise, simply render the heading as text -->
-      <template v-else>
-        {{ heading | toTitleCase }}
-      </template>
+          <!-- Otherwise, simply render the heading as text -->
+          <template v-else>
+            {{ heading | toTitleCase }}
+          </template>
 
-    </th>
+        </th>
 
-    <!-- Always include the Actions heading if a valid Id is found -->
-    <th class="smart-table--heading" v-if="includeActionContainer">Actions</th>
-  </tr>
+        <!-- Include the Actions heading if "includeActionContainer" flag is set -->
+        <th class="smart-table--heading" v-if="includeActionContainer">Actions</th>
+
+      </tr>
   </thead>
 </template>
 
