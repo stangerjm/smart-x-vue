@@ -5,7 +5,7 @@
     <header class="smart-card--header">
 
       <!-- Render the card title -->
-      <p :class="[expanded
+      <p :class="[isExpanded
                     ? 'smart-card--hiddenTitle'
                     : 'smart-card--collapsedTitle'
                   ]">
@@ -15,14 +15,14 @@
       <!-- Render the expand button -->
       <bit-btn btn-style="expand"
                class="smart-card--toggle"
-               :is-expanded="expanded"
+               :is-expanded="isExpanded"
                @click.native="toggle">
       </bit-btn>
 
     </header>
 
     <!-- Render content section -->
-    <block-expandable-section :is-expanded="expanded" :watch-resize="watchResize">
+    <block-expandable-section :is-expanded="isExpanded" :watch-resize="watchResize">
 
       <!-- Allow content to be passed in from outside -->
       <main class="smart-card--content">
@@ -89,7 +89,7 @@ export default {
     /**
      * Flag indicating that the starting state of the card should be expanded
      */
-    isExpanded: {
+    expanded: {
       type: Boolean,
       default: false,
     },
@@ -106,7 +106,7 @@ export default {
       /**
        * Local copy of "isExpanded" property
        */
-      expanded: this.isExpanded,
+      isExpanded: this.expanded,
       /**
        * Flag indicating that the actions container should be rendered
        */
@@ -118,7 +118,7 @@ export default {
      * Toggles the content between expanded and collapsed state
      */
     toggle() {
-      this.expanded = !this.expanded;
+      this.isExpanded = !this.isExpanded;
     },
   },
   mounted() {
