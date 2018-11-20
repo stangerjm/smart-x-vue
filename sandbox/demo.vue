@@ -199,6 +199,7 @@ export default {
       await this.addPerson(submittedData);
     },
     async submit(submittedData) {
+      // eslint-disable-next-line
       console.log(submittedData);
       this.working = true;
       await this.delay(3000);

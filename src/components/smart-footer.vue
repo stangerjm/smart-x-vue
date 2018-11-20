@@ -1,14 +1,20 @@
 <template>
   <footer class="smart-footer">
     <!-- @slot Placeholder for any footer content -->
-    <slot name="footer"></slot>
-    <p>&copy; {{currentYear}} Washington State Patrol</p>
+    <slot></slot>
+    <p class="smart-footer--content">&copy; {{currentYear}} {{organization}}</p>
   </footer>
 </template>
 
 <script>
 export default {
   name: 'smart-footer',
+  props: {
+    organization: {
+      type: String,
+      default: 'Washington State Patrol',
+    },
+  },
   data() {
     return {
       /**
