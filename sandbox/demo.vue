@@ -120,7 +120,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex';
 import ModelType from '../src/global/constants/ModelType';
-import { createLinkToRecord } from '../src/global/mixins';
+import { createLinkToRecord, transformIntoFormModel } from '../src/global/mixins';
 
 const { mapGetters, mapActions } = createNamespacedHelpers('people');
 
@@ -161,13 +161,44 @@ export default {
     return {
       devices: [],
       errors: [],
-      formData: {
-        userName: String,
-        password: ModelType.Password,
-        phoneNumber: ModelType.PhoneNumber,
-        birthday: '01/01/2001',
-        options: ['Washington', 'California', 'Oregon'],
-      },
+      formData: transformIntoFormModel({
+        FirstName: {
+          type: String,
+          required: true,
+          span: 5,
+        },
+        MiddleInitial: {
+          type: String,
+          required: false,
+          span: 2,
+          displayName: 'M.I.',
+        },
+        LastName: {
+          type: String,
+          required: true,
+          span: 5,
+        },
+        UserName: {
+          type: String,
+          required: true,
+          span: 6,
+        },
+        Email: {
+          type: String,
+          required: true,
+          span: 6,
+        },
+        Password: {
+          type: ModelType.Password,
+          required: true,
+          span: 6,
+        },
+        ConfirmPassword: {
+          type: ModelType.Password,
+          required: true,
+          span: 6,
+        },
+      }),
       searchModel: {
         Name: String,
         Age: Number,

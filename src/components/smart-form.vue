@@ -7,7 +7,8 @@
           ? 'smart-form--loading'
           : ''
         ]"
-        v-if="formData">
+        v-if="formData"
+        v-bind="$attrs">
 
     <!-- Render title -->
     <header class="smart-form--titleSection" v-if="formTitle">
@@ -33,7 +34,7 @@
                     v-else-if="Array.isArray(item.value)"
                     :name="key"
                     :label-text="key | toTitleCase"
-                    :readonly="readonlyInputs.includes(key)"
+                    :readonly="item.readonly ? item.readonly : false"
                     :select-data="item.value"
                     v-model="selectData[key]"
                     :stack-elements="true"
@@ -49,7 +50,7 @@
                    :name="key"
                    :input-type="getInputType(item.typeConstructor)"
                    :label-text="item.displayName ? item.displayName : key | toTitleCase"
-                   :readonly="readonlyInputs.includes(key)"
+                   :readonly="item.readonly ? item.readonly : false"
                    v-model="item.value"
                    :required-field="item.required"
                    :errored-field="item.errored">
@@ -114,13 +115,6 @@ export default {
   },
   props: {
     /**
-     * Corresponds to the native HTML attribute 'action'
-     */
-    formAction: {
-      type: String,
-      default: '/',
-    },
-    /**
      * Function to be executed on form submit.
      * Takes an object that holds the submitted data as a parameter.
      * @param {object} submittedData
@@ -136,13 +130,6 @@ export default {
     formData: {
       type: [Object, Array],
       default: () => {},
-    },
-    /**
-     * A list of inputs that should be readonly.
-     */
-    readonlyInputs: {
-      type: Array,
-      default: () => [],
     },
     /**
      * Optional array of strings that represent properties that should be ignored.
@@ -226,7 +213,7 @@ export default {
      * @returns {string}
      */
     getFlexProp(span) {
-      const flexBasis = span != null ? (span / 12) * 100 : 100;
+      const flexBasis = span != null ? Math.floor((span / 12) * 100) : 100;
       return `flex: 1 1 ${flexBasis}%;`;
     },
     /**
