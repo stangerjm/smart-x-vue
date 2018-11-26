@@ -1,5 +1,5 @@
 <template>
-  <div class="block-navList">
+  <div class="block-navList" v-if="listItems.length > 0">
 
     <!-- Mobile expand button -->
     <div class="block-navList--expand" @click="isExpanded = !isExpanded">

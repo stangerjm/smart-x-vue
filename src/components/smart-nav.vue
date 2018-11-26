@@ -22,7 +22,7 @@
 
     <main class="smart-nav--list">
       <block-nav-list
-          :list-items="navItems" v-if="navItems.length > 0">
+          :list-items="navItems">
       </block-nav-list>
     </main>
   </nav>
