@@ -161,44 +161,10 @@ export default {
     return {
       devices: [],
       errors: [],
-      formData: transformIntoFormModel({
-        FirstName: {
-          type: String,
-          required: true,
-          span: 5,
-        },
-        MiddleInitial: {
-          type: String,
-          required: false,
-          span: 2,
-          displayName: 'M.I.',
-        },
-        LastName: {
-          type: String,
-          required: true,
-          span: 5,
-        },
-        UserName: {
-          type: String,
-          required: true,
-          span: 6,
-        },
-        Email: {
-          type: String,
-          required: true,
-          span: 6,
-        },
-        Password: {
-          type: ModelType.Password,
-          required: true,
-          span: 6,
-        },
-        ConfirmPassword: {
-          type: ModelType.Password,
-          required: true,
-          span: 6,
-        },
-      }),
+      formData: {
+        UserName: String,
+        Password: ModelType.Password,
+      },
       searchModel: {
         Name: String,
         Age: Number,
