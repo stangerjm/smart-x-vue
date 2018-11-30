@@ -16,6 +16,30 @@
                  :ignore-fields="ignoreFields"
                  :props-to-link="propsToLink"
                  :table-empty-message="tableEmptyMessage">
+
+      <slot name="action-container"
+            :getActionPath="getActionPath"
+            :itemId="itemId"
+            :context="context">
+        <!-- FALLBACK CONTENT -->
+
+        <!-- Edit btn -->
+        <router-link :to="getActionPath(context, 'edit', itemId)">
+          <bit-icon icon-type="edit"></bit-icon>
+        </router-link>
+
+        <!-- Delete btn -->
+        <router-link :to="getActionPath(context, 'delete', itemId)">
+          <bit-icon icon-type="delete"></bit-icon>
+        </router-link>
+
+        <!-- Details btn -->
+        <router-link :to="getActionPath(context, 'details', itemId)">
+          <bit-icon icon-type="details"></bit-icon>
+        </router-link>
+
+      </slot>
+
     </smart-table>
       <bit-paging v-model="pageIdx"
                 class="stack-searchableTable--paging"
@@ -31,6 +55,7 @@ import { splitArrayIntoChunks } from '../global/mixins/helpers';
 import BitPaging from './bit-paging.vue';
 import SmartTable from './smart-table.vue';
 import SmartSearch from './smart-search.vue';
+import BitIcon from './bit-icon.vue';
 
 const getStackSearchableTableProps = stackSearchableTable || function searchableTableProps() {};
 const propsMixin = {
@@ -45,6 +70,7 @@ export default {
     BitPaging,
     SmartTable,
     SmartSearch,
+    BitIcon,
   },
   mixins: [propsMixin],
   props: {

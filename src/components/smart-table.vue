@@ -5,18 +5,44 @@
     <block-table-heading :table-headings="getTableKeys"
                          :unsearchable-headings="unsearchableHeadings"
                          :sort-method="sortBy"
-                         :include-action-container="dataHasIdProperty">
+                         :include-action-container="includeActionContainer">
     </block-table-heading>
 
     <!-- Table body -->
     <block-table-body :typed-data="typedData"
                       :data-keys="getTableKeys"
                       :default-context="defaultContext"
-                      :allow-details="allowDetails"
-                      :allow-delete="allowDelete"
-                      :allow-edit="allowEdit"
-                      :include-action-container="dataHasIdProperty"
+                      :include-action-container="includeActionContainer"
                       :props-to-link="propsToLink">
+
+      <template slot="bodyActionContainer"
+                slot-scope="{ getActionPath, itemId, context }">
+
+        <slot name="action-container"
+              :getActionPath="getActionPath"
+              :itemId="itemId"
+              :context="context">
+          <!-- FALLBACK CONTENT -->
+
+          <!-- Edit btn -->
+          <router-link class="smart-table--edit" :to="getActionPath(context, 'edit', itemId)">
+            <bit-icon icon-type="edit"></bit-icon>
+          </router-link>
+
+          <!-- Delete btn -->
+          <router-link class="smart-table--delete" :to="getActionPath(context, 'delete', itemId)">
+            <bit-icon icon-type="delete"></bit-icon>
+          </router-link>
+
+          <!-- Details btn -->
+          <router-link class="smart-table--details" :to="getActionPath(context, 'details', itemId)">
+            <bit-icon icon-type="details"></bit-icon>
+          </router-link>
+
+        </slot>
+
+      </template>
+
     </block-table-body>
 
   </table>
@@ -34,6 +60,8 @@ import { getDataSortedByColumn, createViewModel, getItemId } from '../global/mix
 import BlockTableBody from './block-tableBody.vue';
 import BlockTableHeading from './block-tableHeading.vue';
 import BitMessage from './bit-message.vue';
+import BitIcon from './bit-icon.vue';
+
 
 const getSmartTableProps = smartTable || function smartTableProps() {};
 const propsMixin = {
@@ -53,6 +81,7 @@ export default {
     BlockTableBody,
     BlockTableHeading,
     BitMessage,
+    BitIcon,
   },
   mixins: [propsMixin],
   computed: {
@@ -144,18 +173,18 @@ export default {
      * Calls the sort method passed into the component.
      * Note: the local property 'descending' will be mutated here if
      *       the current key is equal to the key passed in.
-     * @param key
+     * @param column
      */
-    sortBy(key) {
-      if (this.currentKey === key) {
+    sortBy(column) {
+      if (this.currentKey === column) {
         this.descending = !this.descending;
       } else {
         this.descending = true;
       }
 
-      this.currentKey = key;
+      this.currentKey = column;
       // Use 'getDataSortedByColumn' mixin to sort data
-      this.localData = getDataSortedByColumn(this.localData, key, this.descending);
+      this.localData = getDataSortedByColumn(this.localData, column, this.descending);
     },
   },
 };

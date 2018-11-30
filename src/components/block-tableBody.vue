@@ -28,11 +28,38 @@
     <!-- Action container cell -->
     <td class="smart-table--cell" v-if="includeActionContainer">
       <block-action-container
-          :default-ctx="defaultContext"
-          :item-id="itemId(item)"
-          :details-btn="allowDetails"
-          :edit-btn="allowEdit"
-          :delete-btn="allowDelete">
+          :default-context="defaultContext"
+          :item-id="itemId(item)">
+        <template slot="actionContainer"
+             slot-scope="{ getActionPath, itemId, context }">
+
+          <slot name="bodyActionContainer"
+                :getActionPath="getActionPath"
+                :itemId="itemId"
+                :context="context">
+            <!-- FALLBACK CONTENT -->
+
+            <!-- Edit btn -->
+            <router-link class="block-tableBody--edit"
+                         :to="getActionPath(context, 'edit', itemId)">
+              <bit-icon icon-type="edit"></bit-icon>
+            </router-link>
+
+            <!-- Delete btn -->
+            <router-link class="block-tableBody--delete"
+                         :to="getActionPath(context, 'delete', itemId)">
+              <bit-icon icon-type="delete"></bit-icon>
+            </router-link>
+
+            <!-- Details btn -->
+            <router-link class="block-tableBody--details"
+                         :to="getActionPath(context, 'details', itemId)">
+              <bit-icon icon-type="details"></bit-icon>
+            </router-link>
+
+          </slot>
+
+        </template>
       </block-action-container>
     </td>
 
@@ -49,6 +76,7 @@ import { getItemId } from '../global/mixins';
 import BitTableCell from './bit-tableCell.vue';
 import BlockActionContainer from './block-actionContainer.vue';
 import BitBtn from './bit-btn.vue';
+import BitIcon from './bit-icon.vue';
 import EventBus from '../global/EventCenter/EventBus';
 
 export default {
@@ -57,6 +85,7 @@ export default {
     BitTableCell,
     BlockActionContainer,
     BitBtn,
+    BitIcon,
   },
   props: {
     /**
@@ -81,27 +110,6 @@ export default {
     defaultContext: {
       type: String,
       required: true,
-    },
-    /**
-     * Flag to optionally render details button
-     */
-    allowDetails: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Flag to optionally render edit button
-     */
-    allowEdit: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Flag to optionally render delete button
-     */
-    allowDelete: {
-      type: Boolean,
-      default: true,
     },
     /**
      * Flag to optionally include the action container

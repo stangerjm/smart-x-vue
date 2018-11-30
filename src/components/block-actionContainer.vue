@@ -1,31 +1,36 @@
 <template>
   <div class="block-actionContainer">
 
-    <!-- Render the details button if flagged to show -->
-    <template v-if="detailsBtn">
-      <router-link class="bit-icon-details"
-                   :to="getActionPath(detailsContext, 'Details', itemId)">
-      </router-link>
-    </template>
+    <!-- Scoped slot that exposes "itemId" and "getActionPath" -->
+    <slot name="actionContainer" :getActionPath="getActionPath" :itemId="itemId" :context="defaultContext">
+      <!-- FALLBACK CONTENT -->
 
-    <!-- Render the edit button if flagged to show -->
-    <template v-if="editBtn">
-      <router-link class="bit-icon-edit"
-                   :to="getActionPath(editContext, 'Edit', itemId)">
+      <!-- Edit btn -->
+      <router-link class="block-actionContainer--edit"
+                   :to="getActionPath(defaultContext, 'edit', itemId)">
+        <bit-icon icon-type="edit"></bit-icon>
       </router-link>
-    </template>
 
-    <!-- Render the delete button if flagged to show -->
-    <template v-if="deleteBtn">
-      <router-link class="bit-icon-delete"
-                   :to="getActionPath(deleteContext, 'Delete', itemId)">
+      <!-- Delete btn -->
+      <router-link class="block-actionContainer--delete"
+                   :to="getActionPath(defaultContext, 'delete', itemId)">
+        <bit-icon icon-type="delete"></bit-icon>
       </router-link>
-    </template>
+
+      <!-- Details btn -->
+      <router-link class="block-actionContainer--details"
+                   :to="getActionPath(defaultContext, 'details', itemId)">
+        <bit-icon icon-type="details"></bit-icon>
+      </router-link>
+
+    </slot>
 
   </div>
 </template>
 
 <script>
+import BitIcon from './bit-icon.vue';
+
 /**
  * A component that renders an action container to be part of a table or other similar structure.
  * Contains action links that handle details, edit, and delete actions.
@@ -35,82 +40,20 @@
  */
 export default {
   name: 'block-action-container',
+  components: {
+    BitIcon,
+  },
   props: {
-    /**
-     * Default context for action links.
-     * If an action link context is omitted in the data object, this will be used.
-     */
-    defaultCtx: {
-      type: String,
-      required: true,
-    },
     /**
      * Id of the corresponding item.
      */
     itemId: {
       required: true,
     },
-    /**
-     * Flag to optionally omit the details button.
-     */
-    detailsBtn: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Flag to optionally omit the edit button.
-     */
-    editBtn: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Flag to optionally omit the delete button.
-     */
-    deleteBtn: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Context for the edit button.
-     */
-    editCtx: {
+    defaultContext: {
       type: String,
+      default: '#',
     },
-    /**
-     * Context for the details button.
-     */
-    detailsCtx: {
-      type: String,
-    },
-    /**
-     * Context for the delete button.
-     */
-    deleteCtx: {
-      type: String,
-    },
-  },
-  data() {
-    return {
-      /**
-       * The context for the edit button. Will either be the value passed into the
-       * 'editCtx' prop, or the value passed into the required 'defaultCtx'
-       *  prop if the former is undefined.
-       */
-      editContext: this.editCtx ? this.editCtx : this.defaultCtx,
-      /**
-       * The context for the delete button. Will either be the value passed into the
-       * 'deleteCtx' prop, or the value passed into the required 'defaultCtx'
-       * prop if the former is undefined.
-       */
-      deleteContext: this.deleteCtx ? this.deleteCtx : this.defaultCtx,
-      /**
-       * The context for the details button. Will either be the value passed into the
-       * 'detailsCtx' prop, or the value passed into the required 'defaultCtx'
-       * prop if the former is undefined.
-       */
-      detailsContext: this.detailsCtx ? this.detailsCtx : this.defaultCtx,
-    };
   },
   methods: {
     /**
@@ -129,5 +72,4 @@ export default {
 
 <style scoped lang='scss'>
 @import '../styles/sass/components/block/actionContainer/block-actionContainer';
-@import '../styles/sass/components/bit/icon/bit-icon';
 </style>

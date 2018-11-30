@@ -24,28 +24,11 @@ export default function smartTable() {
       default: () => [],
     },
     /**
-     * Optionally renders the delete action link if true
-     * @see block-actionContainer
+     * Flag to optionally render the action container
      */
-    allowDelete: {
+    includeActionContainer: {
       type: Boolean,
-      default: true,
-    },
-    /**
-     * Optionally renders the edit action link if true
-     * @see block-actionContainer
-     */
-    allowEdit: {
-      type: Boolean,
-      default: true,
-    },
-    /**
-     * Optionally renders the details action link if true
-     * @see block-actionContainer
-     */
-    allowDetails: {
-      type: Boolean,
-      default: true,
+      default: false,
     },
     /**
      * List of fields to ignore

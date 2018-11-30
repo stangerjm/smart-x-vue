@@ -2,6 +2,18 @@ import { createViewModel, createLinkToRecord } from '../../../src/global/mixins'
 import { createComponentGenerator } from '../helpers';
 import BlockTableBody from '../../../src/components/block-tableBody.vue';
 
+const mountBlockTableBodyWithCustomActions = createComponentGenerator(BlockTableBody, {
+  stubs: ['router-link'],
+  scopedSlots: {
+    bodyActionContainer:
+      `<div class="custom-action" slot-scope="{ getActionPath, itemId, context }">
+        <a class="custom-action--edit" :href="getActionPath(context, 'edit', itemId)">Edit</a>
+        <a class="custom-action--delete" :href="getActionPath(context, 'delete', itemId)">Delete</a>
+        <a class="custom-action--details" :href="getActionPath(context, 'details', itemId)">Details</a>
+       </div>`,
+  },
+});
+
 const mountBlockTableBody = createComponentGenerator(BlockTableBody, { stubs: ['router-link'] });
 const data = [
   {
@@ -67,6 +79,12 @@ const tableBody = mountBlockTableBody({
   },
 });
 
+const tableBodyWithCustomActions = mountBlockTableBodyWithCustomActions({
+  typedData,
+  dataKeys,
+  defaultContext,
+});
+
 const tableRows = tableBody.findAll('.smart-table--row');
 const tableCellsOfFirstRow = tableRows.wrappers[0]
   .findAll('.smart-table--cell')
@@ -118,6 +136,30 @@ describe('block-tableBody.vue', () => {
     });
 
     expect(tableBodyWithoutActions.find('.block-actionContainer').exists()).toBeFalsy();
+  });
+
+  it('renders a default action container with edit, delete, and details actions', () => {
+    const actionContainer = tableBody.find('.block-actionContainer');
+
+    const editBtn = actionContainer.find('.block-tableBody--edit');
+    const deleteBtn = actionContainer.find('.block-tableBody--delete');
+    const detailsBtn = actionContainer.find('.block-tableBody--details');
+
+    expect(editBtn.attributes('to')).toEqual('/test/edit/1');
+    expect(deleteBtn.attributes('to')).toEqual('/test/delete/1');
+    expect(detailsBtn.attributes('to')).toEqual('/test/details/1');
+  });
+
+  it('allows a custom action container to be specified', () => {
+    const customActionContainer = tableBodyWithCustomActions.find('.block-actionContainer');
+
+    const editBtn = customActionContainer.find('.custom-action--edit');
+    const deleteBtn = customActionContainer.find('.custom-action--delete');
+    const detailsBtn = customActionContainer.find('.custom-action--details');
+
+    expect(editBtn.attributes('href')).toEqual('/test/edit/1');
+    expect(deleteBtn.attributes('href')).toEqual('/test/delete/1');
+    expect(detailsBtn.attributes('href')).toEqual('/test/details/1');
   });
 
   it('renders an expand button that expands the table cell in a mobile view', () => {
