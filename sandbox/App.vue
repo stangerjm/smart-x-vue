@@ -14,20 +14,6 @@
 
       <template slot="content">
 
-        <!--<smart-form :form-data="formModel"-->
-        <!--:on-submit="submit"-->
-        <!--:validation-errors="getErrors"-->
-        <!--style="width: 60%; margin: 0 auto"-->
-        <!--:centerForm="true">-->
-
-        <!--<bit-btn slot="form-buttons">Back</bit-btn>-->
-
-        <!--<p slot="form-end">-->
-        <!--<span style="color: red;">*</span> indicates a required field-->
-        <!--</p>-->
-
-        <!--</smart-form>-->
-
         <demo></demo>
 
       </template>

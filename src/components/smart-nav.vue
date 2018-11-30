@@ -2,29 +2,28 @@
   <nav class="smart-nav">
 
     <header class="smart-nav--header">
+        <section class="smart-nav--headerMain">
+          <a href="/" class="smart-nav--logo"></a>
+          <h4 class="smart-nav--title">{{navTitle}}</h4>
+        </section>
 
-      <main class="smart-nav--headerMain">
-        <a href="/" class="smart-nav--logo"></a>
-        <h4 class="smart-nav--title">{{navTitle}}</h4>
-      </main>
-
-      <aside class="smart-nav--headerAside" v-if="usr != null">
-        <span class="smart-nav--userTime">{{getNavMessage(usr)}}</span>
-        <bit-btn btn-style="clear"
-                 btn-size="medium"
-                 class="smart-nav--signOut"
-                 @click.native="onSignOut">
-          <bit-icon icon-type="logout"></bit-icon>&nbsp;Sign Out
-        </bit-btn>
-      </aside>
+        <aside class="smart-nav--headerAside" v-if="usr != null">
+          <span class="smart-nav--userTime">{{getNavMessage(usr)}}</span>
+          <bit-btn btn-style="clear"
+                   btn-size="medium"
+                   class="smart-nav--signOut"
+                   @click.native="onSignOut">
+            <bit-icon icon-type="logout"></bit-icon>&nbsp;Sign Out
+          </bit-btn>
+        </aside>
 
     </header>
 
-    <main class="smart-nav--list">
+    <section class="smart-nav--list">
       <block-nav-list
           :list-items="navItems">
       </block-nav-list>
-    </main>
+    </section>
   </nav>
 </template>
 
