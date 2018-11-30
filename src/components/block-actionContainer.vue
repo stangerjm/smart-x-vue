@@ -2,7 +2,9 @@
   <div class="block-actionContainer">
 
     <!-- Scoped slot that exposes "itemId" and "getActionPath" -->
-    <slot name="actionContainer" :getActionPath="getActionPath" :itemId="itemId" :context="defaultContext">
+    <slot name="actionContainer"
+          :getActionPath="getActionPath"
+          :itemId="itemId" :context="defaultContext">
       <!-- FALLBACK CONTENT -->
 
       <!-- Edit btn -->

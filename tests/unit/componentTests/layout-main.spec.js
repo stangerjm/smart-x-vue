@@ -1,4 +1,4 @@
-import {createComponentGenerator} from '../helpers';
+import { createComponentGenerator } from '../helpers';
 import LayoutMain from '../../../src/components/layout-main.vue';
 
 const mountLayoutMain = createComponentGenerator(LayoutMain, {
