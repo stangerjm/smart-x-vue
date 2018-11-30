@@ -72,6 +72,7 @@
     <smart-table :table-data="devices"
                  default-context="testTable"
                  includeActionContainer
+                 idKey="deviceId"
                  :props-to-link="propsToLink">
       <!--<template slot="action-container" slot-scope="{ getActionPath, itemId }">-->
         <!--<router-link :to="getActionPath('test', 'edit', itemId)">Edit</router-link>-->
@@ -241,37 +242,37 @@ export default {
       await this.delay(1000);
       this.devices = [
         {
-          id: 1,
+          deviceId: 1,
           deviceModel: 'TEST',
           manufacturerName: 'James',
           registerDate: new Date().toUTCString(),
         },
         {
-          id: 2,
+          deviceId: 2,
           deviceModel: 'ANOTHER',
           manufacturerName: 'James',
           registerDate: new Date().toUTCString(),
         },
         {
-          id: 3,
+          deviceId: 3,
           deviceModel: 'More',
           manufacturerName: 'Smart Start',
           registerDate: new Date().toUTCString(),
         },
         {
-          id: 4,
+          deviceId: 4,
           deviceModel: 'Device 1',
           manufacturerName: 'Draeger',
           registerDate: new Date().toUTCString(),
         },
         {
-          id: 5,
+          deviceId: 5,
           deviceModel: 'Device 2',
           manufacturerName: 'Smart Start',
           registerDate: new Date().toUTCString(),
         },
         {
-          id: 6,
+          deviceId: 6,
           deviceModel: 'Device 3',
           manufacturerName: 'Manufacturer 3',
           registerDate: new Date().toUTCString(),

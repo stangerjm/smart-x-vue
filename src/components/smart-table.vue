@@ -13,6 +13,7 @@
                       :data-keys="getTableKeys"
                       :default-context="defaultContext"
                       :include-action-container="includeActionContainer"
+                      :id-key="idKey"
                       :props-to-link="propsToLink">
 
       <template slot="bodyActionContainer"
@@ -56,7 +57,7 @@
 
 <script>
 import { smartTable } from './props';
-import { getDataSortedByColumn, createViewModel, getItemId } from '../global/mixins';
+import { getDataSortedByColumn, createViewModel } from '../global/mixins';
 import BlockTableBody from './block-tableBody.vue';
 import BlockTableHeading from './block-tableHeading.vue';
 import BitMessage from './bit-message.vue';
@@ -96,17 +97,6 @@ export default {
       }
 
       return [];
-    },
-    /**
-     * Looks at the first object in the 'typedData' local property
-     * and determines if a valid id can be found
-     */
-    dataHasIdProperty() {
-      if (this.typedData.length > 0) {
-        return getItemId(this.typedData[0]) != null;
-      }
-
-      return false;
     },
     /**
      * Maps each item in the 'localData' property to an array
@@ -155,7 +145,8 @@ export default {
       if (
         this.ignoreFields.includes(heading) ||
         heading[0] === '_' ||
-        heading.toLowerCase() === 'id'
+        heading.toLowerCase() === 'id' ||
+        heading === this.idKey
       ) {
         return false;
       }

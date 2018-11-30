@@ -1,4 +1,5 @@
 import { createComponentGenerator } from '../helpers';
+import { createLinkToRecord } from '../../../src/global/mixins';
 import SmartTable from '../../../src/components/smart-table.vue';
 import BlockTableBody from '../../../src/components/block-tableBody.vue';
 import BlockTableHeading from '../../../src/components/block-tableHeading.vue';
@@ -19,6 +20,19 @@ const mountSmartTableWithCustomActions = createComponentGenerator(SmartTable, {
 
 const defaultContext = 'test';
 
+const propsToLink = {
+  name: createLinkToRecord({
+    linkContext: 'person',
+    linkAction: 'edit',
+    destinationTable: [
+      { id: 1, name: 'James', code: 'dummy' },
+      { id: 2, name: 'test', code: 'dummy' },
+    ],
+    destinationLookupKey: 'name',
+    destinationIdKey: 'id',
+  }),
+};
+
 const tableData = [
   {
     id: 1,
@@ -29,25 +43,32 @@ const tableData = [
   },
   {
     id: 2,
-    name: 'James',
+    name: 'test2',
     age: 25,
     birthday: new Date(),
     isEmployee: true,
   },
   {
     id: 3,
-    name: 'James',
+    name: 'test3',
     age: 25,
     birthday: new Date(),
     isEmployee: true,
   },
   {
     id: 4,
-    name: 'James',
+    name: 'test1',
     age: 25,
     birthday: new Date(),
     isEmployee: true,
   },
+];
+
+const dataWithCustomId = [
+  { personId: 1, name: 'James', age: 25 },
+  { personId: 2, name: 'test2', age: 25 },
+  { personId: 3, name: 'test3', age: 25 },
+  { personId: 4, name: 'test1', age: 25 },
 ];
 
 const tableWithNoData = mountSmartTable({
@@ -58,6 +79,7 @@ const tableWithNoData = mountSmartTable({
 const tableWithData = mountSmartTable({
   tableData,
   defaultContext,
+  propsToLink,
 });
 
 const tableWithActionContainer = mountSmartTable({
@@ -69,6 +91,13 @@ const tableWithActionContainer = mountSmartTable({
 const tableWithCustomActionContainer = mountSmartTableWithCustomActions({
   tableData,
   defaultContext,
+  includeActionContainer: true,
+});
+
+const tableWithCustomId = mountSmartTable({
+  tableData: dataWithCustomId,
+  defaultContext,
+  idKey: 'personId',
   includeActionContainer: true,
 });
 
@@ -139,11 +168,41 @@ describe('smart-table.vue', () => {
     expect(detailsBtn.attributes('href')).toEqual('/test/details/1');
   });
 
-  it('passes typed data, table keys, default context, and "propsToLink" properties to table body', () => {});
+  it('passes typed data, table keys, default context, and "propsToLink" properties to table body', () => {
+    const tableBody = tableWithData.find(BlockTableBody);
+    const tableKeys = ['name', 'age', 'birthday', 'isEmployee'];
 
-  it('sorts the data when a column is clicked', () => {});
+    expect(tableBody.props('typedData').length).toEqual(Object.keys(tableData).length);
+    expect(tableBody.props('dataKeys')).toEqual(tableKeys);
+    expect(tableBody.props('defaultContext')).toEqual(defaultContext);
+    expect(tableBody.props('includeActionContainer')).toEqual(false);
+    expect(tableBody.props('propsToLink')).toEqual(propsToLink);
+  });
 
-  it('allows data without an id to be rendered', () => {});
+  it('sorts the data when a column is clicked', () => {
+    const sortBtns = tableWithData.findAll('.smart-table--link');
 
-  it('allows a specified property to be treated as the id', () => {});
+    const nameSortBtn = sortBtns.wrappers.find(sortBtn => sortBtn.text() === 'Name');
+
+    function gatherName(accumulator, person) {
+      return [
+        ...accumulator,
+        person.name,
+      ];
+    }
+
+    nameSortBtn.trigger('click');
+    let names = tableWithData.vm.localData.reduce(gatherName, []);
+    expect(names).toEqual(['test3', 'test2', 'test1', 'James']);
+
+    nameSortBtn.trigger('click');
+    names = tableWithData.vm.localData.reduce(gatherName, []);
+    expect(names).toEqual(['James', 'test1', 'test2', 'test3']);
+  });
+
+  it('allows a specified property to be treated as the id', () => {
+    const editLink = tableWithCustomId.find('.smart-table--edit');
+
+    expect(editLink.attributes('to')).toEqual('/test/edit/1');
+  });
 });

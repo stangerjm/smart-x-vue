@@ -51,5 +51,9 @@ export default function smartTable() {
       type: String,
       default: 'No data found.',
     },
+    idKey: {
+      type: String,
+      default: null,
+    },
   };
 }

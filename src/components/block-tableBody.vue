@@ -125,9 +125,17 @@ export default {
       type: Object,
       default: () => {},
     },
+    idKey: {
+      type: String,
+      default: null,
+    },
   },
   methods: {
     itemId(item) {
+      if (this.idKey != null) {
+        return item[this.idKey].value;
+      }
+
       return getItemId(item).value;
     },
     /**
