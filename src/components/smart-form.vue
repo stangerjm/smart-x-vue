@@ -43,6 +43,7 @@
 
         <!-- Render as a bit-input component if above conditions are false -->
         <bit-input class="smart-form--field"
+                   :ref="key.toLowerCase()"
                    :style="getFlexProp(item.span)"
                    :key="key"
                    v-else-if="isValidField(item, key)"
@@ -216,7 +217,10 @@ export default {
      * @returns {string}
      */
     getFlexProp(span) {
+      // Calculate the width of the element based off of a 12 column grid
       const flexBasis = span != null ? Math.floor((span / 12) * 100) : 100;
+
+      // Return valid flex-basis prop (see CSS flex-box documentation)
       return `flex: 1 1 ${flexBasis}%;`;
     },
     /**
@@ -225,6 +229,10 @@ export default {
      * @param validationErrors
      */
     mapErrors(masterData, validationErrors) {
+      if (validationErrors.length < 1) {
+        return;
+      }
+
       /**
        * Sets the 'errored' property of the data at the propName passed in to true if
        * a corresponding error is found
@@ -239,13 +247,22 @@ export default {
         function findMatchingField(error) {
           return error.fieldName === propName;
         }
+
         // Find the matching field name
         const key = validationErrors.find(findMatchingField);
+
         // Set errored field to true if a matching field name was found, false if otherwise.
         masterData[propName].errored = key != null;
       }
+
       // Map field names to corresponding errors
       Object.keys(masterData).map(modifyMatchingField);
+
+
+      const firstErrorFieldName = validationErrors[0].fieldName;
+      const firstErrorInput = this.$el.querySelector(`.bit-input--field[name="${firstErrorFieldName}"`);
+
+      firstErrorInput.focus();
     },
     /**
      * Ensures that the item passed in is not an array, and that the key passed in
@@ -332,6 +349,9 @@ export default {
       // Mark the form as having completed
       this.working = false;
     },
+  },
+  mounted() {
+    this.mapErrors(this.masterData, this.validationErrors);
   },
 };
 </script>

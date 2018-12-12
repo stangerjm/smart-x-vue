@@ -103,7 +103,6 @@ const erroredFormData = transformIntoFormModel({
 const validationErrors = [
   { message: 'First name is incorrect', fieldName: 'firstName' },
   { message: 'Middle initial is the wrong letter', fieldName: 'middleInitial' },
-  { message: 'Last name is different', fieldName: 'lastName' },
 ];
 
 const formTitle = 'Test';
@@ -306,7 +305,7 @@ describe('smart-form.vue', () => {
     expect(wrapperComponent.emitted('formSubmit')[0]).toEqual([expectedData]);
   });
 
-  it('Allows form to react to form-data structure changing', () => {
+  it('allows form to react to form-data structure changing', () => {
     const model = {
       name: String,
       hireDate: Date,
@@ -339,5 +338,20 @@ describe('smart-form.vue', () => {
     expect(nameField.exists()).toBeTruthy();
     expect(ageField.exists()).toBeTruthy();
     expect(birthdayField.exists()).toBeTruthy();
+  });
+
+  it('auto-focuses on the first errored field of the form if submitted with validation errors', () => {
+    const attachedErroredForm = mount(SmartForm, {
+      attachToDocument: true,
+      propsData: {
+        formData: erroredFormData,
+        onSubmit: submit,
+        validationErrors,
+      },
+    });
+
+    const firstErroredField = attachedErroredForm.find('.bit-input--field[name="firstName"').element;
+
+    expect(firstErroredField).toBe(document.activeElement);
   });
 });

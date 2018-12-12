@@ -173,8 +173,8 @@ export default {
       devices: [],
       errors: [],
       formData: {
-        UserName: String,
-        Password: ModelType.Password,
+        Name: String,
+        Age: Number,
       },
       searchModel: {
         Name: String,
@@ -210,7 +210,7 @@ export default {
       // eslint-disable-next-line
       console.log(submittedData);
       this.working = true;
-      await this.delay(3000);
+      // await this.delay(3000);
       if (this.count > 0) {
         this.count -= 1;
         this.errors = [
