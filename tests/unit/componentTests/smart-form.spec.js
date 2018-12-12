@@ -305,4 +305,39 @@ describe('smart-form.vue', () => {
 
     expect(wrapperComponent.emitted('formSubmit')[0]).toEqual([expectedData]);
   });
+
+  it('Allows form to react to form-data structure changing', () => {
+    const model = {
+      name: String,
+      hireDate: Date,
+      age: Number,
+    };
+
+    const redefinedModel = {
+      ...model,
+      birthday: Date,
+    };
+
+    const smartForm = mountSmartForm({
+      formData: model,
+      onSubmit: submit,
+    });
+
+    const nameField = smartForm.find('.bit-input--field[name="name"]');
+    const ageField = smartForm.find('.bit-input--field[name="age"]');
+
+    expect(nameField.exists()).toBeTruthy();
+    expect(ageField.exists()).toBeTruthy();
+
+    // smartForm.vm.propsData.formData = redefinedModel;
+    smartForm.setProps({
+      formData: redefinedModel,
+    });
+
+    const birthdayField = smartForm.find('.bit-input--field[name="birthday"');
+
+    expect(nameField.exists()).toBeTruthy();
+    expect(ageField.exists()).toBeTruthy();
+    expect(birthdayField.exists()).toBeTruthy();
+  });
 });

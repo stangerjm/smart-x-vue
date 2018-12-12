@@ -36,11 +36,11 @@
     <!--<h2>Details: Outlined</h2>-->
     <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>-->
 
-    <!--<h1>Form</h1>-->
-    <!--<smart-form :form-data="formData"-->
-                <!--:on-submit="submit"-->
-                <!--:validation-errors="errors">-->
-    <!--</smart-form>-->
+    <h1>Form</h1>
+    <smart-form :form-data="formData"
+                :on-submit="submit"
+                :validation-errors="errors">
+    </smart-form>
 
     <!--<h1>Searchable Table</h1>-->
     <!--<stack-searchable-table form-title="Test"-->
@@ -68,18 +68,18 @@
       <!--<h2>Hello</h2>-->
     <!--</smart-section>-->
 
-    <h1>Table</h1>
-    <smart-table :table-data="devices"
-                 default-context="testTable"
-                 includeActionContainer
-                 idKey="deviceId"
-                 :props-to-link="propsToLink">
+    <!--<h1>Table</h1>-->
+    <!--<smart-table :table-data="devices"-->
+                 <!--default-context="testTable"-->
+                 <!--includeActionContainer-->
+                 <!--idKey="deviceId"-->
+                 <!--:props-to-link="propsToLink">-->
       <!--<template slot="action-container" slot-scope="{ getActionPath, itemId }">-->
         <!--<router-link :to="getActionPath('test', 'edit', itemId)">Edit</router-link>-->
         <!--<router-link :to="getActionPath('test', 'delete', itemId)">Delete</router-link>-->
         <!--<router-link :to="getActionPath('test', 'details', itemId)">Details</router-link>-->
       <!--</template>-->
-    </smart-table>
+    <!--</smart-table>-->
 
     <!--<h1>Tabs</h1>-->
     <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->

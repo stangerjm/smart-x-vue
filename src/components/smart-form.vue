@@ -196,6 +196,9 @@ export default {
     validationErrors() {
       this.mapErrors(this.masterData, this.validationErrors);
     },
+    formData() {
+      this.masterData = createViewModel(this.formData);
+    },
   },
   computed: {
     hasErrors() {
