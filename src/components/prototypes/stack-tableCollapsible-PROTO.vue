@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import SmartTable from './smart-table.vue';
-import SmartAccordion from './smart-accordion.vue';
+import SmartTable from '../smart-table.vue';
+import SmartAccordion from '../smart-accordion.vue';
 
 /**
  * A component that renders a smart-table inside of a smart-accordion.
