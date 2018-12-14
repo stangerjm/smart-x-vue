@@ -5,17 +5,17 @@
       <!--<h1>Hello there</h1>-->
     <!--</block-expandable-section>-->
 
-    <h1>Loading</h1>
+    <!--<h1>Loading</h1>-->
 
-    <h2>Bit Loading</h2>
-    <bit-loading></bit-loading>
+    <!--<h2>Bit Loading</h2>-->
+    <!--<bit-loading></bit-loading>-->
 
-    <h2>Smart Loading</h2>
-    <smart-loading loading>
-      <smart-form :form-data="formData"
-                  :on-submit="function () {}">
-      </smart-form>
-    </smart-loading>
+    <!--<h2>Smart Loading</h2>-->
+    <!--<smart-loading loading>-->
+      <!--<smart-form :form-data="formData"-->
+                  <!--:on-submit="function () {}">-->
+      <!--</smart-form>-->
+    <!--</smart-loading>-->
 
     <!--<h1>Accordion</h1>-->
     <!--<smart-accordion title="Devices">-->
@@ -45,11 +45,11 @@
     <!--<h2>Details: Outlined</h2>-->
     <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>-->
 
-    <h1>Form</h1>
-    <smart-form :form-data="formData"
-                :on-submit="submit"
-                :validation-errors="errors">
-    </smart-form>
+    <!--<h1>Form</h1>-->
+    <!--<smart-form :form-data="formData"-->
+                <!--:on-submit="submit"-->
+                <!--:validation-errors="errors">-->
+    <!--</smart-form>-->
 
     <!--<h1>Searchable Table</h1>-->
     <!--<stack-searchable-table form-title="Test"-->
@@ -90,12 +90,12 @@
       <!--</template>-->
     <!--</smart-table>-->
 
-    <!--<h1>Tabs</h1>-->
-    <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->
-      <!--<smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>-->
-      <!--<smart-details slot="TabTwo" :detail-data="james"></smart-details>-->
-      <!--<smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>-->
-    <!--</smart-tabs>-->
+    <h1>Tabs</h1>
+    <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
+      <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
+      <smart-details slot="TabTwo" :detail-data="james"></smart-details>
+      <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
+    </smart-tabs>
 
     <!--<h1>Cards</h1>-->
     <!--<div class="demo-grid">-->

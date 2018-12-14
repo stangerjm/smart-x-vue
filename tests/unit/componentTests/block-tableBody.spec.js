@@ -1,6 +1,7 @@
 import { createViewModel, createLinkToRecord } from '../../../src/global/mixins';
 import { createComponentGenerator } from '../helpers';
 import BlockTableBody from '../../../src/components/block-tableBody.vue';
+import BlockActionContainer from '../../../src/components/block-actionContainer.vue';
 
 const mountBlockTableBodyWithCustomActions = createComponentGenerator(BlockTableBody, {
   stubs: ['router-link'],
@@ -176,5 +177,23 @@ describe('block-tableBody.vue', () => {
     // Should collapsed when clicked again
     expandBtn.trigger('click');
     expect(firstRow.classes()).not.toContain('record-is-expanded');
+  });
+
+  it('generates a random id if a valid id cannot be extracted from the data', () => {
+    const tableDataWithoutId = [
+      { name: 'Test1', prop: false, thirdProp: 1 },
+      { name: 'Test2', prop: true, thirdProp: 2 },
+    ];
+
+    const tableContainingDataWithNoId = mountBlockTableBody({
+      typedData: tableDataWithoutId.map(dataItem => createViewModel(dataItem)),
+      dataKeys: Object.keys(tableDataWithoutId[0]),
+      defaultContext: 'test',
+      includeActionContainer: true,
+    });
+
+    const actionContainer = tableContainingDataWithNoId.find(BlockActionContainer);
+
+    expect(actionContainer.props('itemId')).toContain('table-item-');
   });
 });

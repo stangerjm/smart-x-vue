@@ -136,6 +136,12 @@ export default {
         return item[this.idKey].value;
       }
 
+      const id = getItemId(item);
+
+      if (id == null) {
+        return `table-item-${Math.random().toString(36).substr(2, 9)}`;
+      }
+
       return getItemId(item).value;
     },
     /**

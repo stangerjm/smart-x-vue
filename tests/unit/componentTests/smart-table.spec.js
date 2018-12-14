@@ -3,6 +3,7 @@ import { createLinkToRecord } from '../../../src/global/mixins';
 import SmartTable from '../../../src/components/smart-table.vue';
 import BlockTableBody from '../../../src/components/block-tableBody.vue';
 import BlockTableHeading from '../../../src/components/block-tableHeading.vue';
+import BlockActionContainer from '../../../src/components/block-actionContainer.vue';
 
 const mountSmartTable = createComponentGenerator(SmartTable, { stubs: ['router-link'] });
 
@@ -202,7 +203,9 @@ describe('smart-table.vue', () => {
 
   it('allows a specified property to be treated as the id', () => {
     const editLink = tableWithCustomId.find('.smart-table--edit');
+    const blockActionContainer = tableWithCustomId.find(BlockActionContainer);
 
     expect(editLink.attributes('to')).toEqual('/test/edit/1');
+    expect(blockActionContainer.props('itemId')).toEqual(1);
   });
 });
