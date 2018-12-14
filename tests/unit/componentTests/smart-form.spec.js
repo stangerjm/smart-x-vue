@@ -137,6 +137,20 @@ const erroredForm = mountSmartForm({
   validationErrors,
 });
 
+const formWithEmptyRequiredFields = mountSmartForm({
+  formData: transformIntoFormModel({
+    name: {
+      type: String,
+      required: true,
+    },
+    age: {
+      value: 25,
+      required: true,
+    },
+  }),
+  onSubmit: submit,
+});
+
 describe('smart-form.vue', () => {
   it('allows the form to be centered, but will not be centered by default', () => {
     expect(centeredForm.classes()).toContain('smart-form-centered');
@@ -357,5 +371,56 @@ describe('smart-form.vue', () => {
     const firstErroredField = attachedErroredForm.find('.bit-input--field[name="firstName"').element;
 
     expect(firstErroredField).toBe(document.activeElement);
+  });
+
+  it('will not submit a form with empty required fields', () => {
+    const submitBtn = formWithEmptyRequiredFields.find('.smart-form--button');
+
+    // Submit
+    submitBtn.trigger('click');
+
+    const errors = formWithEmptyRequiredFields.findAll('.smart-form--error');
+
+    expect(errors.length).toBeGreaterThan(0);
+    expect(formWithEmptyRequiredFields.vm.errors).toContainEqual({ message: 'name is required', fieldName: 'name' });
+  });
+
+  it('updates the errors passed in as they change, overriding the existing errors', () => {
+    const submitBtn = formWithEmptyRequiredFields.find('.smart-form--button');
+
+    // Submit
+    submitBtn.trigger('click');
+
+    expect(formWithEmptyRequiredFields.vm.errors.length).toBeGreaterThan(0);
+
+    const newValidationErrors = [
+      { fieldName: 'name', message: 'That is not correct' },
+      { fieldName: 'age', message: 'You are not the right age' },
+    ];
+
+    formWithEmptyRequiredFields.setProps({
+      validationErrors: newValidationErrors,
+    });
+
+    expect(formWithEmptyRequiredFields.vm.errors).toEqual(newValidationErrors);
+  });
+
+  it('updates internal errors and overrides errors passed in', () => {
+    const newValidationErrors = [
+      { fieldName: 'name', message: 'That is not correct' },
+      { fieldName: 'age', message: 'You are not the right age' },
+    ];
+
+    formWithEmptyRequiredFields.setProps({
+      validationErrors: newValidationErrors,
+    });
+
+    expect(formWithEmptyRequiredFields.vm.errors).toEqual(newValidationErrors);
+
+    const submitBtn = formWithEmptyRequiredFields.find('.smart-form--button');
+
+    submitBtn.trigger('click');
+
+    expect(formWithEmptyRequiredFields.vm.errors).toEqual([{ message: 'name is required', fieldName: 'name' }]);
   });
 });

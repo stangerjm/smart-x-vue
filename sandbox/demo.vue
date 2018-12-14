@@ -182,10 +182,20 @@ export default {
     return {
       devices: [],
       errors: [],
-      formData: {
-        Name: String,
-        Age: Number,
-      },
+      formData: transformIntoFormModel({
+        Name: {
+          type: String,
+          required: true,
+        },
+        Age: {
+          type: Number,
+          required: true,
+        },
+        HireDate: {
+          value: [1, 2, 3],
+          required: true,
+        },
+      }),
       searchModel: {
         Name: String,
         Age: Number,

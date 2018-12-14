@@ -83,7 +83,7 @@
       <!-- Render errors if any are passed in -->
       <p class="smart-form--error"
          v-if="hasErrors"
-         v-for="(error, key) in validationErrors"
+         v-for="(error, key) in errors"
          :key="key">
         {{error.message}}
       </p>
@@ -187,6 +187,10 @@ export default {
        * Flag indicating that the form is loading
        */
       working: false,
+      /**
+       * Contains all the form errors, both internal and external
+       */
+      errors: [...this.validationErrors],
     };
   },
   watch: {
@@ -194,7 +198,8 @@ export default {
      * Watch validation errors for changes and map them to the appropriate fields
      */
     validationErrors() {
-      this.mapErrors(this.masterData, this.validationErrors);
+      this.errors = this.validationErrors;
+      this.mapErrors(this.masterData, this.errors);
     },
     formData() {
       this.masterData = createViewModel(this.formData);
@@ -202,7 +207,7 @@ export default {
   },
   computed: {
     hasErrors() {
-      return this.validationErrors.length > 0;
+      return this.errors.length > 0;
     },
   },
   filters: {
@@ -332,6 +337,40 @@ export default {
       });
     },
     /**
+     * Returns a list of errors for each required field that is not filled out.
+     * @param submittedData
+     * @returns {array} List of validation errors
+     */
+    getRequiredValidationMessages(submittedData) {
+      const submittedDataKeys = Object.keys(submittedData);
+
+      /**
+       * Determines if an item is required
+       * @param fieldKey
+       * @param fieldData
+       * @returns {boolean}
+       */
+      function isItemRequiredAndEmpty([fieldKey, fieldData]) {
+        return fieldData.required && !submittedDataKeys.includes(fieldKey);
+      }
+
+      /**
+       * Creates a validation error for an empty required field
+       * @param fieldKey
+       * @returns {{fieldName: *, message: string}}
+       */
+      function mapEmptyRequiredFieldToError([fieldKey]) {
+        return {
+          fieldName: fieldKey,
+          message: `${fieldKey} is required`,
+        };
+      }
+
+      const emptyRequiredFields = Object.entries(this.masterData).filter(isItemRequiredAndEmpty);
+
+      return emptyRequiredFields.map(mapEmptyRequiredFieldToError);
+    },
+    /**
      * Execute the 'onSubmit' function that was passed into the component and pass
      * properly formatted data to be submitted.
      */
@@ -342,15 +381,29 @@ export default {
       // Flag the form as working
       this.working = true;
 
+      const submittedData = this.getSubmitData();
+
+      // Validate that all required fields are filled out
+      const requiredValidationMessages = this.getRequiredValidationMessages(submittedData);
+
+      // If any validation errors, render errors and exit submission
+      if (requiredValidationMessages.length > 0) {
+        this.working = false;
+        this.errors = requiredValidationMessages;
+        this.mapErrors(this.masterData, this.errors);
+        return;
+      }
+
       // Call the submit function passed into the component and pass in the form data
-      await this.onSubmit(this.getSubmitData());
+      await this.onSubmit(submittedData);
 
       // Mark the form as having completed
       this.working = false;
     },
   },
   mounted() {
-    this.mapErrors(this.masterData, this.validationErrors);
+    // Set validation errors when component mounts
+    this.mapErrors(this.masterData, this.errors);
   },
 };
 </script>
