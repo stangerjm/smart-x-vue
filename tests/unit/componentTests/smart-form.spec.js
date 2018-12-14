@@ -423,4 +423,28 @@ describe('smart-form.vue', () => {
 
     expect(formWithEmptyRequiredFields.vm.errors).toEqual([{ message: 'name is required', fieldName: 'name' }]);
   });
+
+  it('passes required state to all child bit-input and bit-select components', () => {
+    const requiredFields = advancedForm.findAll('.bit-input--required');
+
+    expect(requiredFields.length).toEqual(6);
+
+    const firstNameRequiredLabel = advancedForm.find('.smart-form--field[name="firstName"] > .bit-input--required');
+    expect(firstNameRequiredLabel.exists()).toBeTruthy();
+
+    const middleInitialRequiredLabel = advancedForm.find('.smart-form--field[name="middleInitial"] > .bit-input--required');
+    expect(middleInitialRequiredLabel.exists()).toBeTruthy();
+
+    const lastNameRequiredLabel = advancedForm.find('.smart-form--field[name="lastName"] > .bit-input--required');
+    expect(lastNameRequiredLabel.exists()).toBeTruthy();
+
+    const birthdayRequiredLabel = advancedForm.find('.smart-form--field[name="birthday"] > .bit-input--required');
+    expect(birthdayRequiredLabel.exists()).toBeTruthy();
+
+    const ageRequiredLabel = advancedForm.find('.smart-form--field[name="age"] > .bit-input--required');
+    expect(ageRequiredLabel.exists()).toBeTruthy();
+
+    const teamMembersRequiredLabel = advancedForm.find('.smart-form--field[name="teamMembers"] > .bit-input--required');
+    expect(teamMembersRequiredLabel.exists()).toBeTruthy();
+  });
 });

@@ -38,6 +38,7 @@
                       :select-data="item.value"
                       v-model="selectData[key]"
                       :stack-elements="true"
+                      :required-field="item.required"
                       :errored-field="item.errored">
           </bit-select>
 

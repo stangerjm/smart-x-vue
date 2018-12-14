@@ -2,7 +2,9 @@
   <div :class="[stackElements ? 'bit-input-stacked' : 'bit-input']">
 
     <!-- Select label -->
-    <label class="bit-input--label" :for="randomId">{{labelText}}</label>
+    <label class="bit-input--label"
+           :class="requiredField ? 'bit-input--required' : ''"
+           :for="randomId">{{labelText}}</label>
 
     <!-- Select element -->
     <select class="bit-input--field"
@@ -60,6 +62,13 @@ export default {
      * Flag to indicate if the field has an error associated with it
      */
     erroredField: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Flag to indicate if the field should be required or not
+     */
+    requiredField: {
       type: Boolean,
       default: false,
     },
