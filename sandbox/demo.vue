@@ -5,8 +5,17 @@
       <!--<h1>Hello there</h1>-->
     <!--</block-expandable-section>-->
 
-    <!--<h1>Loading</h1>-->
-    <!--<bit-loading></bit-loading>-->
+    <h1>Loading</h1>
+
+    <h2>Bit Loading</h2>
+    <bit-loading></bit-loading>
+
+    <h2>Smart Loading</h2>
+    <smart-loading loading>
+      <smart-form :form-data="formData"
+                  :on-submit="function () {}">
+      </smart-form>
+    </smart-loading>
 
     <!--<h1>Accordion</h1>-->
     <!--<smart-accordion title="Devices">-->
@@ -150,6 +159,7 @@ export default {
     SmartTable: () => import('../src/components/smart-table'),
     SmartCard: () => import('../src/components/smart-card'),
     StackSearchableTable: () => import('../src/components/stack-searchableTable'),
+    SmartLoading: () => import('../src/components/smart-loading'),
   },
   computed: {
     ...mapGetters(['getPeople']),
@@ -210,7 +220,7 @@ export default {
       // eslint-disable-next-line
       console.log(submittedData);
       this.working = true;
-      // await this.delay(3000);
+      await this.delay(1000);
       if (this.count > 0) {
         this.count -= 1;
         this.errors = [

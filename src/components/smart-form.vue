@@ -3,103 +3,102 @@
           centerForm
           ? 'smart-form-centered'
           : 'smart-form',
-          working
-          ? 'smart-form--loading'
-          : ''
         ]"
         v-if="formData"
         v-bind="$attrs">
 
-    <!-- Render title -->
-    <header class="smart-form--titleSection" v-if="formTitle">
-      <h3 class="smart-form--title">{{formTitle}}</h3>
-    </header>
+    <!-- Loading spinner that keeps track of the loading state of the form -->
+    <smart-loading :loading="working">
 
-    <section class="smart-form--fieldSection">
+      <!-- Render title -->
+      <header class="smart-form--titleSection" v-if="formTitle">
+        <h3 class="smart-form--title">{{formTitle}}</h3>
+      </header>
 
-      <!-- Render each item in the "masterData" array as an input field with a label. -->
-      <template v-for="(item, key) in masterData">
+      <section class="smart-form--fieldSection">
 
-        <!-- If the item is the object's id, render it as a hidden field. -->
-        <input v-if="isObjectId(key)"
-               :name="key"
-               type="hidden"
-               :key="key"
-               v-model="item.value">
+        <!-- Render each item in the "masterData" array as an input field with a label. -->
+        <template v-for="(item, key) in masterData">
 
-        <!-- Render as a select element if value is a list of items -->
-        <bit-select class="smart-form--field"
-                    :style="getFlexProp(item.span)"
-                    :key="key"
-                    v-else-if="Array.isArray(item.value)"
-                    :name="key"
-                    :label-text="key | toTitleCase"
-                    :readonly="item.readonly ? item.readonly : false"
-                    :select-data="item.value"
-                    v-model="selectData[key]"
-                    :stack-elements="true"
-                    :errored-field="item.errored">
-        </bit-select>
+          <!-- If the item is the object's id, render it as a hidden field. -->
+          <input v-if="isObjectId(key)"
+                 :name="key"
+                 type="hidden"
+                 :key="key"
+                 v-model="item.value">
 
-        <!-- Render as a bit-input component if above conditions are false -->
-        <bit-input class="smart-form--field"
-                   :ref="key.toLowerCase()"
-                   :style="getFlexProp(item.span)"
-                   :key="key"
-                   v-else-if="isValidField(item, key)"
-                   :stack-elements="true"
-                   :name="key"
-                   :input-type="getInputType(item.typeConstructor)"
-                   :label-text="item.displayName ? item.displayName : key | toTitleCase"
-                   :readonly="item.readonly ? item.readonly : false"
-                   v-model="item.value"
-                   :required-field="item.required"
-                   :errored-field="item.errored">
-        </bit-input>
+          <!-- Render as a select element if value is a list of items -->
+          <bit-select class="smart-form--field"
+                      :style="getFlexProp(item.span)"
+                      :key="key"
+                      v-else-if="Array.isArray(item.value)"
+                      :name="key"
+                      :label-text="key | toTitleCase"
+                      :readonly="item.readonly ? item.readonly : false"
+                      :select-data="item.value"
+                      v-model="selectData[key]"
+                      :stack-elements="true"
+                      :errored-field="item.errored">
+          </bit-select>
 
-      </template>
+          <!-- Render as a bit-input component if above conditions are false -->
+          <bit-input class="smart-form--field"
+                     :ref="key.toLowerCase()"
+                     :style="getFlexProp(item.span)"
+                     :key="key"
+                     v-else-if="isValidField(item, key)"
+                     :stack-elements="true"
+                     :name="key"
+                     :input-type="getInputType(item.typeConstructor)"
+                     :label-text="item.displayName ? item.displayName : key | toTitleCase"
+                     :readonly="item.readonly ? item.readonly : false"
+                     v-model="item.value"
+                     :required-field="item.required"
+                     :errored-field="item.errored">
+          </bit-input>
 
-    </section>
+        </template>
 
-    <section class="smart-form--buttonSection">
+      </section>
 
-      <!-- Submit button -->
-      <bit-btn type="submit"
-               class="smart-form--button"
-               @click.native="submit"
-               :btn-size="submitBtnSize">
-        Submit
-      </bit-btn>
+      <section class="smart-form--buttonSection">
 
-      <!-- @slot Placeholder for additional markup after
-                 the submit button but before the loading spinner -->
-      <slot name="form-buttons"></slot>
+        <!-- Submit button -->
+        <bit-btn type="submit"
+                 class="smart-form--button"
+                 @click.native="submit"
+                 :btn-size="submitBtnSize">
+          Submit
+        </bit-btn>
 
-    </section>
+        <!-- @slot Placeholder for additional markup after
+                   the submit button but before the loading spinner -->
+        <slot name="form-buttons"></slot>
 
-    <!-- Only render loading spinner if form is loading -->
-    <bit-loading class="smart-form--spinner" v-if="working"></bit-loading>
+      </section>
 
-    <!-- @slot Placeholder for any additional markup after the form -->
-    <slot name="form-end"></slot>
+      <!-- @slot Placeholder for any additional markup after the form -->
+      <slot name="form-end"></slot>
 
-    <!-- Render errors if any are passed in -->
-    <p class="smart-form--error"
-       v-if="hasErrors"
-       v-for="(error, key) in validationErrors"
-       :key="key">
-      {{error.message}}
-    </p>
+      <!-- Render errors if any are passed in -->
+      <p class="smart-form--error"
+         v-if="hasErrors"
+         v-for="(error, key) in validationErrors"
+         :key="key">
+        {{error.message}}
+      </p>
+
+    </smart-loading>
 
   </form>
 </template>
 
 <script>
 import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
-import BitLoading from './bit-loading.vue';
 import BitSelect from './bit-select.vue';
 import BitBtn from './bit-btn.vue';
 import BitInput from './bit-input.vue';
+import SmartLoading from './smart-loading.vue';
 
 /**
  * A component that renders a dynamic form based on a model.
@@ -109,7 +108,7 @@ import BitInput from './bit-input.vue';
 export default {
   name: 'smart-form',
   components: {
-    BitLoading,
+    SmartLoading,
     BitSelect,
     BitBtn,
     BitInput,

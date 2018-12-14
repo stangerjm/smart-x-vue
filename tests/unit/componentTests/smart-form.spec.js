@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createComponentGenerator, delay } from '../helpers';
 import SmartForm from '../../../src/components/smart-form.vue';
+import SmartLoading from '../../../src/components/smart-loading.vue';
 import { transformIntoFormModel } from '../../../src/global/mixins';
 
 const button = '<button class="extra-button">Click</button>';
@@ -144,13 +145,16 @@ describe('smart-form.vue', () => {
   });
 
   it('allows the form to show a loading state on submit', () => {
-    expect(filledOutForm.classes()).not.toContain('smart-form--loading');
+    const smartLoading = filledOutForm.find(SmartLoading);
+
+    expect(smartLoading.vm.loading).toBeFalsy();
+
 
     const submitBtn = filledOutForm.find('.smart-form--button');
 
     submitBtn.trigger('click');
 
-    expect(filledOutForm.classes()).toContain('smart-form--loading');
+    expect(smartLoading.vm.loading).toBeTruthy();
   });
 
   it('optionally renders a title', () => {
