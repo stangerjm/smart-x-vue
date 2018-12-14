@@ -35,25 +35,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.smart-loading-active {
-  position: relative;
-
-  &:after {
-    content: "";
-    display: inline-block;
-    background: rgba(0, 0, 0, 0.2);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-  }
-
-  .smart-loading--spinner {
-    position: absolute;
-    top: calc(50% - (25px / 2));
-    left: calc(50% - (25px / 2));
-  }
-}
+@import '../styles/sass/components/smart/loading/smart-loading';
 </style>
