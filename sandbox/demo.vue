@@ -92,6 +92,7 @@
 
     <h1>Tabs</h1>
     <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
+      <h1>Title</h1>
       <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
       <smart-details slot="TabTwo" :detail-data="james"></smart-details>
       <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>

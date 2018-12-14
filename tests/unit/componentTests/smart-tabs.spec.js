@@ -3,6 +3,7 @@ import SmartTabs from '../../../src/components/smart-tabs.vue';
 
 const mountSmartTabs = createComponentGenerator(SmartTabs, {
   slots: {
+    default: '<div class="default-content">Default Content</div>',
     TabOne: '<div class="tab-one-content">Tab One Content</div>',
     TabTwo: '<div class="tab-two-content">Tab Two Content</div>',
     TabThree: '<div class="tab-three-content">Tab Three Content</div>',
@@ -111,5 +112,16 @@ describe('smart-tabs.vue', () => {
     const firstTab = tabsWithInvalidTabNumber.find('.smart-tabs--tab');
 
     expect(firstTab.classes()).toContain(activeTabClass);
+  });
+
+  it('allows content to be passed into a default slot, which will be shared among all the tabs', () => {
+    tabElements.map((tab) => {
+      tab.trigger('click');
+
+      const defaultContent = smartTabs.find('.default-content');
+      expect(defaultContent.exists()).toBeTruthy();
+
+      return tab;
+    });
   });
 });

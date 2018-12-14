@@ -23,6 +23,9 @@
     <!-- Container for all content -->
     <article class="smart-tabs--content">
 
+      <!-- @slot Default slot which contains content shared between all tabs -->
+      <slot></slot>
+
       <!-- Render a slot corresponding to each tab above.
           Only render if the current tab is the active tab -->
       <slot v-for="tab in tabs" :name="tab" v-if="tab === activeTab"></slot>
