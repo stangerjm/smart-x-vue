@@ -10,35 +10,35 @@
     <smart-table :table-data="currentPage"
                  :default-context="defaultContext"
                  :unsearchable-headings="unsearchableHeadings"
-                 :allow-delete="allowDelete"
-                 :allow-edit="allowEdit"
-                 :allow-details="allowDetails"
                  :ignore-fields="ignoreFields"
                  :props-to-link="propsToLink"
                  :table-empty-message="tableEmptyMessage">
 
-      <slot name="action-container"
-            :getActionPath="getActionPath"
-            :itemId="itemId"
-            :context="context">
-        <!-- FALLBACK CONTENT -->
+      <template slot="bodyActionContainer" slot-scope="{ getActionPath, itemId, context }">
 
-        <!-- Edit btn -->
-        <router-link :to="getActionPath(context, 'edit', itemId)">
-          <bit-icon icon-type="edit"></bit-icon>
-        </router-link>
+        <slot name="action-container"
+              :getActionPath="getActionPath"
+              :itemId="itemId"
+              :context="context">
+          <!-- FALLBACK CONTENT -->
 
-        <!-- Delete btn -->
-        <router-link :to="getActionPath(context, 'delete', itemId)">
-          <bit-icon icon-type="delete"></bit-icon>
-        </router-link>
+          <!-- Edit btn -->
+          <router-link :to="getActionPath(context, 'edit', itemId)">
+            <bit-icon icon-type="edit"></bit-icon>
+          </router-link>
 
-        <!-- Details btn -->
-        <router-link :to="getActionPath(context, 'details', itemId)">
-          <bit-icon icon-type="details"></bit-icon>
-        </router-link>
+          <!-- Delete btn -->
+          <router-link :to="getActionPath(context, 'delete', itemId)">
+            <bit-icon icon-type="delete"></bit-icon>
+          </router-link>
 
-      </slot>
+          <!-- Details btn -->
+          <router-link :to="getActionPath(context, 'details', itemId)">
+            <bit-icon icon-type="details"></bit-icon>
+          </router-link>
+
+        </slot>
+      </template>
 
     </smart-table>
       <bit-paging v-model="pageIdx"
