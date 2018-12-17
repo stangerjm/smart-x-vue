@@ -140,12 +140,12 @@ describe('bit-input.vue', () => {
     expect(wrapper.emitted('input')[0]).toEqual([expectedDate]);
 
     input.setValue('01/01/200');
-    expect(wrapper.emitted('input')[1]).toBeUndefined();
+    expect(wrapper.emitted('input')[1]).toEqual([null]);
 
     input.setValue('test');
-    expect(wrapper.emitted('input')[2]).toBeUndefined();
+    expect(wrapper.emitted('input')[2]).toEqual([null]);
 
     input.setValue('12345');
-    expect(wrapper.emitted('input')[3]).toBeUndefined();
+    expect(wrapper.emitted('input')[3]).toEqual([null]);
   });
 });

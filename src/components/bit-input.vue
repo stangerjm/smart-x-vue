@@ -252,7 +252,11 @@ export default {
       // Reset phone number if input mask is not satisfied
       phoneElement.onblur = () => {
         if (!phoneElement.inputmask.isComplete()) {
+          // clear v-model
           this.$emit('input', '');
+
+          // clear physical input
+          phoneElement.value = '';
         }
       };
     },
@@ -297,9 +301,14 @@ export default {
        * @param value
        */
       const emit = (value) => {
-        if (value != null) {
-          this.$emit('input', castValue(value, this.inputType));
+        // Do not emit if phone number is null
+        // It will only need to be emitted if it is filled out
+        // and will be cleared elsewhere
+        if (value == null && this.inputType === InputType.PHONE) {
+          return;
         }
+
+        this.$emit('input', castValue(value, this.inputType));
       };
       /**
        * Gets the value to be emitted. Will actively ignore
