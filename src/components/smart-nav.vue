@@ -8,8 +8,9 @@
         </section>
 
         <aside class="smart-nav--headerAside" v-if="usr != null">
-          <span class="smart-nav--userTime">{{getNavMessage(usr)}}</span>
-          <bit-btn btn-style="clear"
+          <span class="smart-nav--userInfo">{{getNavMessage(usr)}}</span>
+          <bit-btn v-if="!excludeLogout"
+                   btn-style="clear"
                    btn-size="medium"
                    class="smart-nav--signOut"
                    @click.native="onSignOut">
@@ -71,6 +72,13 @@ export default {
     onSignOut: {
       type: Function,
       default: () => {},
+    },
+    /**
+     * Optionally excludes the logout button
+     */
+    excludeLogout: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
