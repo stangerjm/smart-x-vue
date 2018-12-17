@@ -82,12 +82,12 @@
       <slot name="form-end"></slot>
 
       <!-- Render errors if any are passed in -->
-      <p class="smart-form--error"
-         v-if="hasErrors"
-         v-for="(error, key) in errors"
-         :key="key">
-        {{error.message}}
-      </p>
+      <block-messages class="smart-form--errors"
+                      v-if="hasErrors"
+                      :messages="errors.map(error => error.message)"
+                      :align-left="!centerMessages"
+                      message-type="error">
+      </block-messages>
 
     </smart-loading>
 
@@ -99,6 +99,7 @@ import { createViewModel, getInputType, toTitleCase } from '../global/mixins';
 import BitSelect from './bit-select.vue';
 import BitBtn from './bit-btn.vue';
 import BitInput from './bit-input.vue';
+import BlockMessages from './block-messages.vue';
 import SmartLoading from './smart-loading.vue';
 
 /**
@@ -113,6 +114,7 @@ export default {
     BitSelect,
     BitBtn,
     BitInput,
+    BlockMessages,
   },
   props: {
     /**
@@ -171,6 +173,13 @@ export default {
     submitBtnSize: {
       type: String,
       default: 'medium',
+    },
+    /**
+     * Allows error messages to be centered
+     */
+    centerMessages: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

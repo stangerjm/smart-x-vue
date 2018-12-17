@@ -42,14 +42,19 @@
       <!--}"-->
       <!--:details-per-column="20"></smart-details>-->
 
+    <h1>Messages</h1>
+    <block-messages :messages="messages"
+                    message-type="error">
+    </block-messages>
+
     <!--<h2>Details: Outlined</h2>-->
     <!--<smart-details :detail-data="{ name: 'James', birthday: new Date() }" outlined></smart-details>-->
 
-    <!--<h1>Form</h1>-->
-    <!--<smart-form :form-data="formData"-->
-                <!--:on-submit="submit"-->
-                <!--:validation-errors="errors">-->
-    <!--</smart-form>-->
+    <h1>Form</h1>
+    <smart-form :form-data="formData"
+                :on-submit="submit"
+                :validation-errors="errors">
+    </smart-form>
 
     <!--<h1>Searchable Table</h1>-->
     <!--<stack-searchable-table form-title="Test"-->
@@ -90,13 +95,13 @@
       <!--</template>-->
     <!--</smart-table>-->
 
-    <h1>Tabs</h1>
-    <smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">
-      <h1>Title</h1>
-      <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
-      <smart-details slot="TabTwo" :detail-data="james"></smart-details>
-      <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
-    </smart-tabs>
+    <!--<h1>Tabs</h1>-->
+    <!--<smart-tabs :tabs="['TabOne', 'TabTwo', 'TabThree']" :current-tab="2">-->
+      <!--<h1>Title</h1>-->
+      <!--<smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>-->
+      <!--<smart-details slot="TabTwo" :detail-data="james"></smart-details>-->
+      <!--<smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>-->
+    <!--</smart-tabs>-->
 
     <!--<h1>Cards</h1>-->
     <!--<div class="demo-grid">-->
@@ -138,23 +143,22 @@
 import { createNamespacedHelpers } from 'vuex';
 import ModelType from '../src/global/constants/ModelType';
 import { createLinkToRecord, transformIntoFormModel } from '../src/global/mixins';
-import BlockActionContainer from '../src/components/block-actionContainer.vue';
-import BlockTableBody from '../src/components/block-tableBody.vue';
 
 const { mapGetters, mapActions } = createNamespacedHelpers('people');
 
 export default {
   name: 'demo',
   components: {
-    BlockTableBody,
-    BlockActionContainer,
-    BlockExpandableSection: () => import('../src/components/block-expandableSection'),
     BitBtn: () => import('../src/components/bit-btn'),
     BitIcon: () => import('../src/components/bit-icon'),
+    BitLoading: () => import('../src/components/bit-loading'),
+    BlockTableBody: () => import('../src/components/block-tableBody'),
+    BlockActionContainer: () => import('../src/components/block-actionContainer'),
+    BlockExpandableSection: () => import('../src/components/block-expandableSection'),
+    BlockMessages: () => import('../src/components/block-messages'),
     SmartTabs: () => import('../src/components/smart-tabs'),
     SmartDetails: () => import('../src/components/smart-details'),
     SmartAccordion: () => import('../src/components/smart-accordion'),
-    BitLoading: () => import('../src/components/bit-loading'),
     SmartSection: () => import('../src/components/smart-section'),
     SmartForm: () => import('../src/components/smart-form'),
     SmartTable: () => import('../src/components/smart-table'),
@@ -183,6 +187,11 @@ export default {
     return {
       devices: [],
       errors: [],
+      messages: [
+        'This is an error message',
+        'You did the thing wrong',
+        'That is not what we were expecting',
+      ],
       formData: transformIntoFormModel({
         Name: {
           type: String,
@@ -261,6 +270,7 @@ export default {
     },
     async populateDevices() {
       await this.delay(1000);
+
       this.devices = [
         {
           deviceId: 1,

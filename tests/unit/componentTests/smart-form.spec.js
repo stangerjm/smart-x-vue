@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { createComponentGenerator, delay } from '../helpers';
 import SmartForm from '../../../src/components/smart-form.vue';
 import SmartLoading from '../../../src/components/smart-loading.vue';
+import BlockMessages from '../../../src/components/block-messages.vue';
 import { transformIntoFormModel } from '../../../src/global/mixins';
 
 const button = '<button class="extra-button">Click</button>';
@@ -135,6 +136,7 @@ const erroredForm = mountSmartForm({
   formData: erroredFormData,
   onSubmit: submit,
   validationErrors,
+  centerMessages: true,
 });
 
 const formWithEmptyRequiredFields = mountSmartForm({
@@ -281,7 +283,7 @@ describe('smart-form.vue', () => {
   });
 
   it('displays any error messages passed in', () => {
-    const errors = erroredForm.findAll('.smart-form--error');
+    const errors = erroredForm.findAll('.block-messages--message');
     expect(errors.length).toEqual(validationErrors.length);
 
     errors.wrappers.every((error, idx) => {
@@ -379,7 +381,7 @@ describe('smart-form.vue', () => {
     // Submit
     submitBtn.trigger('click');
 
-    const errors = formWithEmptyRequiredFields.findAll('.smart-form--error');
+    const errors = formWithEmptyRequiredFields.findAll('.block-messages--message');
 
     expect(errors.length).toBeGreaterThan(0);
     expect(formWithEmptyRequiredFields.vm.errors).toContainEqual({ message: 'name is required', fieldName: 'name' });
@@ -446,5 +448,10 @@ describe('smart-form.vue', () => {
 
     const teamMembersRequiredLabel = advancedForm.find('.smart-form--field[name="teamMembers"] > .bit-input--required');
     expect(teamMembersRequiredLabel.exists()).toBeTruthy();
+  });
+
+  it('allows error message list to be centered', () => {
+    const blockMessages = erroredForm.find(BlockMessages);
+    expect(blockMessages.props('alignLeft')).toBeFalsy();
   });
 });
