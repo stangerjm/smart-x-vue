@@ -1,20 +1,6 @@
 export default function smartSearch() {
   return {
     /**
-     * The title that will display to the right of the search.
-     */
-    formTitle: {
-      type: String,
-      required: true,
-    },
-    /**
-     * Name of the route to navigate to when add button is clicked.
-     */
-    routeName: {
-      type: String,
-      required: true,
-    },
-    /**
      * Model that should be used to render the search fields.
      */
     searchModel: {
@@ -27,6 +13,13 @@ export default function smartSearch() {
     onSubmit: {
       type: Function,
       required: true,
+    },
+    /**
+     * The title that will display to the right of the search.
+     */
+    searchTitle: {
+      type: String,
+      default: '',
     },
     /**
      * Indicates if the search should be expanded

@@ -7,6 +7,6 @@ the layout will have problems. This will be fixed in a future version.
 <smart-search
     action="/Region"
     method="get"
-    form-title="Region">
+    search-title="Region">
 </smart-search>
 ```

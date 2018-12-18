@@ -3,7 +3,10 @@
 
     <!-- Select label -->
     <label class="bit-input--label"
-           :class="requiredField ? 'bit-input--required' : ''"
+           :class="{
+              'bit-input--neatLabel': lineUp,
+              'bit-input-required' : requiredField
+           }"
            :for="randomId">{{labelText}}</label>
 
     <!-- Select element -->
@@ -69,6 +72,14 @@ export default {
      * Flag to indicate if the field should be required or not
      */
     requiredField: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Lines up the input label to a uniform position to be in line with other inputs
+     * <br>*Note: if stackElements flag is set, this will have no effect.
+     */
+    lineUp: {
       type: Boolean,
       default: false,
     },
