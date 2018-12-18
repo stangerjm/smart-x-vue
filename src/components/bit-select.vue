@@ -5,7 +5,7 @@
     <label class="bit-input--label"
            :class="{
               'bit-input--neatLabel': lineUp,
-              'bit-input-required' : requiredField
+              'bit-input--required' : requiredField
            }"
            :for="randomId">{{labelText}}</label>
 

@@ -17,6 +17,7 @@ describe('bit-select.vue', () => {
       labelText: 'Test',
       stackElements: true,
       erroredField: true,
+      requiredField: true,
     },
   });
 
@@ -39,6 +40,10 @@ describe('bit-select.vue', () => {
 
   it('applies the class "bit-input--stacked" when the element is flagged to stack', () => {
     expect(bitSelect.classes()).toContain('bit-input-stacked');
+  });
+
+  it('flags a required field as required', () => {
+    expect(label.classes()).toContain('bit-input--required');
   });
 
   it('has an associated label', () => {
