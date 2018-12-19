@@ -21,3 +21,19 @@ export function delay(time, value) {
     setTimeout(resolve.bind(null, value), time);
   });
 }
+
+export function findByElementName(nameValue) {
+  return function findByName(input) {
+    const {
+      vm: {
+        $el = null,
+      } = {},
+    } = input;
+
+    if ($el == null) {
+      return null;
+    }
+
+    return $el.getAttribute('name') === nameValue;
+  };
+}

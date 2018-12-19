@@ -37,8 +37,9 @@
                       :readonly="item.readonly ? item.readonly : false"
                       :select-data="item.value"
                       v-model="selectData[key]"
-                      :stack-elements="true"
                       :required-field="item.required"
+                      :stack-elements="stackInputs"
+                      :line-up="lineUpInputs"
                       :errored-field="item.errored">
           </bit-select>
 
@@ -48,13 +49,14 @@
                      :style="getFlexProp(item.span)"
                      :key="key"
                      v-else-if="isValidField(item, key)"
-                     :stack-elements="true"
                      :name="key"
                      :input-type="getInputType(item.typeConstructor)"
                      :label-text="item.displayName ? item.displayName : key | toTitleCase"
                      :readonly="item.readonly ? item.readonly : false"
                      v-model="item.value"
                      :required-field="item.required"
+                     :stack-elements="stackInputs"
+                     :line-up="lineUpInputs"
                      :errored-field="item.errored">
           </bit-input>
 
@@ -69,7 +71,7 @@
                  class="smart-form--button"
                  @click.native="submit"
                  :btn-size="submitBtnSize">
-          Submit
+          {{submitBtnText}}
         </bit-btn>
 
         <!-- @slot Placeholder for additional markup after
@@ -180,6 +182,27 @@ export default {
     centerMessages: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * Allows inputs to be stacked
+     */
+    stackInputs: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * Allows inputs to be lined up
+     */
+    lineUpInputs: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Text for the submit button
+     */
+    submitBtnText: {
+      type: String,
+      default: 'Submit',
     },
   },
   data() {

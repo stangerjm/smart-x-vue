@@ -1,8 +1,10 @@
 import { mount } from '@vue/test-utils';
-import { createComponentGenerator, delay } from '../helpers';
+import { createComponentGenerator, delay, findByElementName } from '../helpers';
 import SmartForm from '../../../src/components/smart-form.vue';
 import SmartLoading from '../../../src/components/smart-loading.vue';
 import BlockMessages from '../../../src/components/block-messages.vue';
+import BitInput from '../../../src/components/bit-input.vue';
+import BitSelect from '../../../src/components/bit-select.vue';
 import { transformIntoFormModel } from '../../../src/global/mixins';
 
 const button = '<button class="extra-button">Click</button>';
@@ -453,5 +455,71 @@ describe('smart-form.vue', () => {
   it('allows error message list to be centered', () => {
     const blockMessages = erroredForm.find(BlockMessages);
     expect(blockMessages.props('alignLeft')).toBeFalsy();
+  });
+
+  it('allows elements to not be stacked', () => {
+    const formWithNonStackedInputs = mountSmartForm({
+      formData: emptyFormData,
+      onSubmit: submit,
+      stackInputs: false,
+    });
+
+    const { wrappers: inputWrappers } = formWithNonStackedInputs.findAll(BitInput);
+
+    const nameInput = inputWrappers.find(findByElementName('name'));
+    expect(nameInput.props('stackElements')).toEqual(false);
+
+    const birthdayInput = inputWrappers.find(findByElementName('birthday'));
+    expect(birthdayInput.props('stackElements')).toEqual(false);
+
+    const ageInput = inputWrappers.find(findByElementName('age'));
+    expect(ageInput.props('stackElements')).toEqual(false);
+
+    const isEmployeeInput = inputWrappers.find(findByElementName('isEmployee'));
+    expect(isEmployeeInput.props('stackElements')).toEqual(false);
+
+    const teamMembersInput = formWithNonStackedInputs.find(BitSelect);
+    expect(teamMembersInput.props('stackElements')).toEqual(false);
+  });
+
+  it('allows elements to be lined up', () => {
+    const formWithLinedUpInputs = mountSmartForm({
+      formData: emptyFormData,
+      onSubmit: submit,
+      lineUpInputs: true,
+    });
+
+    const { wrappers: inputWrappers } = formWithLinedUpInputs.findAll(BitInput);
+
+    const nameInput = inputWrappers.find(findByElementName('name'));
+    expect(nameInput.props('lineUp')).toEqual(true);
+
+    const birthdayInput = inputWrappers.find(findByElementName('birthday'));
+    expect(birthdayInput.props('lineUp')).toEqual(true);
+
+    const ageInput = inputWrappers.find(findByElementName('age'));
+    expect(ageInput.props('lineUp')).toEqual(true);
+
+    const isEmployeeInput = inputWrappers.find(findByElementName('isEmployee'));
+    expect(isEmployeeInput.props('lineUp')).toEqual(true);
+
+    const teamMembersInput = formWithLinedUpInputs.find(BitSelect);
+    expect(teamMembersInput.props('lineUp')).toEqual(true);
+  });
+
+  it('allows submit button text to be specified with a default of "submit"', () => {
+    const btnText = 'Test';
+
+    const formWithCustomSubmitText = mountSmartForm({
+      formData: emptyFormData,
+      onSubmit: submit,
+      submitBtnText: btnText,
+    });
+
+    const customSubmitBtn = formWithCustomSubmitText.find('.smart-form--button');
+    expect(customSubmitBtn.text()).toEqual(btnText);
+
+    const defaultSubmitBtn = emptyForm.find('.smart-form--button');
+    expect(defaultSubmitBtn.text()).toEqual('Submit');
   });
 });

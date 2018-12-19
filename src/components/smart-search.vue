@@ -32,6 +32,9 @@
 
         <smart-form :on-submit="submit"
                     :form-data="searchModel"
+                    :stack-inputs="false"
+                    line-up-inputs
+                    :submit-btn-text="searchBtnText"
                     :submit-btn-size="searchBtnSize">
         </smart-form>
 

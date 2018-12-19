@@ -35,5 +35,11 @@ export default function smartSearch() {
       type: String,
       default: 'medium',
     },
+    /**
+     * Sets the size of the search button. Accepted values are 'small', 'medium', and 'large'
+     */
+    searchBtnText: {
+      type: String,
+    },
   };
 }

@@ -1,4 +1,4 @@
-import { createComponentGenerator } from '../helpers';
+import { createComponentGenerator, findByElementName } from '../helpers';
 import SmartSearch from '../../../src/components/smart-search.vue';
 import BlockExpandableSection from '../../../src/components/block-expandableSection.vue';
 import BitInput from '../../../src/components/bit-input.vue';
@@ -36,12 +36,6 @@ const smartSearch = mountSmartSearch({
 });
 
 const searchHeader = smartSearch.find('.smart-search--header');
-
-function findByElementName(nameValue) {
-  return function findByName(input) {
-    return input.vm.$el.getAttribute('name') === nameValue;
-  };
-}
 
 const inputWrappers = smartSearch.findAll(BitInput).wrappers;
 const selectWrappers = smartSearch.findAll(BitSelect).wrappers;
@@ -125,13 +119,13 @@ describe('smart-search.vue', () => {
     expect(positionWrapper.vm.$options.name).toEqual('bit-select');
   });
 
-  // it('lines up input fields for consistency', () => {
-  //   expect(nameInput.props('lineUp')).toBeTruthy();
-  //   expect(birthdayInput.props('lineUp')).toBeTruthy();
-  //   expect(isEmployeeInput.props('lineUp')).toBeTruthy();
-  //   expect(phoneInput.props('lineUp')).toBeTruthy();
-  //   expect(positionSelect.props('lineUp')).toBeTruthy();
-  // });
+  it('lines up input fields for consistency', () => {
+    expect(nameWrapper.props('lineUp')).toEqual(true);
+    expect(birthdayWrapper.props('lineUp')).toEqual(true);
+    expect(isEmployeeWrapper.props('lineUp')).toEqual(true);
+    expect(phoneWrapper.props('lineUp')).toEqual(true);
+    expect(positionWrapper.props('lineUp')).toEqual(true);
+  });
 
   it('only submits values from search fields that are filled out', () => {
     function Click(wrapper) {
@@ -240,5 +234,22 @@ describe('smart-search.vue', () => {
 
     const searchBtn = smartSearchWithLargeBtn.find('.bit-btn-large');
     expect(searchBtn.exists()).toEqual(true);
+  });
+
+  it('allows search button text to be set', () => {
+    const btnText = 'Test';
+
+    const searchWithCustomSubmitText = mountSmartSearch({
+      searchTitle,
+      searchModel,
+      onSubmit,
+      searchBtnText: btnText,
+    });
+
+    const customSubmitBtn = searchWithCustomSubmitText.find('.smart-form--button');
+    expect(customSubmitBtn.text()).toEqual(btnText);
+
+    const defaultSubmitBtn = smartSearch.find('.smart-form--button');
+    expect(defaultSubmitBtn.text()).toEqual('Submit');
   });
 });
