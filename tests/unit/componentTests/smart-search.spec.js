@@ -1,4 +1,4 @@
-import { createComponentGenerator, findByElementName } from '../helpers';
+import { createComponentGenerator, findByElementName, Click } from '../helpers';
 import SmartSearch from '../../../src/components/smart-search.vue';
 import BlockExpandableSection from '../../../src/components/block-expandableSection.vue';
 import BitInput from '../../../src/components/bit-input.vue';
@@ -128,12 +128,6 @@ describe('smart-search.vue', () => {
   });
 
   it('only submits values from search fields that are filled out', () => {
-    function Click(wrapper) {
-      if (wrapper.trigger != null) {
-        wrapper.trigger('click');
-      }
-    }
-
     const submitBtn = smartSearch.find('.smart-form--button');
 
     Click(submitBtn);

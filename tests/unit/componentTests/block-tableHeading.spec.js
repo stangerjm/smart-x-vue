@@ -1,5 +1,6 @@
 import { createComponentGenerator } from '../helpers';
 import BlockTableHeading from '../../../src/components/block-tableHeading.vue';
+import { capitalize } from '../../../src/global/mixins/helpers';
 
 function test() {}
 
@@ -66,10 +67,14 @@ describe('block-tableHeading.vue', () => {
     expect(missingActionContainer).toBeUndefined();
   });
 
-  it('renders a tooltip for each sortable heading', () => {
-    sortableHeadings.every((heading) => {
+  it('renders a tooltip and unique class for each sortable heading', () => {
+    const searchableHeadings = tableHeadings.filter(item =>
+      unsearchableHeadings.indexOf(item) === -1);
+
+    sortableHeadings.every((heading, idx) => {
       const link = heading.find('.smart-table--link');
 
+      expect(link.classes()).toContain(`smart-table--sortBy${capitalize(searchableHeadings[idx])}`);
       expect(link.attributes('title')).not.toBeUndefined();
       return true;
     });

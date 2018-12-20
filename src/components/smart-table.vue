@@ -64,10 +64,10 @@ import BitMessage from './bit-message.vue';
 import BitIcon from './bit-icon.vue';
 
 
-const getSmartTableProps = smartTable || function smartTableProps() {};
+const smartTableProps = smartTable || {};
 const propsMixin = {
   props: {
-    ...getSmartTableProps(),
+    ...smartTableProps,
   },
 };
 

@@ -1,22 +1,25 @@
 <template>
   <section class="stack-searchableTable">
-    <smart-search :form-title="formTitle"
-                  :route-name="routeName"
-                  :search-model="modifiedSearchModel"
+    <smart-search :search-model="modifiedSearchModel"
                   :on-submit="handleSearchSubmit"
+                  :search-title="searchTitle"
+                  :search-btn-size="searchBtnSize"
+                  :search-btn-text="searchBtnText"
                   :is-expanded="isExpanded">
       <slot name="search-action" slot="extra-action"></slot>
     </smart-search>
     <smart-table :table-data="currentPage"
                  :default-context="defaultContext"
                  :unsearchable-headings="unsearchableHeadings"
+                 :include-action-container="includeActionContainer"
+                 :id-key="idKey"
                  :ignore-fields="ignoreFields"
                  :props-to-link="propsToLink"
                  :table-empty-message="tableEmptyMessage">
 
-      <template slot="bodyActionContainer" slot-scope="{ getActionPath, itemId, context }">
+      <template slot="action-container" slot-scope="{ getActionPath, itemId, context }">
 
-        <slot name="action-container"
+        <slot name="table-action"
               :getActionPath="getActionPath"
               :itemId="itemId"
               :context="context">
@@ -51,16 +54,16 @@
 <script>
 import { stackSearchableTable } from './props';
 import { compare } from '../global/mixins';
-import { splitArrayIntoChunks } from '../global/mixins/helpers';
+import { splitArrayIntoChunks, getType } from '../global/mixins/helpers';
 import BitPaging from './bit-paging.vue';
 import SmartTable from './smart-table.vue';
 import SmartSearch from './smart-search.vue';
 import BitIcon from './bit-icon.vue';
 
-const getStackSearchableTableProps = stackSearchableTable || function searchableTableProps() {};
+const stackSearchableTableProps = stackSearchableTable || {};
 const propsMixin = {
   props: {
-    ...getStackSearchableTableProps(),
+    ...stackSearchableTableProps,
   },
 };
 
@@ -126,11 +129,9 @@ export default {
       }
 
       // Set the number of results per page if formData has the corresponding property
-      if (
-        submittedData.ResultsPerPage != null &&
-        Number(submittedData.ResultsPerPage.value) > 0
-      ) {
-        this.numberOfResultsPerPage = Number(submittedData.ResultsPerPage.value);
+      const resultsPerPage = Number(submittedData.ResultsPerPage);
+      if (resultsPerPage > 0) {
+        this.numberOfResultsPerPage = resultsPerPage;
       } else {
         // Otherwise, reset the results per page.
         this.numberOfResultsPerPage = this.resultsPerPage;
@@ -140,8 +141,8 @@ export default {
       this.pageIdx = 0;
 
       // Extract only the filter data, and ignore the results per page
-      // eslint-disable-next-line
-      let { ResultsPerPage, ...formData } = submittedData;
+      const { ResultsPerPage, ...formData } = submittedData;
+
       this.filterData(formData);
     },
     resetData() {
@@ -166,7 +167,7 @@ export default {
          * @returns {boolean}
          */
         function tableRowValueMatchesFormValue(key) {
-          return compare(tableRow[key], formData[key].value, formData[key].typeConstructor);
+          return compare(tableRow[key], formData[key], getType(formData[key], true));
         }
 
         // Return true if every value in the form matches the corresponding table cell

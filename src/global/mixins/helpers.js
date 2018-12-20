@@ -132,3 +132,16 @@ export function coerceToDate(date) {
       return undefined;
   }
 }
+
+/**
+ * Capitalizes the first letter of a given string
+ * @param string
+ * @returns {string || null}
+ */
+export function capitalize(string) {
+  if (typeof string !== 'string') {
+    return null;
+  }
+
+  return string.replace(/^\w/, firstLetter => firstLetter.toUpperCase());
+}

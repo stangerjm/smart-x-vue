@@ -37,3 +37,9 @@ export function findByElementName(nameValue) {
     return $el.getAttribute('name') === nameValue;
   };
 }
+
+export function Click(wrapper) {
+  if (wrapper.trigger != null && typeof wrapper.trigger === 'function') {
+    wrapper.trigger('click');
+  }
+}

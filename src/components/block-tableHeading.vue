@@ -9,7 +9,10 @@
 
           <!-- Render the heading as a sort button if heading is not flagged to be unsearchable -->
           <template v-if="!unsearchableHeadings.includes(heading)">
-            <a class="smart-table--link" @click="sortMethod(heading)" :title="`Sort by ${heading}`">
+            <a class="smart-table--link"
+               :class="[ `smart-table--sortBy${capitalize(heading)}` ]"
+               @click="sortMethod(heading)"
+               :title="`Sort by ${heading}`">
               {{ heading | toTitleCase }}
               <bit-icon icon-type="sort"></bit-icon>
             </a>
@@ -31,6 +34,7 @@
 
 <script>
 import { toTitleCase } from '../global/mixins';
+import { capitalize } from '../global/mixins/helpers';
 import BitIcon from './bit-icon.vue';
 
 export default {
@@ -70,6 +74,9 @@ export default {
   },
   filters: {
     toTitleCase,
+  },
+  methods: {
+    capitalize,
   },
 };
 </script>

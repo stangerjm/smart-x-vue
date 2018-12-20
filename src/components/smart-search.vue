@@ -52,10 +52,11 @@ import BitIcon from './bit-icon.vue';
 import BlockExpandableSection from './block-expandableSection.vue';
 import SmartForm from './smart-form.vue';
 
-const getSmartSearchProps = smartSearch || function smartSearchProps() {};
+const smartSearchProps = smartSearch || {};
+
 const propsMixin = {
   props: {
-    ...getSmartSearchProps(),
+    ...smartSearchProps,
   },
 };
 
