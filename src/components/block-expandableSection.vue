@@ -67,7 +67,9 @@ export default {
         return accumulator;
       }
 
-      const totalHeight = [...contentContainer.childNodes].reduce(getHeight, 0);
+      const { childNodes } = contentContainer;
+
+      const totalHeight = [...childNodes].reduce(getHeight, 0);
 
       // do not update DOM unless the height needs to be updated
       if (previousHeight !== totalHeight) {
@@ -81,6 +83,11 @@ export default {
      */
     collapseData() {
       const contentContainer = this.$refs.content;
+
+      if (contentContainer == null) {
+        return;
+      }
+
       contentContainer.style.height = '0px';
       this.previousHeight = 0;
     },
