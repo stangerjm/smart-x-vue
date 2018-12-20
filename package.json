@@ -1,6 +1,6 @@
 {
   "name": "smart-x-vue",
-  "version": "0.7.2",
+  "version": "1.0.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name smart-x-vue ./src/main.js",
@@ -13,8 +13,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "date-fns": "^2.0.0-alpha.25",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.2",
     "flatpickr": "^4.5.2",
     "inputmask": "^4.0.2",
     "vue": "^2.5.17",
@@ -29,7 +27,6 @@
     "@vue/cli-plugin-unit-jest": "^3.0.3",
     "@vue/cli-service": "^3.0.3",
     "@vue/eslint-config-airbnb": "^3.0.5",
-    "@vue/eslint-config-prettier": "^3.0.3",
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
