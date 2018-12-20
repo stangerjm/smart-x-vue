@@ -114,9 +114,14 @@ export function splitArrayIntoChunks(array, elementsPerChunk) {
   );
 }
 
+/**
+ * Coerces a value into a date
+ * @param date
+ * @returns {Date || null}
+ */
 export function coerceToDate(date) {
   if (date == null) {
-    return undefined;
+    return null;
   }
 
   const type = getType(date, true);
@@ -129,7 +134,7 @@ export function coerceToDate(date) {
     case Number:
       return new Date(date);
     default:
-      return undefined;
+      return null;
   }
 }
 

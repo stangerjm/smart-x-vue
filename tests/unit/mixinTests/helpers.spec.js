@@ -1,4 +1,4 @@
-import { isObject, getType, getDefaultValue, getClass, splitArrayIntoChunks, coerceToDate } from '../../../src/global/mixins/helpers';
+import { isObject, getType, getDefaultValue, getClass, splitArrayIntoChunks, coerceToDate, capitalize } from '../../../src/global/mixins/helpers';
 
 function test() {}
 
@@ -82,5 +82,13 @@ describe('helpers.js', () => {
     expect(coerceToDate(dateString)).toEqual(new Date(dateString));
     expect(coerceToDate(new Date(dateString))).toEqual(new Date(dateString));
     expect(coerceToDate(Date.parse(dateString))).toEqual(new Date(dateString));
+  });
+
+  it('contains a function capitalize that capitalizes the first letter of a string', () => {
+    expect(capitalize('test')).toEqual('Test');
+    expect(capitalize('person 1')).toEqual('Person 1');
+    expect(capitalize('this is a string')).toEqual('This is a string');
+    expect(capitalize('1person')).toEqual('1person');
+    expect(capitalize('1 test')).toEqual('1 test');
   });
 });
