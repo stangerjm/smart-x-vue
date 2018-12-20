@@ -129,7 +129,7 @@ export default {
         // });
       }
 
-      return undefined;
+      return null;
     },
   },
 };

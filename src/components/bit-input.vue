@@ -323,6 +323,9 @@ export default {
             if (this.$refs[inputType].inputmask.isComplete()) {
               return e.target.value;
             }
+
+            // Return undefined important here because if null
+            // is emitted, value is not properly cleared
             return undefined;
           default:
             return e.target.value;

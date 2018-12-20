@@ -24,10 +24,10 @@ export default {
   },
   data() {
     return {
-      focusableEls: undefined,
-      firstFocusableEl: undefined,
-      lastFocusableEl: undefined,
-      focusedElBeforeOpen: undefined,
+      focusableEls: null,
+      firstFocusableEl: null,
+      lastFocusableEl: null,
+      focusedElBeforeOpen: null,
       selectData: [],
     };
   },

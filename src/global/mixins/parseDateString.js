@@ -40,15 +40,15 @@ function isValidDateString(value) {
 /**
  * Parses a string date into a new Date object.
  * @param {*} dateString
- * @returns {Date | undefined}
+ * @returns {Date | null}
  */
 export default function parseDateString(dateString) {
   if (dateString == null) {
-    return undefined;
+    return null;
   }
 
   if (typeof dateString !== 'string') {
-    return undefined;
+    return null;
   }
 
   // If date is earliest possible .NET MVC encoded JSON date, return early date
@@ -60,6 +60,6 @@ export default function parseDateString(dateString) {
     return new Date(dateString);
   }
 
-  // If parameter cannot be parsed, return undefined
-  return undefined;
+  // If parameter cannot be parsed, return null
+  return null;
 }

@@ -86,7 +86,7 @@ export default {
       /**
        * Current time and date
        */
-      currentDateTime: undefined,
+      currentDateTime: null,
     };
   },
   methods: {

@@ -118,7 +118,7 @@ export default {
       /**
        * The current key the table sort will use as the criteria
        */
-      currentKey: undefined,
+      currentKey: null,
       /**
        * Copy of the table data passed into the component. This is used as a workaround for the
        * prop mutation anti-pattern described in the Vue documentation.

@@ -37,15 +37,15 @@ describe('parseDateString.js', () => {
       /**
        * Unsupported / ignored formats
        */
-      dateObject: undefined,
-      dateToString: undefined,
-      invalidDateString: undefined,
-      wordThenNumber: undefined,
-      stringLikeYear: undefined,
-      numberLikeYear: undefined,
-      numberLikeDate: undefined,
-      stringLikeYearThenWords: undefined,
-      wordsThenStringLikeYear: undefined,
+      dateObject: null,
+      dateToString: null,
+      invalidDateString: null,
+      wordThenNumber: null,
+      stringLikeYear: null,
+      numberLikeYear: null,
+      numberLikeDate: null,
+      stringLikeYearThenWords: null,
+      wordsThenStringLikeYear: null,
     };
 
     Object.entries(dates).every(([key, value]) => {

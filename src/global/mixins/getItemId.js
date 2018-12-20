@@ -1,7 +1,7 @@
 /**
  * Finds the id property of an item and returns it.
  * @param {object} item
- * @returns {string | number}
+ * @returns {string | number | null}
  */
 export default function getItemId(item) {
   const keys = Object.keys(item);
@@ -11,6 +11,6 @@ export default function getItemId(item) {
     return item[idKey];
   }
 
-  // return undefined if no valid id is found
-  return undefined;
+  // return null if no valid id is found
+  return null;
 }
