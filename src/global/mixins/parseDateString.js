@@ -8,6 +8,16 @@ function getDateValidator(dateString) {
   };
 }
 
+function isISOString(value) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  const isoRegex = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/;
+
+  return isoRegex.exec(value) != null;
+}
+
 /**
  * Returns true if the passed in value is a valid date string
  * *Note: CANNOT handle UTC strings
@@ -55,7 +65,7 @@ export default function parseDateString(dateString) {
   if (dateString.startsWith('/Date(')) {
     const parsedDate = dateString.substring(dateString.indexOf('(') + 1, dateString.indexOf(')'));
     return new Date(Number.parseInt(parsedDate, 10));
-  } else if (isValidDateString(dateString)) {
+  } else if (isISOString(dateString) || isValidDateString(dateString)) {
     // If date is any other valid date, return new date with the value
     return new Date(dateString);
   }
