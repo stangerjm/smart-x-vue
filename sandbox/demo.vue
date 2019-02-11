@@ -54,11 +54,7 @@
     <h1>Searchable Table</h1>
     <stack-searchable-table form-title="Test"
                             route-name="test"
-                            :table-data="[
-                                  { id: 1, Name: 'James', Age: 25, birthday: '01/01/2001' },
-                                  { id: 2, Name: 'Joel', Age: 20, birthday: '01/01/2003' },
-                                  { id: 3, Name: 'Jenna', Age: 23, birthday: '01/01/2002' }
-                                ]"
+                            :table-data="delayedData"
                             include-action-container
                             default-context="test"
                             :searchModel="searchModel">
@@ -185,6 +181,9 @@ export default {
     getDevices() {
       return this.devices;
     },
+    delayedData() {
+      return this.testDelayData;
+    },
   },
   data() {
     return {
@@ -195,6 +194,7 @@ export default {
         'You did the thing wrong',
         'That is not what we were expecting',
       ],
+      testDelayData: [],
       formData: transformIntoFormModel({
         Name: {
           type: String,
@@ -333,8 +333,31 @@ export default {
       console.log(searchData);
     },
   },
-  mounted() {
+  async mounted() {
     this.populateDevices();
+
+    await this.delay(3000);
+
+    this.testDelayData = [
+      {
+        id: 1,
+        Name: 'James',
+        Age: 25,
+        birthday: '01/01/2001',
+      },
+      {
+        id: 2,
+        Name: 'Joel',
+        Age: 20,
+        birthday: '01/01/2003',
+      },
+      {
+        id: 3,
+        Name: 'Jenna',
+        Age: 23,
+        birthday: '01/01/2002',
+      },
+    ];
   },
 };
 </script>

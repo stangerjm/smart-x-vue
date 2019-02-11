@@ -102,6 +102,11 @@ export default {
       },
     };
   },
+  watch: {
+    tableData() {
+      this.masterData = this.tableData;
+    },
+  },
   computed: {
     /**
      * Data that has been split into multiple pages.

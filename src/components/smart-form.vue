@@ -299,6 +299,10 @@ export default {
       const firstErrorFieldName = validationErrors[0].fieldName;
       const firstErrorInput = this.$el.querySelector(`.bit-input--field[name="${firstErrorFieldName}"`);
 
+      if (firstErrorInput == null) {
+        return;
+      }
+
       firstErrorInput.focus();
     },
     /**

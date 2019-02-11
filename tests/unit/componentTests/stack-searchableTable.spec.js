@@ -1,4 +1,4 @@
-import { createComponentGenerator, Click } from '../helpers';
+import { createComponentGenerator, Click, delay } from '../helpers';
 import StackSearchableTable from '../../../src/components/stack-searchableTable.vue';
 import SmartTable from '../../../src/components/smart-table.vue';
 import SmartSearch from '../../../src/components/smart-search.vue';
@@ -563,5 +563,30 @@ describe('stack-searchableTable.vue', () => {
     Click(nextPageBtn);
 
     expect(freshStackSearchableTable.vm.currentPage).toEqual([tableData[1]]);
+  });
+
+  it('renders correctly when data is loaded asynchronously', () => {
+    const patientSearchableTable = mountStackSearchableTable({
+      ...tableProps,
+      ...searchProps,
+      resultsPerPage,
+      // Ensure table data is empty to begin with
+      tableData: [],
+    });
+
+    const testTableData = [{
+      personId: 1,
+      name: 'Test',
+      age: 25,
+    }];
+
+    // Change table data to test if change will cause re-render
+    patientSearchableTable.vm.tableData = testTableData;
+
+    // Find the actual table to test the re-render
+    const patientSmartTable = patientSearchableTable.find(SmartTable);
+
+    // Check if changing the parent data caused the child to update
+    expect(patientSmartTable.vm.tableData).toEqual(testTableData);
   });
 });
