@@ -5,12 +5,7 @@
     <header class="smart-card--header">
 
       <!-- Render the card title -->
-      <p :class="[isExpanded
-                    ? 'smart-card--hiddenTitle'
-                    : 'smart-card--collapsedTitle'
-                  ]">
-        {{cardTitle}}
-      </p>
+      <p class="smart-card--title">{{cardTitle}}</p>
 
       <!-- Render the expand button -->
       <bit-btn btn-style="expand"
@@ -33,10 +28,7 @@
       </main>
 
       <!-- Render info section -->
-      <aside class="smart-card--info">
-
-        <!-- Render card title -->
-        <p class="smart-card--title">{{cardTitle}}</p>
+      <aside class="smart-card--info" v-if="hasInfo">
 
         <!-- Render card description -->
         <p class="smart-card--description">{{cardDescription}}</p>
@@ -74,11 +66,9 @@ export default {
   props: {
     /**
      * Title of the card
-     * Will display towards bottom of expanded card, and towards the top of collapsed card
      */
     cardTitle: {
       type: String,
-      required: true,
     },
     /**
      * Description of the card
@@ -112,6 +102,14 @@ export default {
        */
       hasActions: true,
     };
+  },
+  computed: {
+    /**
+     * Determines if the info container should be rendered
+     */
+    hasInfo() {
+      return this.cardDescription != null && this.cardDescription != '';
+    },
   },
   methods: {
     /**

@@ -1,4 +1,4 @@
-import { createComponentGenerator, Click, delay } from '../helpers';
+import { createComponentGenerator, Click } from '../helpers';
 import StackSearchableTable from '../../../src/components/stack-searchableTable.vue';
 import SmartTable from '../../../src/components/smart-table.vue';
 import SmartSearch from '../../../src/components/smart-search.vue';

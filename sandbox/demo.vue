@@ -1,7 +1,6 @@
 <template>
   <div>
-
-
+<!-- 
     <h1>Loading</h1>
 
     <h2>Bit Loading</h2>
@@ -99,20 +98,19 @@
       <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
       <smart-details slot="TabTwo" :detail-data="james"></smart-details>
       <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
-    </smart-tabs>
+    </smart-tabs> -->
 
     <h1>Cards</h1>
     <div class="demo-grid">
       <smart-card card-title="ITS3"
-                  card-description="He is a developer."
                   is-expanded>
         <template slot="card-content">
           <smart-details title="James"
                          :detail-data="{ name: 'James', birthday: new Date() }">
           </smart-details>
         </template>
-        <bit-icon slot="card-actions" icon-type="delete"></bit-icon>
-        <bit-icon slot="card-actions" icon-type="edit"></bit-icon>
+        <bit-icon slot="card-actions" style="margin-right: 10px;" icon-type="delete"></bit-icon>
+        <bit-icon slot="card-actions" style="margin-right: 10px;" icon-type="edit"></bit-icon>
       </smart-card>
 
       <smart-card card-title="Logo"
@@ -120,18 +118,23 @@
                   is-expanded
                   watch-resize>
         <template slot="card-content">
-          <img src="../src/styles/assets/wspLogo.svg" alt="test">
+          <img style="margin: 10px;" src="../src/styles/assets/wspLogo.svg" alt="test">
         </template>
       </smart-card>
-      <smart-card card-title="Devices"
-                  card-description="A list of all the devices."
+      <smart-card card-description="A list of all the devices."
                   is-expanded
                   style="grid-column: 1 / -1;">
         <template slot="card-content">
-          <smart-table :table-data="getDevices"
-                       default-context="test">
-          </smart-table>
+          <section>
+            <smart-table :table-data="getDevices"
+                         default-context="test">
+            </smart-table>
+          </section>
         </template>
+        
+        <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 1</bit-btn>
+        <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 2</bit-btn>
+        <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 3</bit-btn>
       </smart-card>
     </div>
   </div>
@@ -210,6 +213,12 @@ export default {
         },
         Options: {
           value: [1, 2, 3],
+        },
+        Password: {
+          value: ModelType.Password('asdf'),
+        },
+        PhoneNumber: {
+          value: ModelType.PhoneNumber('1234567890'),
         },
       }),
       searchModel: {

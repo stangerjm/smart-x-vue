@@ -21,8 +21,7 @@ const collapsedCard = mountSmartCard({
   cardDescription,
 });
 
-const collapsedTopTitle = collapsedCard.find('.smart-card--collapsedTitle');
-const collapsedContentTitle = collapsedCard.find('.smart-card--title');
+const cardTitleEl = collapsedCard.find('.smart-card--title');
 const collapsedCardButton = collapsedCard.find('.smart-card--toggle');
 
 const expandedCard = mountSmartCard({
@@ -33,10 +32,24 @@ const expandedCard = mountSmartCard({
 
 const expandedCardButton = expandedCard.find('.smart-card--toggle');
 
+function testElementDoesNotExist({
+  vueElement,
+  elementSelector,
+  done,
+}) {
+  if (vueElement.vm == null || typeof elementSelector !== 'string') {
+    return;
+  }
+
+  vueElement.vm.$nextTick(async () => {
+    expect(vueElement.find(elementSelector).exists()).toBeFalsy();
+    await done();
+  });
+}
+
 describe('smart-card.vue', () => {
   it('renders a title for the card', () => {
-    expect(collapsedTopTitle.text()).toEqual(cardTitle);
-    expect(collapsedContentTitle.text()).toEqual(cardTitle);
+    expect(cardTitleEl.text()).toEqual(cardTitle);
   });
 
   it('allows the expanded state to be set from the outside', () => {
@@ -107,10 +120,34 @@ describe('smart-card.vue', () => {
       cardDescription,
     });
 
-    // Wait for card's mounted() method to update DOM
-    cardWithoutActions.vm.$nextTick(async () => {
-      expect(cardWithoutActions.find('.smart-card--actions').exists()).toBeFalsy();
-      await done();
+    testElementDoesNotExist({
+      vueElement: cardWithoutActions,
+      elementSelector: '.smart-card--actions',
+      done,
+    });
+  });
+
+  it('will not render an info container if no description is specified', (done) => {
+    // Create a card but do not set a description
+    const cardWithoutDescription = mountSmartCard();
+
+    const elementSelector = '.smart-card--info';
+
+    testElementDoesNotExist({
+      vueElement: cardWithoutDescription,
+      elementSelector,
+      done,
+    });
+
+    // Create a card with an empty description
+    const cardWithEmptyDescription = mountSmartCard({
+      cardDescription: '',
+    });
+
+    testElementDoesNotExist({
+      vueElement: cardWithEmptyDescription,
+      elementSelector,
+      done,
     });
   });
 });
