@@ -108,7 +108,7 @@ export default {
      * Determines if the info container should be rendered
      */
     hasInfo() {
-      return this.cardDescription != null && this.cardDescription != '';
+      return this.cardDescription != null && this.cardDescription !== '';
     },
   },
   methods: {
