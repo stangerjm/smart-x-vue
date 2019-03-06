@@ -1,6 +1,5 @@
 <template>
   <div>
-<!-- 
     <h1>Loading</h1>
 
     <h2>Bit Loading</h2>
@@ -98,7 +97,7 @@
       <smart-table slot="TabOne" :table-data="devices" default-context="Test"></smart-table>
       <smart-details slot="TabTwo" :detail-data="james"></smart-details>
       <smart-form slot="TabThree" :form-data="person" :on-submit="addNewPerson"></smart-form>
-    </smart-tabs> -->
+    </smart-tabs>
 
     <h1>Cards</h1>
     <div class="demo-grid">

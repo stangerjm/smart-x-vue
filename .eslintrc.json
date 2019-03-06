@@ -9,7 +9,8 @@
   ],
   "rules": {
     "no-param-reassign": 0,
-    "no-underscore-dangle": ["error", { "allow": ["_id", "_input"] }]
+    "no-underscore-dangle": ["error", { "allow": ["_id", "_input"] }],
+    "linebreak-style": "off"
   },
   "parserOptions": {
     "parser": "babel-eslint"
