@@ -1,5 +1,6 @@
 import { createViewModel } from '../../../src/global/mixins';
 import ModelType from '../../../src/global/constants/ModelType';
+import { Password, PhoneNumber } from '../../../src/global/constants/CustomTypes';
 
 const defaultViewModelProps = ['type', 'typeConstructor', 'value', 'errored'];
 const advancedViewModelProps = [...defaultViewModelProps, 'required'];
@@ -61,14 +62,14 @@ const modelWithDefaultValues = {
   },
   phoneNumber: {
     type: 'PhoneNumber',
-    typeConstructor: ModelType.PhoneNumber,
+    typeConstructor: PhoneNumber,
     value: '',
     errored: false,
     required: true,
   },
   password: {
     type: 'Password',
-    typeConstructor: ModelType.Password,
+    typeConstructor: Password,
     value: '',
     errored: false,
     required: true,
@@ -133,14 +134,14 @@ const modelWithCustomValues = {
   },
   phoneNumber: {
     type: 'PhoneNumber',
-    typeConstructor: ModelType.PhoneNumber,
+    typeConstructor: PhoneNumber,
     value: '1234567890',
     errored: false,
     required: true,
   },
   password: {
     type: 'Password',
-    typeConstructor: ModelType.Password,
+    typeConstructor: Password,
     value: 'test123',
     errored: false,
     required: true,
@@ -171,8 +172,8 @@ describe('createViewModel.js', () => {
       isEmployee: Boolean,
       teamMembers: Array,
       position: Object,
-      phoneNumber: ModelType.PhoneNumber,
-      password: ModelType.Password,
+      phoneNumber: ModelType.PhoneNumber(),
+      password: ModelType.Password(),
     };
 
     viewModelMatchesExpectedModel(model, modelWithDefaultValues, defaultViewModelProps);
@@ -259,12 +260,12 @@ describe('createViewModel.js', () => {
       },
       {
         name: 'phoneNumber',
-        type: ModelType.PhoneNumber,
+        type: ModelType.PhoneNumber(),
         required: true,
       },
       {
         name: 'password',
-        type: ModelType.Password,
+        type: ModelType.Password(),
         required: true,
       },
     ];

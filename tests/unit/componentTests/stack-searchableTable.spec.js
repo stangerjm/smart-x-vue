@@ -116,7 +116,7 @@ const searchModel = {
   age: Number,
   isEmployee: Boolean,
   hireDate: Date,
-  phoneNumber: ModelType.PhoneNumber,
+  phoneNumber: ModelType.PhoneNumber(),
   position: positions,
 };
 
@@ -124,7 +124,7 @@ const searchModelWithoutBoolean = {
   name: String,
   age: Number,
   hireDate: Date,
-  phoneNumber: ModelType.PhoneNumber,
+  phoneNumber: ModelType.PhoneNumber(),
   position: positions,
 };
 

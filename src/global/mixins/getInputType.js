@@ -1,5 +1,5 @@
 import InputType from '../constants/InputType';
-import ModelType from '../constants/ModelType';
+import { Password, PhoneNumber } from '../constants/CustomTypes';
 
 /**
  * Gets the appropriate input type depending on the value's data type.
@@ -16,9 +16,9 @@ export default function getInputType(type) {
       return InputType.NUMBER;
     case Date:
       return InputType.DATE;
-    case ModelType.Password:
+    case Password:
       return InputType.PASSWORD;
-    case ModelType.PhoneNumber:
+    case PhoneNumber:
       return InputType.PHONE;
     default:
       return InputType.TEXT;
