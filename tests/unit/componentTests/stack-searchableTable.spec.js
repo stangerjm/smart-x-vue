@@ -404,7 +404,7 @@ describe('stack-searchableTable.vue', () => {
     // VALID TEST 1
     const firstOption = options.wrappers[0];
 
-    firstOption.trigger('input');
+    firstOption.trigger('change');
     Click(submitBtn);
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
@@ -413,7 +413,7 @@ describe('stack-searchableTable.vue', () => {
     // VALID TEST 2
     const secondOption = options.wrappers[1];
 
-    secondOption.trigger('input');
+    secondOption.trigger('change');
     Click(submitBtn);
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
@@ -422,7 +422,7 @@ describe('stack-searchableTable.vue', () => {
     // VALID TEST 3
     const thirdOption = options.wrappers[2];
 
-    thirdOption.trigger('input');
+    thirdOption.trigger('change');
     Click(submitBtn);
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
@@ -466,7 +466,7 @@ describe('stack-searchableTable.vue', () => {
       phoneInput.setValue(phoneNumber);
 
       // Select option at passed-in index
-      options.wrappers[positionIndex].trigger('input');
+      options.wrappers[positionIndex].trigger('change');
 
       // Submit
       Click(submitBtn);

@@ -200,15 +200,12 @@ export default {
       formData: transformIntoFormModel({
         Name: {
           type: String,
-          required: true,
         },
         Age: {
           type: Number,
-          required: true,
         },
         HireDate: {
           type: Date,
-          required: true,
         },
         Options: {
           value: [1, 2, 3],
@@ -253,7 +250,6 @@ export default {
       await this.addPerson(submittedData);
     },
     async submit(submittedData) {
-      // eslint-disable-next-line
       console.log(submittedData);
       this.working = true;
       await this.delay(1000);

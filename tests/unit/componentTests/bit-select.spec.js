@@ -52,7 +52,7 @@ describe('bit-select.vue', () => {
 
   it('emits the selected value to a parent component', () => {
     options.wrappers.every((option, idx) => {
-      option.trigger('input');
+      option.trigger('change');
       expect(bitSelect.emitted('input')[idx]).toEqual([data[idx]]);
       return true;
     });

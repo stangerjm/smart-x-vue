@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 // Mixins
 import {
   parseDateString,

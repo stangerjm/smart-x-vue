@@ -346,6 +346,7 @@ export default {
      */
     getSubmitData() {
       const data = this.masterData.simpleVersion;
+
       if (this.selectData != null) {
         return Object.entries(data).reduce(
           this.reduceArrayPropertiesIntoSelectedValues,

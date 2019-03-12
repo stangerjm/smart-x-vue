@@ -14,7 +14,7 @@
             :class="[erroredField ? 'bit-input--error' : '']"
             :id="randomId"
             v-bind="$attrs"
-            @input="$emit('input', $event.target.value)">
+            @change="$emit('input', $event.target.value)">
 
       <!-- Default option -->
       <option selected disabled>Please select an option</option>

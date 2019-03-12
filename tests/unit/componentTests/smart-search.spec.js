@@ -181,7 +181,7 @@ describe('smart-search.vue', () => {
     // Select position and verify submitted value is correct
     const selectedPosition = positionInput.find('option:not([disabled])');
 
-    selectedPosition.trigger('input');
+    selectedPosition.trigger('change');
     Click(submitBtn);
 
     expect(Object.keys(result).length).toEqual(6);
