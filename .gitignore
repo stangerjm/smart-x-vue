@@ -3,6 +3,8 @@ node_modules
 /dist
 
 smart-x-vue-*
+/report
+/report/report.html
 
 # local env files
 .env.local
