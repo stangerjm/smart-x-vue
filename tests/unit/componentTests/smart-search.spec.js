@@ -20,7 +20,7 @@ const searchModel = {
   age: Number,
   birthday: Date,
   isEmployee: Boolean,
-  phone: ModelType.PhoneNumber,
+  phone: ModelType.PhoneNumber(),
   position: ['ITS3', 'ITS4', 'ITS5'],
 };
 

@@ -1,6 +1,7 @@
 import parseDateString from './parseDateString';
+import switchCase from './switchCase';
 import { isObject, getDefaultValue, getType } from './helpers';
-import ModelType from '../constants/ModelType';
+import { Password, PhoneNumber } from '../constants/CustomTypes';
 
 /**
  * Parses value if needed and returns raw or parsed value.
@@ -95,7 +96,32 @@ function getViewModelReductor() {
       });
     }
 
+    function accumulateCustomType(type) {
+      const typeLookup = switchCase({
+        Password,
+        PhoneNumber,
+      })(() => {});
+
+      return getSimplifyableObject({
+        ...accumulatorObj,
+        [key]: {
+          type,
+          typeConstructor: typeLookup(type),
+          value: value.modelValue,
+          errored: false,
+        },
+      });
+    }
+
     if (isObject(value)) {
+      if (value.modelType === 'Password') {
+        return accumulateCustomType(value.modelType);
+      }
+
+      if (value.modelType === 'PhoneNumber') {
+        return accumulateCustomType(value.modelType);
+      }
+
       return getSimplifyableObject({
         ...accumulatorObj,
         [key]: {
@@ -106,14 +132,6 @@ function getViewModelReductor() {
         },
       });
     } else if (typeof value === 'function') {
-      if (value.name === ModelType.PhoneNumber().name) {
-        return accumulateFunctionType(ModelType.PhoneNumber);
-      }
-
-      if (value.name === ModelType.Password().name) {
-        return accumulateFunctionType(ModelType.Password);
-      }
-
       return accumulateFunctionType(value);
     }
 

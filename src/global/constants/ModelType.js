@@ -1,12 +1,14 @@
 export default {
   Password(password) {
-    return function GetPassword() {
-      return password;
+    return {
+      modelType: 'Password',
+      modelValue: password != null ? password : '',
     };
   },
   PhoneNumber(phoneNumber) {
-    return function GetPhoneNumber() {
-      return phoneNumber;
+    return {
+      modelType: 'PhoneNumber',
+      modelValue: phoneNumber != null ? phoneNumber : '',
     };
   },
 };
