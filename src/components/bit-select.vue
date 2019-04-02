@@ -17,7 +17,7 @@
             @change="$emit('input', $event.target.value)">
 
       <!-- Default option -->
-      <option selected disabled>Please select an option</option>
+      <option value="" disabled>Please select an option</option>
 
       <!-- Render an option for each item in the list -->
       <option v-for="(option, key) in selectData"
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { generateRandomId } from '../global/mixins';
+
 /**
  * A dynamic select element that will render options based off of an array passed in
  * @author James Stanger, Washington State Patrol
@@ -87,7 +89,7 @@ export default {
   data() {
     return {
       selectedValue: '',
-      randomId: `input-${Math.random().toString(36).substr(2, 9)}`,
+      randomId: `input-${generateRandomId()}`,
     };
   },
 };
