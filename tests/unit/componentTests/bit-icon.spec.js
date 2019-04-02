@@ -6,7 +6,7 @@ const mountIcon = createWrapperGenerator(BitIcon);
 describe('bit-icon.vue', () => {
   it('renders the correct style when props.iconType is set', () => {
     // Should render each of the below styles
-    ['user', 'sort', 'delete', 'details', 'edit', 'search', 'exit', 'logout']
+    ['user', 'sort', 'delete', 'details', 'edit', 'search', 'exit', 'logout', 'reset']
       .every((type) => {
         const wrapper = mountIcon({
           propsData: { iconType: type },
