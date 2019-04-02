@@ -16,7 +16,8 @@
              :class="[erroredField ? 'bit-input--error' : '']"
              :id="inputId ? inputId : randomId"
              :type="inputType"
-             :checked="checked"
+             :value="value"
+             :checked="value"
              @change="updateCheckbox"
              v-bind="$attrs">
       <!-- Hidden checkbox for .NET MVC applications -->
@@ -58,7 +59,7 @@ import InputMask from 'inputmask';
 import 'flatpickr/dist/flatpickr.min.css';
 import config from '../../app.config';
 import InputType from '../global/constants/InputType';
-import { parseDateString } from '../global/mixins';
+import { parseDateString, generateRandomId } from '../global/mixins';
 
 /**
  * A flexible input and label that can be rendered as a text field,
@@ -132,7 +133,7 @@ export default {
       /**
        * Random id generated for input boxes and their corresponding labels
        */
-      randomId: `input-${Math.random().toString(36).substr(2, 9)}`,
+      randomId: `input-${generateRandomId()}`,
       /**
        * Date-picker configuration
        */
@@ -148,10 +149,6 @@ export default {
        * Allow imported InputType constant to be accessible in the template.
        */
       InputType,
-      /**
-       * Flag that keeps track of the state of a checkbox
-       */
-      checked: this.value,
     };
   },
   methods: {
@@ -167,8 +164,7 @@ export default {
      * Event emitter that will update the v-model for a checkbox
      */
     updateCheckbox() {
-      this.checked = !this.checked;
-      this.$emit('input', this.checked);
+      this.$emit('input', !this.value);
     },
     /**
      * Mounts a date-picker component
@@ -310,6 +306,7 @@ export default {
 
         this.$emit('input', castValue(value, this.inputType));
       };
+
       /**
        * Gets the value to be emitted. Will actively ignore
        * fields that have not completed their input masks.
@@ -346,17 +343,20 @@ export default {
         instance._input.value = null;
       }
     },
+    applyMasks() {
+      if (this.inputType === InputType.DATE) {
+        this.mountDatePicker();
+      } else if (this.inputType === InputType.PHONE) {
+        this.applyPhoneMask();
+      }
+    },
   },
   /**
    * If component should be a date-picker, mount a date picker to the element
    * If data is a phone number, apply the appropriate input mask
    */
   mounted() {
-    if (this.inputType === InputType.DATE) {
-      this.mountDatePicker();
-    } else if (this.inputType === InputType.PHONE) {
-      this.applyPhoneMask();
-    }
+    this.applyMasks();
   },
 };
 </script>
