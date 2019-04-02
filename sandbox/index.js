@@ -7,6 +7,8 @@ Vue.use(Router);
 
 require('../src/styles/sass/base/_base.scss');
 
+console.obj = function logObject(object) { console.log(JSON.parse(JSON.stringify(object))); };
+
 // eslint-disable-next-line
 export function initSandbox() {
   new Vue({

@@ -38,6 +38,7 @@
     </block-messages>
 
     <h1>Form</h1>
+
     <smart-form :form-data="formData"
                 :on-submit="submit"
                 :validation-errors="errors">
@@ -46,7 +47,9 @@
     <h1>Search</h1>
     <smart-search search-title="Test"
                   :search-model="searchModel"
-                  :on-submit="search">
+                  :on-submit="search"
+                  v-model="resultsPerPage"
+                  :on-reset="reset">
     </smart-search>
 
     <h1>Searchable Table</h1>
@@ -55,15 +58,8 @@
                             :table-data="delayedData"
                             include-action-container
                             default-context="test"
-                            :searchModel="searchModel">
-
-      <router-link slot="search-action" to="/add">
-        <bit-btn btn-size="large" style="margin-right: 10px;">Add</bit-btn>
-      </router-link>
-
-      <router-link slot="search-action" to="/clear">
-        <bit-btn btn-size="large">Clear</bit-btn>
-      </router-link>
+                            :searchModel="searchTableModel"
+                            :on-reset="function() {}">
 
       <template slot="table-action" slot-scope="{ getActionPath, itemId }">
         <router-link :to="getActionPath('test', 'edit', itemId)">Edit</router-link>
@@ -130,7 +126,7 @@
             </smart-table>
           </section>
         </template>
-        
+
         <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 1</bit-btn>
         <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 2</bit-btn>
         <bit-btn btn-size="large" style="margin-right: 10px;" slot="card-actions">Action 3</bit-btn>
@@ -166,6 +162,7 @@ export default {
     StackSearchableTable: () => import('../src/components/stack-searchableTable'),
     SmartLoading: () => import('../src/components/smart-loading'),
     SmartSearch: () => import('../src/components/smart-search'),
+    Usability: () => import('./components/usability'),
   },
   computed: {
     ...mapGetters(['getPeople']),
@@ -189,6 +186,7 @@ export default {
   },
   data() {
     return {
+      resultsPerPage: 10,
       devices: [],
       errors: [],
       messages: [
@@ -217,12 +215,35 @@ export default {
           value: ModelType.PhoneNumber('1234567890'),
         },
       }),
+      searchTableModel: {
+        nameAndDob: {
+          Name: String,
+          birthday: Date,
+        },
+        Name: String,
+        Age: Number,
+        birthday: Date,
+        phoneNumber: ModelType.PhoneNumber(),
+        nameAge: {
+          Name: String,
+          Age: Number,
+        },
+      },
       searchModel: {
+        nameAndDob: {
+          name: String,
+          dob: Date,
+        },
+        arrayPhone: {
+          array: [1, 2, 3],
+          phone: ModelType.PhoneNumber(),
+        },
         Name: String,
         Age: Number,
         birthday: Date,
         options: [1, 2, 3],
-        phoneNumber: ModelType.PhoneNumber,
+        phoneNumber: ModelType.PhoneNumber(),
+        isEmployee: Boolean,
       },
       textModel: '',
       dateModel: new Date(),
@@ -240,7 +261,7 @@ export default {
         age: Number,
         birthday: Date,
         isEmployee: Boolean,
-        phoneNumber: ModelType.PhoneNumber,
+        phoneNumber: ModelType.PhoneNumber(),
       },
     };
   },
@@ -328,19 +349,16 @@ export default {
       });
     },
     search(searchData) {
-      const {
-        birthday: {
-          value = null,
-        } = {},
-      } = searchData;
-
       console.log(searchData);
+    },
+    reset() {
+      // console.log('reset');
     },
   },
   async mounted() {
     this.populateDevices();
 
-    await this.delay(3000);
+    // await this.delay(3000);
 
     this.testDelayData = [
       {
