@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     getNavMessage(usr) {
-      return usr ? `Welcome, ${usr}!` : '';
+      return usr ? `Logged in as: ${usr}` : '';
     },
     /**
      * Gets the current date and time in the format: 'MM/DD/YY HH:MM:SS'

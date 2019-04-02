@@ -36,7 +36,7 @@ describe('smart-nav.vue', () => {
   it('displays a welcome message with the user name', () => {
     const welcomeMessage = smartNav.find('.smart-nav--userInfo');
 
-    expect(welcomeMessage.text()).toEqual(`Welcome, ${usr}!`);
+    expect(welcomeMessage.text()).toEqual(`Logged in as: ${usr}`);
   });
 
   it('renders a log out button', () => {
