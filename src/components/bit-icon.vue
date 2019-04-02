@@ -38,6 +38,7 @@ export default {
         'search',
         'exit',
         'logout',
+        'reset',
       ]),
     };
   },
