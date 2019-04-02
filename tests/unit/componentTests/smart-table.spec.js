@@ -194,11 +194,11 @@ describe('smart-table.vue', () => {
 
     nameSortBtn.trigger('click');
     let names = tableWithData.vm.localData.reduce(gatherName, []);
-    expect(names).toEqual(['test3', 'test2', 'test1', 'James']);
+    expect(names).toEqual(['James', 'test1', 'test2', 'test3']);
 
     nameSortBtn.trigger('click');
     names = tableWithData.vm.localData.reduce(gatherName, []);
-    expect(names).toEqual(['James', 'test1', 'test2', 'test3']);
+    expect(names).toEqual(['test3', 'test2', 'test1', 'James']);
   });
 
   it('allows a specified property to be treated as the id', () => {

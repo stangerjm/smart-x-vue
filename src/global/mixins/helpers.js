@@ -96,8 +96,10 @@ export function splitArrayIntoChunks(array, elementsPerChunk) {
   if (array == null || elementsPerChunk == null) {
     return [];
   }
+
+  // If # of elements per chunk are invalid, return all items in a new container array
   if (elementsPerChunk <= 0) {
-    return array;
+    return [array];
   }
   // Create an array with the number of chunks required
   return (

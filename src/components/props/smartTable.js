@@ -50,8 +50,17 @@ export default {
     type: String,
     default: 'No data found.',
   },
+  /**
+   * Optional way to indicate an alternative id key for a record
+   */
   idKey: {
     type: String,
     default: null,
+  },
+  /**
+   * Method to be called on sort that replaces the default sort method
+   */
+  onSort: {
+    type: Function,
   },
 };

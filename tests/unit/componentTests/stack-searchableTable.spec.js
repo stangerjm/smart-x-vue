@@ -1,3 +1,5 @@
+import { mount } from '@vue/test-utils';
+
 import { createComponentGenerator, Click } from '../helpers';
 import StackSearchableTable from '../../../src/components/stack-searchableTable.vue';
 import SmartTable from '../../../src/components/smart-table.vue';
@@ -6,8 +8,19 @@ import BitPaging from '../../../src/components/bit-paging.vue';
 import ModelType from '../../../src/global/constants/ModelType';
 import { smartSearch, smartTable } from '../../../src/components/props';
 
-// Get all search props except for onSubmit, which stack-searchableTable overrides
-const { onSubmit, ...smartSearchProps } = smartSearch;
+// Get all search props except for onSubmit, onReset,
+// and value, which stack-searchableTable overrides
+const {
+  onSubmit,
+  onReset,
+  value,
+  ...smartSearchProps
+} = smartSearch;
+
+const {
+  onSort,
+  ...smartTableProps
+} = smartTable;
 
 const searchContent = '<div class="search-content">Test</div>';
 
@@ -120,6 +133,21 @@ const searchModel = {
   position: positions,
 };
 
+const multipleSearchModel = {
+  namePosition: {
+    name: String,
+    position: positions,
+  },
+  agePhone: {
+    age: Number,
+    phoneNumber: ModelType.PhoneNumber(),
+  },
+  employeeHireDate: {
+    isEmployee: Boolean,
+    hireDate: Date,
+  },
+};
+
 const searchModelWithoutBoolean = {
   name: String,
   age: Number,
@@ -128,17 +156,8 @@ const searchModelWithoutBoolean = {
   position: positions,
 };
 
-const searchTitle = 'Test Search';
-const isExpanded = true;
-const searchBtnSize = 'large';
-const searchBtnText = 'Test';
-
 const searchProps = {
   searchModel,
-  searchTitle,
-  isExpanded,
-  searchBtnSize,
-  searchBtnText,
 };
 
 const resultsPerPage = 5;
@@ -156,11 +175,56 @@ const stackSearchableTable = mountStackSearchableTable({
   resultsPerPage,
 });
 
+const searchableTableWithMultipleSearch = mountStackSearchableTable({
+  ...tableProps,
+  searchModel: multipleSearchModel,
+  resultsPerPage,
+});
+
 const table = stackSearchableTable.find(SmartTable);
 
 const search = stackSearchableTable.find(SmartSearch);
 
 const bitPaging = stackSearchableTable.find(BitPaging);
+
+function clickSearchOption(optionName, searchableTable) {
+  const filter = searchableTable.find(`.smart-search--filterList option[value=${optionName}]`);
+
+  filter.trigger('change');
+}
+
+function setInputValue(input, inputValue) {
+  if (typeof inputValue === 'boolean') {
+    Click(input);
+  } else if (Array.isArray(inputValue)) {
+    const [selectValue] = inputValue;
+
+    const option = input.find(`option[value="${selectValue}"]`);
+
+    option.trigger('change');
+  } else {
+    input.setValue(inputValue);
+  }
+}
+
+function clickSearchOptionAndSetValue(optionName, searchableTable, searchData) {
+  clickSearchOption(optionName, searchableTable);
+
+  const inputWrapper = searchableTable.find('.smart-search--searchField');
+
+  const input = inputWrapper.find('.bit-input--field');
+
+  setInputValue(input, searchData);
+}
+
+function clickSearchOptionAndSetMultipleValue(optionName, searchableTable, searchValues) {
+  clickSearchOption(optionName, searchableTable);
+
+  const inputs = searchableTable.findAll('.smart-search--searchField .bit-input--field');
+
+  setInputValue(inputs.at(0), searchValues[0]);
+  setInputValue(inputs.at(1), searchValues[1]);
+}
 
 describe('stack-searchableTable.vue', () => {
   it('passes all available smart-table props into a smart-table component', () => {
@@ -173,7 +237,7 @@ describe('stack-searchableTable.vue', () => {
     expect(table.props('tableEmptyMessage')).toEqual(tableEmptyMessage);
     expect(table.props('idKey')).toEqual(idKey);
 
-    const smartTableComponentProps = Object.keys(smartTable);
+    const smartTableComponentProps = Object.keys(smartTableProps);
     const testedSmartTableProps = Object.keys(tableProps);
 
     smartTableComponentProps.every((prop) => {
@@ -185,11 +249,7 @@ describe('stack-searchableTable.vue', () => {
   });
 
   it('passes all available smart-search props into a smart-search component', () => {
-    expect(search.props('searchModel')).toEqual({ ...searchModel, ResultsPerPage: Number });
-    expect(search.props('searchTitle')).toEqual(searchTitle);
-    expect(search.props('isExpanded')).toEqual(isExpanded);
-    expect(search.props('searchBtnSize')).toEqual(searchBtnSize);
-    expect(search.props('searchBtnText')).toEqual(searchBtnText);
+    expect(search.props('searchModel')).toEqual(searchModel);
 
     const smartSearchComponentProps = Object.keys(smartSearchProps);
     const testedSmartSearchProps = Object.keys(searchProps);
@@ -236,177 +296,123 @@ describe('stack-searchableTable.vue', () => {
   });
 
   it('yields the correct results when string criteria is set', () => {
-    const nameInput = stackSearchableTableWithoutCheckbox.find('.bit-input--field[name=name]');
-    const submitBtn = stackSearchableTableWithoutCheckbox.find('.smart-form--button');
-
     // VALID TEST 1
-    nameInput.setValue('Person 1');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('name', stackSearchableTableWithoutCheckbox, 'Person 1');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[0]]);
 
-    // VALID TEST 2
-    nameInput.setValue('Person 6');
-    Click(submitBtn);
-
+    // // VALID TEST 2
+    clickSearchOptionAndSetValue('name', stackSearchableTableWithoutCheckbox, 'Person 6');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[5]]);
 
     // VALID TEST 3
-    nameInput.setValue('Person');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('name', stackSearchableTableWithoutCheckbox, 'Person');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([...tableData]);
 
     // INVALID TEST
-    nameInput.setValue('bad data');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('name', stackSearchableTableWithoutCheckbox, 'bad data');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([]);
 
     // CLEAR
-    nameInput.setValue('');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('name', stackSearchableTableWithoutCheckbox, '');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([...tableData]);
   });
 
   it('yields the correct results when number criteria is set', () => {
-    const ageInput = stackSearchableTableWithoutCheckbox.find('.bit-input--field[name=age]');
-    const submitBtn = stackSearchableTableWithoutCheckbox.find('.smart-form--button');
-
     // VALID TEST 1
-    ageInput.setValue(29);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('age', stackSearchableTableWithoutCheckbox, 29);
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[4]]);
 
     // VALID TEST 2
-    ageInput.setValue(25);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('age', stackSearchableTableWithoutCheckbox, 25);
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[0]]);
 
     // VALID TEST 3
-    ageInput.setValue(27);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('age', stackSearchableTableWithoutCheckbox, 27);
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[2]]);
 
     // INVALID TEST
-    ageInput.setValue(1859);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('age', stackSearchableTableWithoutCheckbox, 7832);
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([]);
 
     // CLEAR
-    ageInput.setValue(null);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('age', stackSearchableTableWithoutCheckbox, null);
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([...tableData]);
   });
 
   it('yields the correct results when boolean criteria is set', () => {
-    const isEmployeeInput = stackSearchableTable.find('.bit-input--field[name=isEmployee]');
-    const submitBtn = stackSearchableTable.find('.smart-form--button');
-
     // VALID TEST 1
-    Click(isEmployeeInput);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('isEmployee', stackSearchableTable, true);
     expect(stackSearchableTable.vm.currentPage).toEqual([tableData[0], tableData[2], tableData[4]]);
 
     // VALID TEST 2
-    Click(isEmployeeInput);
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('isEmployee', stackSearchableTable, false);
     expect(stackSearchableTable.vm.currentPage).toEqual([tableData[1], tableData[3], tableData[5]]);
   });
 
   it('yields the correct results when date criteria is set', () => {
-    const dateInput = stackSearchableTableWithoutCheckbox.find('.bit-input--field[name=hireDate]');
-    const submitBtn = stackSearchableTableWithoutCheckbox.find('.smart-form--button');
-
     // VALID TEST 1
-    dateInput.setValue('01/01/2001');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('hireDate', stackSearchableTableWithoutCheckbox, '01/01/2001');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[0]]);
 
     // VALID TEST 2
-    dateInput.setValue('01/01/2002');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('hireDate', stackSearchableTableWithoutCheckbox, '01/01/2002');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[1]]);
 
     // VALID TEST 3
-    dateInput.setValue('01/01/2003');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('hireDate', stackSearchableTableWithoutCheckbox, '01/01/2003');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[2]]);
 
     // INVALID TEST
-    dateInput.setValue('09/09/1999');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('hireDate', stackSearchableTableWithoutCheckbox, '09/09/1999');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([]);
 
     // CLEAR
-    dateInput.setValue('');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('hireDate', stackSearchableTableWithoutCheckbox, '');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([...tableData]);
   });
 
   it('yields the correct results when phone # criteria is set', () => {
-    const phoneInput = stackSearchableTableWithoutCheckbox.find('.bit-input--field[name=phoneNumber]');
-    const submitBtn = stackSearchableTableWithoutCheckbox.find('.smart-form--button');
-
     // VALID TEST 1
-    phoneInput.setValue('(360) 223-4567');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('phoneNumber', stackSearchableTableWithoutCheckbox, '(360) 223-4567');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[1]]);
 
     // VALID TEST 2
-    phoneInput.setValue('(360) 523-4567');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('phoneNumber', stackSearchableTableWithoutCheckbox, '(360) 523-4567');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[4]]);
 
     // VALID TEST 3
-    phoneInput.setValue('(360) 623-4567');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('phoneNumber', stackSearchableTableWithoutCheckbox, '(360) 623-4567');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([tableData[5]]);
 
     // INVALID TEST
-    phoneInput.setValue('(360) 999-9999');
-    Click(submitBtn);
-
+    clickSearchOptionAndSetValue('phoneNumber', stackSearchableTableWithoutCheckbox, '(360) 999-9999');
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([]);
 
     // CLEAR
+    clickSearchOptionAndSetValue('phoneNumber', stackSearchableTableWithoutCheckbox, '');
 
-    // simulate blur event when focus is set to button on click
-    phoneInput.setValue('');
-    phoneInput.trigger('blur');
+    const inputWrapper = stackSearchableTableWithoutCheckbox.find('.smart-search--searchField');
 
-    Click(submitBtn);
+    const input = inputWrapper.find('.bit-input--field');
+
+    // Simulate the user clicking outside of the phone input
+    input.trigger('blur');
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage).toEqual([...tableData]);
   });
 
   it('yields the correct results when array criteria is set', () => {
-    const positionInput = stackSearchableTableWithoutCheckbox.find('.bit-input--field[name=position]');
+    clickSearchOption('position', stackSearchableTableWithoutCheckbox);
+
+    const selectWrapper = stackSearchableTableWithoutCheckbox.find('.smart-search--searchField');
+
+    const positionInput = selectWrapper.find('.bit-input--field');
     const options = positionInput.findAll('option:not([disabled])');
-    const submitBtn = stackSearchableTableWithoutCheckbox.find('.smart-form--button');
 
     // VALID TEST 1
     const firstOption = options.wrappers[0];
 
     firstOption.trigger('change');
-    Click(submitBtn);
-
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
       .toEqual([tableData[2], tableData[3]]);
 
@@ -414,7 +420,6 @@ describe('stack-searchableTable.vue', () => {
     const secondOption = options.wrappers[1];
 
     secondOption.trigger('change');
-    Click(submitBtn);
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
       .toEqual([tableData[0], tableData[4]]);
@@ -423,117 +428,20 @@ describe('stack-searchableTable.vue', () => {
     const thirdOption = options.wrappers[2];
 
     thirdOption.trigger('change');
-    Click(submitBtn);
 
     expect(stackSearchableTableWithoutCheckbox.vm.currentPage)
       .toEqual([tableData[1], tableData[5]]);
   });
 
   it('yields the correct results when multiple criteria are set', () => {
-    const submitBtn = stackSearchableTable.find('.smart-form--button');
-    const isEmployeeInput = stackSearchableTable.find('.bit-input--field[name=isEmployee]');
-    const nameInput = stackSearchableTable.find('.bit-input--field[name=name]');
-    const ageInput = stackSearchableTable.find('.bit-input--field[name=age]');
-    const dateInput = stackSearchableTable.find('.bit-input--field[name=hireDate]');
-    const phoneInput = stackSearchableTable.find('.bit-input--field[name=phoneNumber]');
-    const positionInput = stackSearchableTable.find('.bit-input--field[name=position]');
-    const options = positionInput.findAll('option:not([disabled])');
+    clickSearchOptionAndSetMultipleValue('namePosition', searchableTableWithMultipleSearch, ['Person 1', ['ITS4']]);
+    expect(searchableTableWithMultipleSearch.vm.currentPage).toEqual([tableData[0]]);
 
-    function searchForAndCheckData({
-      name = '',
-      age = null,
-      isEmployee = false,
-      hireDate = '',
-      phoneNumber = '',
-      positionIndex = 0,
-      expectedData = [],
-    }) {
-      // Set name input
-      nameInput.setValue(name);
+    clickSearchOptionAndSetMultipleValue('agePhone', searchableTableWithMultipleSearch, [28, '3604234567']);
+    expect(searchableTableWithMultipleSearch.vm.currentPage).toEqual([tableData[3]]);
 
-      // Set age input
-      ageInput.setValue(age);
-
-      // Synchronize isEmployeeInput with isEmployee parameter
-      if (isEmployee !== isEmployeeInput.element.checked) {
-        Click(isEmployeeInput);
-      }
-
-      // Set hire date
-      dateInput.setValue(hireDate);
-
-      // Set phone input
-      phoneInput.setValue(phoneNumber);
-
-      // Select option at passed-in index
-      options.wrappers[positionIndex].trigger('change');
-
-      // Submit
-      Click(submitBtn);
-
-      // Check result
-      expect(stackSearchableTable.vm.currentPage).toEqual([expectedData]);
-    }
-
-    searchForAndCheckData({
-      name: 'Person 1',
-      age: 25,
-      isEmployee: true,
-      hireDate: '01/01/2001',
-      phoneNumber: '(360) 123-4567',
-      positionIndex: 1,
-      expectedData: tableData[0],
-    });
-
-    searchForAndCheckData({
-      name: 'Person 2',
-      age: 26,
-      isEmployee: false,
-      hireDate: '01/01/2002',
-      phoneNumber: '(360) 223-4567',
-      positionIndex: 2,
-      expectedData: tableData[1],
-    });
-
-    searchForAndCheckData({
-      name: 'Person 3',
-      age: 27,
-      isEmployee: true,
-      hireDate: '01/01/2003',
-      phoneNumber: '(360) 323-4567',
-      positionIndex: 0,
-      expectedData: tableData[2],
-    });
-
-    searchForAndCheckData({
-      name: 'Person 4',
-      age: 28,
-      isEmployee: false,
-      hireDate: '01/01/2004',
-      phoneNumber: '(360) 423-4567',
-      positionIndex: 0,
-      expectedData: tableData[3],
-    });
-
-    searchForAndCheckData({
-      name: 'Person 5',
-      age: 29,
-      isEmployee: true,
-      hireDate: '01/01/2005',
-      phoneNumber: '(360) 523-4567',
-      positionIndex: 1,
-      expectedData: tableData[4],
-    });
-
-    searchForAndCheckData({
-      name: 'Person 6',
-      age: 30,
-      isEmployee: false,
-      hireDate: '01/01/2006',
-      phoneNumber: '(360) 623-4567',
-      positionIndex: 2,
-      expectedData: tableData[5],
-    });
+    clickSearchOptionAndSetMultipleValue('employeeHireDate', searchableTableWithMultipleSearch, [true, '01/01/2005']);
+    expect(searchableTableWithMultipleSearch.vm.currentPage).toEqual([tableData[4]]);
   });
 
   it('limits the number of results to the specified number of results per page', () => {
@@ -544,17 +452,10 @@ describe('stack-searchableTable.vue', () => {
       resultsPerPage: 10,
     });
 
-    const nameInput = freshStackSearchableTable.find('.bit-input--field[name=name]');
-    const resultsPerPageInput = freshStackSearchableTable.find('.bit-input--field[name=ResultsPerPage]');
-    const submitBtn = freshStackSearchableTable.find('.smart-form--button');
-
-    // Set search criteria to include multiple results
-    nameInput.setValue('Person');
+    const resultsPerPageInput = freshStackSearchableTable.find('.stack-searchableTable--resultsPerPage .bit-input--field');
 
     // Limit results to one result per page
     resultsPerPageInput.setValue(1);
-
-    Click(submitBtn);
 
     expect(freshStackSearchableTable.vm.currentPage.length).toEqual(1);
     expect(freshStackSearchableTable.vm.currentPage).toEqual([tableData[0]]);
@@ -565,14 +466,8 @@ describe('stack-searchableTable.vue', () => {
     expect(freshStackSearchableTable.vm.currentPage).toEqual([tableData[1]]);
   });
 
-  it('renders correctly when data is loaded asynchronously', () => {
-    const patientSearchableTable = mountStackSearchableTable({
-      ...tableProps,
-      ...searchProps,
-      resultsPerPage,
-      // Ensure table data is empty to begin with
-      tableData: [],
-    });
+  it('renders correctly when data is loaded asynchronously', (done) => {
+    const secondsToWaitForData = 1;
 
     const testTableData = [{
       personId: 1,
@@ -580,13 +475,95 @@ describe('stack-searchableTable.vue', () => {
       age: 25,
     }];
 
-    // Change table data to test if change will cause re-render
-    patientSearchableTable.vm.tableData = testTableData;
+    const patientTableWrapper = mount({
+      components: {
+        StackSearchableTable,
+      },
+      template: `<stack-searchable-table :table-data="currentTableData"
+                                         default-context="test"
+                                         :search-model="searchModel" />`,
+      data() {
+        return {
+          tableData: [],
+          searchModel,
+        };
+      },
+      computed: {
+        currentTableData() {
+          return this.tableData;
+        },
+      },
+      mounted() {
+        setTimeout(() => {
+          this.tableData = testTableData;
+        }, secondsToWaitForData * 1000);
+      },
+    });
 
-    // Find the actual table to test the re-render
-    const patientSmartTable = patientSearchableTable.find(SmartTable);
+    const patientTable = patientTableWrapper.find(SmartTable);
 
     // Check if changing the parent data caused the child to update
-    expect(patientSmartTable.vm.tableData).toEqual(testTableData);
+    setTimeout(() => {
+      expect(patientTable.vm.tableData).toEqual(testTableData);
+
+      done();
+    }, (secondsToWaitForData + 1) * 1000);
+  });
+
+  it('forces the table data to go back to page one if the number of results per page have changed', () => {
+    const freshStackSearchableTable = mountStackSearchableTable({
+      ...tableProps,
+      ...searchProps,
+      searchModel: searchModelWithoutBoolean,
+      resultsPerPage: 10,
+    });
+
+    const resultsPerPageInput = freshStackSearchableTable.find('.stack-searchableTable--resultsPerPage .bit-input--field');
+
+    // Limit results to one result per page
+    resultsPerPageInput.setValue(1);
+
+    // Click the next page button
+    const nextPageBtn = freshStackSearchableTable.find('.bit-paging--next');
+    Click(nextPageBtn);
+
+    // Change results per page
+    resultsPerPageInput.setValue(1);
+
+    // Current page should have gone back to initial page
+    expect(freshStackSearchableTable.vm.currentPage).toEqual([tableData[0]]);
+  });
+
+  it('sorts data accross all pages when sort column is clicked', () => {
+    const freshStackSearchableTable = mountStackSearchableTable({
+      ...tableProps,
+      ...searchProps,
+      searchModel: searchModelWithoutBoolean,
+      resultsPerPage: 10,
+    });
+
+    // Limit results to two per page
+    const resultsPerPageInput = freshStackSearchableTable.find('.stack-searchableTable--resultsPerPage .bit-input--field');
+    resultsPerPageInput.setValue(2);
+
+    // Click "position" sort button
+    const positionSortButton = freshStackSearchableTable.find('.smart-table--sortByPosition');
+    Click(positionSortButton);
+
+    // Check to see that the two records rendered are correct
+    expect(freshStackSearchableTable.vm.currentPage).toEqual([
+      tableData[2],
+      tableData[3],
+    ]);
+
+    // Click "name" sort button
+    const nameSortButton = freshStackSearchableTable.find('.smart-table--sortByName');
+    Click(nameSortButton);
+
+    // Check to see that the two records rendered are correct
+    expect(freshStackSearchableTable.vm.currentPage).toEqual([
+      tableData[0],
+      tableData[1],
+    ]);
   });
 });

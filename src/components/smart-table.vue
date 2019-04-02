@@ -105,7 +105,9 @@ export default {
      * @see createViewModel
      */
     typedData() {
-      return this.localData.map(tableItem => createViewModel(tableItem), this);
+      return Array.isArray(this.localData)
+        ? this.localData.map(tableItem => createViewModel(tableItem), this)
+        : [];
     },
   },
   data() {
@@ -170,12 +172,19 @@ export default {
       if (this.currentKey === column) {
         this.descending = !this.descending;
       } else {
-        this.descending = true;
+        this.descending = false;
       }
 
       this.currentKey = column;
-      // Use 'getDataSortedByColumn' mixin to sort data
-      this.localData = getDataSortedByColumn(this.localData, column, this.descending);
+
+      const defaultSort = () => {
+        this.localData = getDataSortedByColumn(this.localData, column, this.descending);
+      };
+
+      // Use default sort functionality if none is passed in
+      const onSort = this.onSort || defaultSort;
+
+      onSort(column, this.descending);
     },
   },
 };

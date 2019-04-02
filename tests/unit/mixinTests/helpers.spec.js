@@ -74,6 +74,14 @@ describe('helpers.js', () => {
     const expectedList = [[1, 2], [3, 4], [5, 6]];
 
     expect(splitArrayIntoChunks(list, 2)).toEqual(expectedList);
+    expect(splitArrayIntoChunks(list, 0)).toEqual([list]);
+    expect(splitArrayIntoChunks(list, -10)).toEqual([list]);
+    expect(splitArrayIntoChunks(list, undefined)).toEqual([]);
+    expect(splitArrayIntoChunks(list, null)).toEqual([]);
+    expect(splitArrayIntoChunks(undefined, 20)).toEqual([]);
+    expect(splitArrayIntoChunks(null, 10)).toEqual([]);
+    expect(splitArrayIntoChunks(undefined, undefined)).toEqual([]);
+    expect(splitArrayIntoChunks(null, null)).toEqual([]);
   });
 
   it('contains a function "coerceToDate" that attempts to coerce a given value into a date', () => {

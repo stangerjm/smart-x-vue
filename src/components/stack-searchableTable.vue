@@ -1,13 +1,16 @@
 <template>
   <section class="stack-searchableTable">
-    <smart-search :search-model="modifiedSearchModel"
-                  :on-submit="handleSearchSubmit"
-                  :search-title="searchTitle"
-                  :search-btn-size="searchBtnSize"
-                  :search-btn-text="searchBtnText"
-                  :is-expanded="isExpanded">
+
+    <!-- Render search -->
+    <smart-search :search-model="searchModel"
+                  :on-submit="handleSearchSubmit">
+
+      <!-- Preserve action slot -->
       <slot name="search-action" slot="extra-action"></slot>
+
     </smart-search>
+
+    <!-- Render table -->
     <smart-table :table-data="currentPage"
                  :default-context="defaultContext"
                  :unsearchable-headings="unsearchableHeadings"
@@ -15,8 +18,10 @@
                  :id-key="idKey"
                  :ignore-fields="ignoreFields"
                  :props-to-link="propsToLink"
-                 :table-empty-message="tableEmptyMessage">
+                 :table-empty-message="tableEmptyMessage"
+                 :on-sort="sortData">
 
+      <!-- Preserve table slot -->
       <template slot="action-container" slot-scope="{ getActionPath, itemId, context }">
 
         <slot name="table-action"
@@ -37,28 +42,48 @@
 
           <!-- Details btn -->
           <router-link :to="getActionPath(context, 'details', itemId)">
+
             <bit-icon icon-type="details"></bit-icon>
+
           </router-link>
 
         </slot>
+
       </template>
 
     </smart-table>
+
+    <!-- Paging section -->
+    <div class="stack-searchableTable--pagingWrapper">
+
+      <!-- Display paging -->
       <bit-paging v-model="pageIdx"
-                class="stack-searchableTable--paging"
-                :paged-data-length="pageData.length">
-    </bit-paging>
+                  class="stack-searchableTable--paging"
+                  :paged-data-length="pageData.length"
+                  :results-per-page="currentResultsPerPage" />
+
+      <!-- Display results per page -->
+      <bit-input class="stack-searchableTable--resultsPerPage"
+                 input-type="number"
+                 label-text="Results Per Page"
+                 v-model="currentResultsPerPage"
+                 @input="resetCurrentPageIdx"
+                 stack-elements />
+
+    </div>
+
   </section>
 </template>
 
 <script>
 import { stackSearchableTable } from './props';
-import { compare } from '../global/mixins';
+import { compare, getDataSortedByColumn } from '../global/mixins';
 import { splitArrayIntoChunks, getType } from '../global/mixins/helpers';
 import BitPaging from './bit-paging.vue';
+import BitIcon from './bit-icon.vue';
+import BitInput from './bit-input.vue';
 import SmartTable from './smart-table.vue';
 import SmartSearch from './smart-search.vue';
-import BitIcon from './bit-icon.vue';
 
 const stackSearchableTableProps = stackSearchableTable || {};
 const propsMixin = {
@@ -74,6 +99,7 @@ export default {
     SmartTable,
     SmartSearch,
     BitIcon,
+    BitInput,
   },
   mixins: [propsMixin],
   props: {
@@ -95,14 +121,17 @@ export default {
        * Index of the 'pageData' array, representing the requested page
        */
       pageIdx: 0,
-      numberOfResultsPerPage: this.resultsPerPage,
-      modifiedSearchModel: {
-        ...this.searchModel,
-        ResultsPerPage: Number,
-      },
+      /**
+       * Data property based off of the resultsPerPage component
+       * prop that will allow the results per page to be mutated
+       */
+      currentResultsPerPage: this.resultsPerPage,
     };
   },
   watch: {
+    /**
+     * Watch table data and ensure local data does not get out of sync with prop
+     */
     tableData() {
       this.masterData = this.tableData;
     },
@@ -112,7 +141,7 @@ export default {
      * Data that has been split into multiple pages.
      */
     pageData() {
-      return splitArrayIntoChunks(this.masterData, this.numberOfResultsPerPage);
+      return splitArrayIntoChunks(this.masterData, this.currentResultsPerPage);
     },
     /**
      * Item in the current index of the 'pageData' computed property,
@@ -122,10 +151,19 @@ export default {
       if (this.pageData == null) {
         return [];
       }
-      return this.pageData.length > 0 ? this.pageData[this.pageIdx] : [];
+
+      return this.pageData.length > 0
+        ? this.pageData[this.pageIdx]
+        : [];
     },
   },
   methods: {
+    /**
+     * Handles a search from the smart-search component
+     * @param {object} submittedData - Data submitted from the search, injected
+     * by smart-search component
+     * @returns {void}
+     */
     handleSearchSubmit(submittedData) {
       // Reset data if data is null
       if (submittedData == null) {
@@ -133,25 +171,22 @@ export default {
         return;
       }
 
-      // Set the number of results per page if formData has the corresponding property
-      const resultsPerPage = Number(submittedData.ResultsPerPage);
-      if (resultsPerPage > 0) {
-        this.numberOfResultsPerPage = resultsPerPage;
-      } else {
-        // Otherwise, reset the results per page.
-        this.numberOfResultsPerPage = this.resultsPerPage;
-      }
-
       // Reset current page
       this.pageIdx = 0;
 
-      // Extract only the filter data, and ignore the results per page
-      const { ResultsPerPage, ...formData } = submittedData;
-
-      this.filterData(formData);
+      this.filterData(submittedData);
     },
+    /**
+     * Resets the local data to the initial state
+     */
     resetData() {
       this.masterData = this.tableData;
+    },
+    /**
+     * Sets the current page index to zero
+     */
+    resetCurrentPageIdx() {
+      this.pageIdx = 0;
     },
     /**
      * Filters the local data based on the passed in formData property, which will
@@ -188,12 +223,25 @@ export default {
       // Filter the data based off of the keys and values found in the formData
       this.masterData = this.tableData.filter(excludeMismatchedData);
     },
+    /**
+     * Sort functionality to be passed into smart-table component
+     */
+    sortData(column, isDescending) {
+      this.masterData = getDataSortedByColumn(this.masterData, column, isDescending);
+    },
   },
 };
 </script>
 
 <style scoped>
 .stack-searchableTable--paging {
-  margin: 15px;
+  margin-right: 20px;
+}
+
+.stack-searchableTable--pagingWrapper {
+  display: flex;
+  align-items: flex-end;
+
+  padding: 10px 0;
 }
 </style>
