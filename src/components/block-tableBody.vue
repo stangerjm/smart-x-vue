@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getItemId } from '../global/mixins';
+import { getItemId, generateRandomId } from '../global/mixins';
 import BitTableCell from './bit-tableCell.vue';
 import BlockActionContainer from './block-actionContainer.vue';
 import BitBtn from './bit-btn.vue';
@@ -139,7 +139,7 @@ export default {
       const id = getItemId(item);
 
       if (id == null) {
-        return `table-item-${Math.random().toString(36).substr(2, 9)}`;
+        return `table-item-${generateRandomId()}`;
       }
 
       return getItemId(item).value;

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { toTitleCase } from '../../global/mixins';
+import { toTitleCase, generateRandomId } from '../../global/mixins';
 
 /**
  * A component that renders two select elements that have a parent-child relationship.
@@ -103,9 +103,7 @@ export default {
       /**
        * Randomly generated id for the input and label elements.
        */
-      inputId: Math.random()
-        .toString(36)
-        .substr(2, 9),
+      inputId: generateRandomId(),
       /**
        * Local copy of the options data passed into the component.
        */

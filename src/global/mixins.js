@@ -9,6 +9,7 @@ import getInputType from './mixins/getInputType';
 import transformIntoFormModel from './mixins/transformIntoFormModel';
 import formatDate from './mixins/formatDate';
 import switchCase from './mixins/switchCase';
+import generateRandomId from './mixins/generateRandomId';
 
 export {
   parseDateString,
@@ -22,4 +23,5 @@ export {
   transformIntoFormModel,
   formatDate,
   switchCase,
+  generateRandomId,
 };
