@@ -8,6 +8,9 @@
     <!-- Search field container -->
     <div class="smart-search--searchContainer">
 
+      <!-- Search icon -->
+      <bit-icon icon-type="search" class="smart-search--icon" />
+
       <!-- Render filter options -->
       <bit-select class="smart-search--filterList"
                   :select-data="filterOptions"
