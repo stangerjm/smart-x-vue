@@ -2,23 +2,32 @@
   <!-- Only show if data length indicates one or more values -->
   <div class="bit-paging" v-if="pagedDataLength > 1">
 
-    <!-- Previous button -->
-    <button class="bit-paging--previous" @click="goToPreviousPage">&lt;</button>
-
     <!-- Render the current page and total number of pages -->
     <span class="bit-paging--nav">Page {{currentPage}} of {{pagedDataLength}}</span>
 
-    <!-- Render a button for each page that can set the current page to the corresponding number -->
-    <button class="bit-paging--pageNumber"
-            v-for="idx in pagedDataLength"
-            :key="idx"
-            @click="setCurrentIndex(idx - 1)"
-            :class="{ 'bit-paging--selectedPage' : idx === currentPage }">
-      {{idx}}
-    </button>
+    <div class="bit-paging--x">
 
-    <!-- Next button -->
-    <button class="bit-paging--next" @click="goToNextPage">&gt;</button>
+      <!-- Previous button -->
+      <button class="bit-paging--previous" @click="goToPreviousPage">&lt;</button>
+
+      <div class="bit-paging--numberBox">
+
+        <!-- Render a button for each page that can
+            set the current page to the corresponding number -->
+        <button class="bit-paging--pageNumber"
+                v-for="(pageNumber, idx) in generatePagination"
+                :key="idx"
+                @click="setCurrentPage(pageNumber)"
+                :class="{ 'bit-paging--selectedPage' : pageNumber === currentPage }">
+          {{pageNumber}}
+        </button>
+
+      </div>
+
+      <!-- Next button -->
+      <button class="bit-paging--next" @click="goToNextPage">&gt;</button>
+    </div>
+
   </div>
 </template>
 
@@ -56,6 +65,80 @@ export default {
     currentPage() {
       return this.getValidIndex(this.value) + 1;
     },
+    /**
+     * Generates an array to be used for pagination
+     * @param {number} current - The current page
+     * @param {number} last - The last possible page in the paged list
+     * @returns {array} List of desired page numbers with ellipsis for unimportant pages
+     */
+    generatePagination() {
+      const current = this.currentPage;
+      const last = this.pagedDataLength;
+      const offset = 2;
+      const leftOffset = current - offset;
+      const rightOffset = current + offset + 1;
+
+      /**
+       * Reduces a list into the page numbers desired in the pagination
+       * @param {array} accumulator - Growing list of desired page numbers
+       * @param {*} _ - Throwaway variable to ignore the current value in iteration
+       * @param {*} idx - The index of the current iteration
+       * @returns {array} The accumulating list of desired page numbers
+       */
+      function reduceToDesiredPageNumbers(accumulator, _, idx) {
+        const currIdx = idx + 1;
+
+        if (
+          // Always include first page
+          currIdx === 1
+          // Always include last page
+          || currIdx === last
+          // Include if index is between the above defined offsets
+          || (currIdx >= leftOffset && currIdx < rightOffset)) {
+          return [
+            ...accumulator,
+            currIdx,
+          ];
+        }
+
+        return accumulator;
+      }
+
+      /**
+       * Transforms a list of desired pages and puts ellipsis in any gaps
+       * @param {array} accumulator - The growing list of page numbers with ellipsis included
+       * @param {number} currentPage - The current page in iteration
+       * @param {number} currIdx - The current index
+       * @param {array} src - The source array the function was called on
+       */
+      function transformToPagesWithEllipsis(accumulator, currentPage, currIdx, src) {
+        const prev = src[currIdx - 1];
+
+        // Ignore the first number, as we always want the first page
+        // Include an ellipsis if there is a gap of more than one between numbers
+        if (prev != null && currentPage - prev !== 1) {
+          return [
+            ...accumulator,
+            '...',
+            currentPage,
+          ];
+        }
+
+        // If page does not meet above requirement, just add it to the list
+        return [
+          ...accumulator,
+          currentPage,
+        ];
+      }
+
+      const pageNumbers = Array(last)
+        .fill()
+        .reduce(reduceToDesiredPageNumbers, []);
+
+      const pageNumbersWithEllipsis = pageNumbers.reduce(transformToPagesWithEllipsis, []);
+
+      return pageNumbersWithEllipsis;
+    },
   },
   methods: {
     /**
@@ -73,6 +156,13 @@ export default {
       }
 
       return idx;
+    },
+    setCurrentPage(pageNumber) {
+      if (typeof pageNumber !== 'number') {
+        return;
+      }
+
+      this.setCurrentIndex(pageNumber - 1);
     },
     /**
      * Sets the current page index.

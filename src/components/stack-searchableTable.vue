@@ -233,15 +233,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.stack-searchableTable--paging {
-  margin-right: 20px;
-}
-
-.stack-searchableTable--pagingWrapper {
-  display: flex;
-  align-items: flex-end;
-
-  padding: 10px 0;
-}
+<style scoped lang="scss">
+@import '../styles/sass/components/stack/searchableTable/stack-searchableTable';
 </style>

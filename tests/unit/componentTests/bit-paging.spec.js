@@ -4,23 +4,19 @@ import BitPaging from '../../../src/components/bit-paging.vue';
 describe('bit-paging.vue', () => {
   function getParentComponent({
     pageIdx = 0,
-    testData = [
-      { name: 'James' },
-      { name: 'Jeremy' },
-      { name: 'Kelli' },
-    ],
+    dataLength = 3,
   } = {}) {
     return {
       data() {
         return {
-          testData,
+          dataLength,
           pageIdx,
         };
       },
       components: {
         BitPaging,
       },
-      template: '<bit-paging v-model="pageIdx" :paged-data-length="Object.keys(testData).length"></bit-paging>',
+      template: '<bit-paging v-model="pageIdx" :paged-data-length="dataLength"></bit-paging>',
     };
   }
 
@@ -40,8 +36,55 @@ describe('bit-paging.vue', () => {
     expect(pageNumberElement.text()).toEqual(String(pageNumber));
   }
 
+  it('renders the first and last page numbers with an offset of two pages on either side of the current page and ellipsis for implied pages', () => {
+    function extractPageNumbers(pageNumberWrapper) {
+      return pageNumberWrapper.element.textContent.trim();
+    }
+
+    function getPageNumbersFromPagingEl(pageNumber, dataLength) {
+      const pageIdx = pageNumber - 1;
+
+      const paging = mount(getParentComponent({
+        pageIdx,
+        dataLength,
+      }));
+
+      return paging.findAll('.bit-paging--pageNumber').wrappers.map(extractPageNumbers);
+    }
+
+    const middleSelectedPageNumbers = getPageNumbersFromPagingEl(10, 50);
+    expect(middleSelectedPageNumbers).toEqual(['1', '...', '8', '9', '10', '11', '12', '...', '50']);
+
+    const endSelectedPageNumbers = getPageNumbersFromPagingEl(50, 50);
+    expect(endSelectedPageNumbers).toEqual(['1', '...', '48', '49', '50']);
+
+    const secondFromEndPageNumbers = getPageNumbersFromPagingEl(49, 50);
+    expect(secondFromEndPageNumbers).toEqual(['1', '...', '47', '48', '49', '50']);
+
+    const closeToEndPageNumbers = getPageNumbersFromPagingEl(45, 50);
+    expect(closeToEndPageNumbers).toEqual(['1', '...', '43', '44', '45', '46', '47', '...', '50']);
+
+    const closeToBeginningPageNumbers = getPageNumbersFromPagingEl(6, 50);
+    expect(closeToBeginningPageNumbers).toEqual(['1', '...', '4', '5', '6', '7', '8', '...', '50']);
+
+    const fifthFromBeginning = getPageNumbersFromPagingEl(5, 50);
+    expect(fifthFromBeginning).toEqual(['1', '...', '3', '4', '5', '6', '7', '...', '50']);
+
+    const fourthFromBeginning = getPageNumbersFromPagingEl(4, 50);
+    expect(fourthFromBeginning).toEqual(['1', '2', '3', '4', '5', '6', '...', '50']);
+
+    const thirdFromBeginning = getPageNumbersFromPagingEl(3, 50);
+    expect(thirdFromBeginning).toEqual(['1', '2', '3', '4', '5', '...', '50']);
+
+    const secondFromBeginning = getPageNumbersFromPagingEl(2, 50);
+    expect(secondFromBeginning).toEqual(['1', '2', '3', '4', '...', '50']);
+
+    const beginningPageNumbers = getPageNumbersFromPagingEl(1, 50);
+    expect(beginningPageNumbers).toEqual(['1', '2', '3', '...', '50']);
+  });
+
   it('tracks the index of a list of data and starts at the index passed in', () => {
-    const parentComponent = mount(getParentComponent({ testData: [] }));
+    const parentComponent = mount(getParentComponent({ dataLength: 0 }));
 
     const pagingWrapper = parentComponent.find('.bit-paging');
     expect(pagingWrapper.exists()).toBeFalsy();
