@@ -27,13 +27,22 @@
 
     <template v-else-if="inputType === InputType.DATE">
 
-      <input class="bit-input--field bit-input--date"
-             :ref="InputType.DATE"
-             :class="[erroredField ? 'bit-input--error' : '']"
-             :id="inputId ? inputId : randomId"
-             @input="updateValue"
-             v-bind="$attrs"
-             :type="inputType">
+      <!-- Wrapper for datepicker -->
+      <div class="bit-input--dateWrapper">
+
+        <!-- Datepicker icon -->
+        <span class="bit-input--datepicker"></span>
+
+        <!-- Actual datepicker element -->
+        <input class="bit-input--field bit-input--date"
+               :ref="InputType.DATE"
+               :class="[erroredField ? 'bit-input--error' : '']"
+               :id="inputId ? inputId : randomId"
+               @input="updateValue"
+               v-bind="$attrs"
+               :type="inputType">
+
+      </div>
 
     </template>
 
@@ -170,6 +179,8 @@ export default {
      * Mounts a date-picker component
      */
     mountDatePicker() {
+      const self = this;
+
       /**
        * Opens a flatpickr component
        * @param picker
@@ -186,8 +197,9 @@ export default {
        * @param datePicker
        * @param initialValue
        * @param validator
+       * @param pickerIcon
        */
-      function setDatepickerOptions(datePicker, initialValue, validator) {
+      function setDatepickerOptions(datePicker, initialValue, validator, pickerIcon) {
         // Create a copy of the initial value so as not to accidentally override an object property
         let value = initialValue;
 
@@ -198,8 +210,9 @@ export default {
 
         // Set the flatpickr input element's date value
         datePicker.setDate(value);
-        // Add a click listener so that the date picker will always open on click.
-        datePicker._input.onclick = openDatePicker(datePicker);
+
+        // Set the datepicker icon to open the date picker on click
+        pickerIcon.onclick = openDatePicker(datePicker);
 
         // Validate on focus out (or blur)
         datePicker.element.onblur = () => {
@@ -213,15 +226,16 @@ export default {
 
       // Transform date elements into date-pickers
       const datePicker = FlatPickr(this.$refs[InputType.DATE], this.flatpickrConfig);
+      const pickerIcon = self.$el.querySelector('.bit-input--datepicker');
       // const datePicker = FlatPickr('.bit-input--date', this.flatpickrConfig);
       // If more than one date picker, set options for each.
       if (datePicker.length > 1) {
         datePicker.forEach((picker) => {
-          setDatepickerOptions(picker, this.value, this.validateField);
+          setDatepickerOptions(picker, this.value, this.validateField, pickerIcon);
         });
       } else if (datePicker.element) {
         // If only one date picker, set the options for this one.
-        setDatepickerOptions(datePicker, this.value, this.validateField);
+        setDatepickerOptions(datePicker, this.value, this.validateField, pickerIcon);
       }
 
       // Apply input mask

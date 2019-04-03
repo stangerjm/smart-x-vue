@@ -543,7 +543,7 @@ describe('smart-search.vue', () => {
       multipleSmartSearch.vm.$nextTick(() => {
         clickMultipleSearchOption(optionName);
 
-        const inputs = multipleSmartSearch.findAll('.smart-search--searchField > .bit-input--field');
+        const inputs = multipleSmartSearch.findAll('.smart-search--searchField .bit-input--field');
 
         testValueIsClear(inputs.at(0).element, values[0]);
         testValueIsClear(inputs.at(1).element, values[1]);
@@ -617,7 +617,7 @@ describe('smart-search.vue', () => {
     multipleSmartSearch.vm.$nextTick(() => {
       clickMultipleSearchOption('arrayPhone');
 
-      const inputs = multipleSmartSearch.findAll('.smart-search--searchField > .bit-input--field');
+      const inputs = multipleSmartSearch.findAll('.smart-search--searchField .bit-input--field');
 
       const options = smartSearch.vm.$el.querySelectorAll('.smart-search--searchField option:not([disabled])');
 
