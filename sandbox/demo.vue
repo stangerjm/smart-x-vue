@@ -162,7 +162,6 @@ export default {
     StackSearchableTable: () => import('../src/components/stack-searchableTable'),
     SmartLoading: () => import('../src/components/smart-loading'),
     SmartSearch: () => import('../src/components/smart-search'),
-    Usability: () => import('./components/usability'),
   },
   computed: {
     ...mapGetters(['getPeople']),

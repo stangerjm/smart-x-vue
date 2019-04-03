@@ -14,7 +14,9 @@
 
       <template slot="content">
 
-        <demo></demo>
+        <!-- <demo></demo> -->
+
+        <usability></usability>
 
       </template>
 
@@ -42,6 +44,7 @@ export default {
     SmartForm: () => import('../src/components/smart-form'),
     LayoutMain: () => import('../src/components/layout-main'),
     Demo: () => import('./demo'),
+    Usability: () => import('./components/usability'),
   },
   data() {
     return {

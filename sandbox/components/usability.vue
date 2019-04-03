@@ -6,7 +6,7 @@
                             include-action-container
                             default-context="test"
                             :searchModel="searchModel"
-                            :on-reset="function() {}">
+                            :results-per-page="100">
 
         <template slot="table-action" slot-scope="{ getActionPath, itemId }">
           <router-link :to="getActionPath('test', 'details', itemId)">Details</router-link>
@@ -71,5 +71,3 @@ export default {
     margin: 0 auto;
   }
 </style>
-
-
