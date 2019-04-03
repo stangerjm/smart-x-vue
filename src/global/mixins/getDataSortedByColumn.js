@@ -6,6 +6,12 @@
  * @returns {number}
  */
 function compareItems(item1, item2) {
+  // Cast compare items to lower case if they are strings
+  if (typeof item1 === 'string' && typeof item2 === 'string') {
+    item1 = item1.toLowerCase();
+    item2 = item2.toLowerCase();
+  }
+
   if (item1 < item2) {
     return -1;
   }
