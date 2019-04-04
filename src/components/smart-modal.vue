@@ -146,5 +146,5 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-@import '../../styles/sass/components/smart/modal/smart-modal';
+@import '../styles/sass/components/smart/modal/smart-modal';
 </style>
