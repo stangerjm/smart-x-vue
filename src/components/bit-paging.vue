@@ -5,7 +5,7 @@
     <!-- Render the current page and total number of pages -->
     <span class="bit-paging--nav">Page {{currentPage}} of {{pagedDataLength}}</span>
 
-    <div class="bit-paging--x">
+    <div class="bit-paging--pagination">
 
       <!-- Previous button -->
       <button class="bit-paging--previous" @click="goToPreviousPage">&lt;</button>
