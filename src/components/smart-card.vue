@@ -9,6 +9,7 @@
 
       <!-- Render the expand button -->
       <bit-btn btn-style="expand"
+               v-if="allowExpand"
                class="smart-card--toggle"
                :is-expanded="isExpanded"
                @click.native="toggle">
@@ -89,6 +90,13 @@ export default {
     watchResize: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * Flag to optionally omit the expand functionality
+     */
+    allowExpand: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

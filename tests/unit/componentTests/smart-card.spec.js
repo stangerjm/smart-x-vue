@@ -150,4 +150,14 @@ describe('smart-card.vue', () => {
       done,
     });
   });
+
+  it('allows the expand button to be optionally omitted', () => {
+    const cardWithoutExpand = mountSmartCard({
+      allowExpand: false,
+    });
+
+    const expandButton = cardWithoutExpand.find('.smart-card--toggle');
+
+    expect(expandButton.exists()).toEqual(false);
+  });
 });
