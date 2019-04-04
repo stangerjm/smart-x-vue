@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 
 import { Click } from '../helpers';
-import SmartModal from '../../../src/components/prototypes/smart-modal-PROTO.vue';
+import SmartModal from '../../../src/components/smart-modal.vue';
 
 const modalWrapper = mount({
   components: {
