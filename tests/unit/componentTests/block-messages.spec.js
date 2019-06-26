@@ -2,6 +2,12 @@ import { createComponentGenerator } from '../helpers';
 import BlockMessages from '../../../src/components/block-messages.vue';
 import BitMessage from '../../../src/components/bit-message.vue';
 
+function sleep(ms) {
+  if (typeof ms !== 'number') return Promise.resolve();
+
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const mountBlockMessages = createComponentGenerator(BlockMessages);
 
 const messageList = ['Hello', 'Goodbye', 'Test', 'Welcome'];
@@ -69,5 +75,25 @@ describe('block-messages.vue', () => {
     const alignedMessages = leftAlignedMessages.findAll('.block-messages--message.block-messages--alignedMessage');
 
     expect(alignedMessages.length).toEqual(messageList.length);
+  });
+
+  it('allows a timeout to be set which will clear the messages', async () => {
+    // jest.setTimeout(5000);
+    const timeout = 1;
+    const messagesWithTimeout = mountBlockMessages({
+      messages: messageList,
+      messageTimeout: timeout,
+    });
+
+    const messageNodes = messagesWithTimeout.findAll(BitMessage);
+
+    expect(messageNodes.length).toEqual(messageList.length);
+
+    // Wait an extra second for messages to disappear
+    await sleep((timeout * 1000) + 1000);
+
+    const messageNodesAfterTimeout = messagesWithTimeout.findAll(BitMessage);
+
+    expect(messageNodesAfterTimeout.length).toEqual(0);
   });
 });
