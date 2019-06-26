@@ -68,7 +68,26 @@ import InputMask from 'inputmask';
 import 'flatpickr/dist/flatpickr.min.css';
 import config from '../../app.config';
 import InputType from '../global/constants/InputType';
-import { parseDateString, generateRandomId } from '../global/mixins';
+import { generateRandomId } from '../global/mixins';
+
+/**
+ * Determines if a date string is valid
+ * *Note: this assums the date string is in the following format: mm/dd/yyyy
+ * @param {string} dateString - The date string to vlidate
+ * @returns {boolean} Flag indicating if the string is a valid date.
+ */
+function dateStringIsValid(dateString) {
+  if (new Date(dateString).toString() === 'Invalid Date') {
+    return false;
+  }
+
+  const [month, day, year] = dateString.split('/');
+  const testDate = new Date(dateString);
+
+  return testDate.getFullYear() === Number(year)
+          && testDate.getMonth() + 1 === Number(month)
+          && testDate.getDate() === Number(day);
+}
 
 /**
  * A flexible input and label that can be rendered as a text field,
@@ -211,17 +230,20 @@ export default {
         // Set the flatpickr input element's date value
         datePicker.setDate(value);
 
-        // Set the datepicker icon to open the date picker on click
-        pickerIcon.onclick = openDatePicker(datePicker);
+        const isReadonly = self.$el.querySelector('input').readOnly;
+        if (isReadonly === false) {
+          // Set the datepicker icon to open the date picker on click
+          pickerIcon.onclick = openDatePicker(datePicker);
 
-        // Validate on focus out (or blur)
-        datePicker.element.onblur = () => {
-          validator(
-            datePicker.selectedDates,
-            datePicker.element.value,
-            datePicker,
-          );
-        };
+          // Validate on focus out (or blur)
+          datePicker.element.onblur = () => {
+            validator(
+              datePicker.selectedDates,
+              datePicker.element.value,
+              datePicker,
+            );
+          };
+        }
       }
 
       // Transform date elements into date-pickers
@@ -296,7 +318,7 @@ export default {
           case InputType.CHECKBOX:
             return Boolean(value);
           case InputType.DATE:
-            return new Date(value).toString() !== 'Invalid Date'
+            return dateStringIsValid(value)
               ? new Date(value)
               : null;
           case InputType.NUMBER:
@@ -311,6 +333,12 @@ export default {
        * @param value
        */
       const emit = (value) => {
+        const input = this.$el.querySelector('input');
+        if (input.readOnly) {
+          input.value = '';
+          return;
+        }
+
         // Do not emit if phone number is null
         // It will only need to be emitted if it is filled out
         // and will be cleared elsewhere
@@ -353,7 +381,7 @@ export default {
      */
     validateField(selectedDates, dateStr, instance) {
       // Reset if date is invalid
-      if (parseDateString(dateStr) == null) {
+      if (!dateStringIsValid(dateStr)) {
         instance._input.value = null;
       }
     },

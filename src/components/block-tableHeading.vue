@@ -26,7 +26,7 @@
         </th>
 
         <!-- Include the Actions heading if "includeActionContainer" flag is set -->
-        <th class="smart-table--heading" v-if="includeActionContainer">Actions</th>
+        <th class="smart-table--heading" v-if="includeActionContainer">{{ actionColumnName }}</th>
 
       </tr>
   </thead>
@@ -70,6 +70,13 @@ export default {
     includeActionContainer: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * Optional custom name for the action column
+     */
+    actionColumnName: {
+      type: String,
+      default: 'Actions',
     },
   },
   filters: {

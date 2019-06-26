@@ -112,6 +112,7 @@ const ignoreFields = ['ignoredField'];
 const propsToLink = {};
 const tableEmptyMessage = 'Sorry, this is a test.';
 const idKey = 'personId';
+const actionColumnName = 'customAction';
 
 const tableProps = {
   tableData,
@@ -122,6 +123,7 @@ const tableProps = {
   propsToLink,
   tableEmptyMessage,
   idKey,
+  actionColumnName,
 };
 
 const searchModel = {
@@ -243,7 +245,7 @@ describe('stack-searchableTable.vue', () => {
     smartTableComponentProps.every((prop) => {
       const result = testedSmartTableProps.find(tableProp => tableProp === prop);
 
-      expect(result, `Smart table prop "${prop}" maybe not be included in stack-searchableTable. Please test for this.`).not.toBeUndefined();
+      expect(result, `Smart table prop "${prop}" may not be included in stack-searchableTable. Please test for this.`).not.toBeUndefined();
       return true;
     });
   });
@@ -257,7 +259,7 @@ describe('stack-searchableTable.vue', () => {
     smartSearchComponentProps.every((prop) => {
       const result = testedSmartSearchProps.find(searchProp => searchProp === prop);
 
-      expect(result, `Smart search prop "${prop}" maybe not be included in stack-searchableTable. Please test for this.`).not.toBeUndefined();
+      expect(result, `Smart search prop "${prop}" may not be included in stack-searchableTable. Please test for this.`).not.toBeUndefined();
       return true;
     });
   });

@@ -19,7 +19,8 @@
                  :ignore-fields="ignoreFields"
                  :props-to-link="propsToLink"
                  :table-empty-message="tableEmptyMessage"
-                 :on-sort="sortData">
+                 :on-sort="sortData"
+                 :action-column-name="actionColumnName">
 
       <!-- Preserve table slot -->
       <template slot="action-container" slot-scope="{ getActionPath, itemId, context }">

@@ -142,10 +142,36 @@ describe('bit-input.vue', () => {
     input.setValue('01/01/200');
     expect(wrapper.emitted('input')[1]).toEqual([null]);
 
-    input.setValue('test');
+    input.setValue('02/30/2001');
     expect(wrapper.emitted('input')[2]).toEqual([null]);
 
-    input.setValue('12345');
+    input.setValue('03/58/2001');
     expect(wrapper.emitted('input')[3]).toEqual([null]);
+
+    input.setValue('test');
+    expect(wrapper.emitted('input')[4]).toEqual([null]);
+
+    input.setValue('12345');
+    expect(wrapper.emitted('input')[5]).toEqual([null]);
+  });
+
+  it('will not emit a value if the input is disabled', () => {
+    const wrapper = mountBitInput({
+      propsData: {
+        inputType: 'date',
+        labelText: 'test',
+        readonly: true,
+      },
+    });
+
+    const input = wrapper.find('input');
+
+    expect(input.element.readOnly).toEqual(true);
+
+    input.setValue('test');
+    expect(wrapper.emitted('input')).toBeUndefined();
+
+    input.setValue('01/01/2001');
+    expect(wrapper.emitted('input')).toBeUndefined();
   });
 });

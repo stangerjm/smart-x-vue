@@ -63,4 +63,11 @@ export default {
   onSort: {
     type: Function,
   },
+  /**
+   * Optional name of the action column
+   */
+  actionColumnName: {
+    type: String,
+    default: 'Actions',
+  },
 };

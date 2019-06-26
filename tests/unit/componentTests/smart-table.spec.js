@@ -93,6 +93,7 @@ const tableWithCustomActionContainer = mountSmartTableWithCustomActions({
   tableData,
   defaultContext,
   includeActionContainer: true,
+  actionColumnName: 'test',
 });
 
 const tableWithCustomId = mountSmartTable({
@@ -207,5 +208,11 @@ describe('smart-table.vue', () => {
 
     expect(editLink.attributes('to')).toEqual('/test/edit/1');
     expect(blockActionContainer.props('itemId')).toEqual(1);
+  });
+
+  it('allows actions column to be renamed', () => {
+    const actionHeading = tableWithCustomActionContainer.find('th.smart-table--heading:last-child');
+
+    expect(actionHeading.text()).toEqual('test');
   });
 });

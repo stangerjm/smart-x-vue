@@ -5,7 +5,8 @@
     <block-table-heading :table-headings="getTableKeys"
                          :unsearchable-headings="unsearchableHeadings"
                          :sort-method="sortBy"
-                         :include-action-container="includeActionContainer">
+                         :include-action-container="includeActionContainer"
+                         :action-column-name="actionColumnName">
     </block-table-heading>
 
     <!-- Table body -->

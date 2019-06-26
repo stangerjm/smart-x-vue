@@ -81,7 +81,7 @@ describe('bit-tableCell.vue', () => {
     const tableCell = getBitTableCell({ cellTitle });
     const inlineTitle = tableCell.find('.smart-table--inlineHeading');
 
-    expect(inlineTitle.text()).toEqual(`${cellTitle}:`);
+    expect(inlineTitle.text()).toEqual('This Is a Test:');
   });
 
   it('renders a checkbox in the cell if cellValue is a boolean', () => {
