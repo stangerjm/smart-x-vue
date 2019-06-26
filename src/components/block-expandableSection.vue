@@ -127,8 +127,10 @@ export default {
     EventBus.$on('elementResize', this.handleResize);
   },
   mounted() {
-    // Resize immediately to ensure all components are proper size.
-    this.toggle();
+    // Resize on the next tick to ensure all components are proper size.
+    this.$nextTick(() => {
+      this.toggle();
+    });
 
     // Set up loop to watch for resize if "watchResize" flag is set to true
     if (this.watchResize) {

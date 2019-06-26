@@ -55,6 +55,7 @@ export default {
       firstFocusableEl: null,
       lastFocusableEl: null,
       focusedElBeforeOpen: null,
+      modal: null,
     };
   },
   watch: {
@@ -141,6 +142,18 @@ export default {
           break;
       }
     },
+  },
+  created() {
+    this.$nextTick(() => {
+      // Get modal from template
+      const modal = this.$el;
+
+      // Remove modal from this context
+      this.$el.remove();
+
+      // Append to body
+      document.body.appendChild(modal);
+    });
   },
 };
 </script>
