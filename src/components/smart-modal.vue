@@ -3,7 +3,8 @@
   <!-- Modal wrapper -->
   <section class="smart-modal"
            role="dialog"
-           v-if="value">
+           v-if="value"
+           tabindex="-1">
 
     <!-- Container for all modal content -->
     <div class="smart-modal--content"
@@ -12,11 +13,12 @@
       <!-- Modal header -->
       <section class="smart-modal--head">
 
+        <!-- Modal title -->
+        <h2 class="smart-modal--title" v-if="modalTitle">{{modalTitle}}</h2>
+
         <!-- Close button -->
         <button class="smart-modal--close" @click="closeModal">CLOSE</button>
 
-        <!-- Modal title -->
-        <h2 class="smart-modal--title" v-if="modalTitle">{{modalTitle}}</h2>
       </section>
 
       <!-- Modal body -->
@@ -143,17 +145,19 @@ export default {
       }
     },
   },
-  created() {
-    this.$nextTick(() => {
-      // Get modal from template
-      const modal = this.$el;
+  mounted() {
+    // Get modal from template
+    const modal = this.$el;
 
-      // Remove modal from this context
-      this.$el.remove();
+    // Remove modal from this context
+    this.$el.remove();
 
-      // Append to body
-      document.body.appendChild(modal);
-    });
+    // Append to body
+    document.body.appendChild(modal);
+
+    if (this.value === true) {
+      this.onOpen();
+    }
   },
 };
 </script>
