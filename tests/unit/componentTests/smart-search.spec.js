@@ -3,6 +3,7 @@ import { createComponentGenerator, Click } from '../helpers';
 import SmartSearch from '../../../src/components/smart-search.vue';
 import BitInput from '../../../src/components/bit-input.vue';
 import ModelType from '../../../src/global/constants/ModelType';
+import { createViewModel } from '../../../src/global/mixins';
 
 const action = '<button type="button" class="content-action">Test</button>';
 
@@ -644,5 +645,52 @@ describe('smart-search.vue', () => {
     expect(result).toEqual({
       initial: 'Test',
     });
+  });
+
+  it('allows search data and current search filter to be specified from the outside', () => {
+    const defaultFilter = 'name';
+    const prefilledSearchModel = {
+      name: 'James',
+      age: 23,
+      birthday: new Date(),
+      isEmployee: false,
+      phone: ModelType.PhoneNumber('1234567890'),
+      position: ['ITS3', 'ITS4', 'ITS5'],
+    };
+
+    const prefilledMultipleSearch = mountSmartSearch({
+      searchModel: prefilledSearchModel,
+      onSubmit,
+      onReset,
+      defaultFilter,
+    });
+
+    const selectField = prefilledMultipleSearch.find('.smart-search--filterList > .bit-input--field');
+    const options = selectField.findAll('option');
+    const selectedFilterField = options.at(selectField.element.selectedIndex);
+
+    expect(selectedFilterField.exists(), 'No option can be selected from the outside.').toEqual(true);
+
+    expect(selectedFilterField.attributes('value')).toEqual(defaultFilter);
+
+    expect(result).toEqual({
+      name: 'James',
+    });
+
+    // Ensure reset still works and properly clears out fields
+    const resetBtn = prefilledMultipleSearch.find('.smart-search--reset');
+
+    Click(resetBtn);
+
+    expect(result).toEqual({});
+
+    expect(prefilledMultipleSearch.vm.searchData).toEqual(createViewModel({
+      name: String,
+      age: Number,
+      birthday: Date,
+      isEmployee: Boolean,
+      phone: ModelType.PhoneNumber(),
+      position: ['ITS3', 'ITS4', 'ITS5'],
+    }));
   });
 });

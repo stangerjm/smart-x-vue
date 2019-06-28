@@ -302,4 +302,30 @@ describe('createViewModel.js', () => {
 
     expect(advancedViewModel.simpleVersion).toEqual(model);
   });
+
+  it('allows values of the input model to be ignored, instead using the default value for that type as the model value', () => {
+    const modelWithValues = createViewModel({
+      name: 'James',
+      age: 25,
+      birthday: new Date('01/01/2001'),
+      isEmployee: true,
+      teamMembers: ['Jeremy', 'Josh', 'Kelli', 'Kieth', 'Long', 'Richard'],
+      position: { name: 'ITS3', team: 'PADS' },
+      phoneNumber: '1234567890',
+      password: 'test123',
+    }, true);
+
+    const expectedModel = createViewModel({
+      name: String,
+      age: Number,
+      birthday: Date,
+      isEmployee: Boolean,
+      teamMembers: ['Jeremy', 'Josh', 'Kelli', 'Kieth', 'Long', 'Richard'],
+      position: { name: String, team: String },
+      phoneNumber: String,
+      password: String,
+    });
+
+    expect(modelWithValues).toEqual(expectedModel);
+  });
 });

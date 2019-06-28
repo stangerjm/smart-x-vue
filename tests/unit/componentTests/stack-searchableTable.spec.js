@@ -126,6 +126,8 @@ const tableProps = {
   actionColumnName,
 };
 
+const defaultFilter = 'name';
+
 const searchModel = {
   name: String,
   age: Number,
@@ -160,6 +162,7 @@ const searchModelWithoutBoolean = {
 
 const searchProps = {
   searchModel,
+  defaultFilter,
 };
 
 const resultsPerPage = 5;

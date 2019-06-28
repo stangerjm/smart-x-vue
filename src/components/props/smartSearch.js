@@ -17,4 +17,7 @@ export default {
     type: Function,
     default() {},
   },
+  defaultFilter: {
+    type: String,
+  },
 };

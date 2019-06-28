@@ -3,7 +3,7 @@ import smartTable from './smartTable';
 
 // Use destructuring to ignore smart-search prop 'onSubmit' and 'onReset'
 // as we will be providing that functionality in the component.
-const { onSubmit, onReset, ...smartSearchProps } = smartSearch;
+const { onSubmit, ...smartSearchProps } = smartSearch;
 
 // Ignore smart-table prop 'onSort' as stack-searchableTable will override this
 const { onSort, ...smartTableProps } = smartTable;

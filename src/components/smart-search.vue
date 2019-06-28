@@ -206,6 +206,7 @@ export default {
   },
   data() {
     const searchData = createViewModel(this.searchModel);
+    const { defaultFilter } = this;
 
     return {
       /**
@@ -215,7 +216,9 @@ export default {
       /**
        * The filter selected by the user
        */
-      selectedFilter: '',
+      selectedFilter: defaultFilter != null
+        ? defaultFilter
+        : '',
       /**
        * Contains any properties from the search data that are array
        * properties and should be rendered as select elements
@@ -354,15 +357,20 @@ export default {
      * Resets the search fields and calls the passed in onReset function
      */
     reset() {
-      this.searchData = createViewModel(this.searchModel);
+      // Specify createViewModel should ignore the existing
+      // values so we can be sure to reset the searchModel
+      this.searchData = createViewModel(this.searchModel, true);
       this.selectData = getSelectData(this.searchData);
 
       // TODO: investigate why date-pickers do not reset and need manual clearing
       this.$el.querySelectorAll('.bit-input--date').forEach((input) => { input.value = ''; });
 
       this.onSubmit(null);
-      this.onReset();
+      this.onReset(this.searchData);
     },
+  },
+  mounted() {
+    this.search(this.selectedFilter);
   },
 };
 </script>

@@ -3,7 +3,9 @@
 
     <!-- Render search -->
     <smart-search :search-model="searchModel"
-                  :on-submit="handleSearchSubmit">
+                  :on-submit="handleSearchSubmit"
+                  :default-filter="defaultFilter"
+                  :on-reset="onReset">
 
       <!-- Preserve action slot -->
       <slot name="search-action" slot="extra-action"></slot>

@@ -6,6 +6,7 @@
                             include-action-container
                             default-context="test"
                             :searchModel="searchModel"
+                            default-filter="Full Name"
                             :results-per-page="100">
 
         <template slot="table-action" slot-scope="{ getActionPath, itemId }">
@@ -16,6 +17,8 @@
     </div>
 </template>
 <script>
+import ModelType from '../../src/global/constants/ModelType';
+
 export default {
   name: 'usability',
   components: {
@@ -26,7 +29,7 @@ export default {
     return {
       searchModel: {
         'Full Name': {
-          firstName: String,
+          firstName: 'Josh',
           lastName: String,
         },
         Manufacturer: {
@@ -40,6 +43,7 @@ export default {
           firstName: String,
           dateOfBirth: Date,
         },
+        phoneNumber: ModelType.PhoneNumber(),
       },
       technicians: [
         {
@@ -50,6 +54,7 @@ export default {
           applicationStatus: 'Sponsorship Denied',
           dateOfBirth: new Date('01/02/2019'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'stangerjm',
@@ -59,6 +64,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('02/06/2019'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'newtechnician',
@@ -68,6 +74,7 @@ export default {
           applicationStatus: 'Sponsorship Denied',
           dateOfBirth: new Date('05/06/2000'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser2',
@@ -77,6 +84,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2001'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'lastTech',
@@ -86,6 +94,7 @@ export default {
           applicationStatus: 'Test Failed',
           dateOfBirth: new Date('02/20/1994'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'imsTest',
@@ -95,6 +104,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('02/22/1978'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser3',
@@ -104,6 +114,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2002'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'techniciantest',
@@ -113,6 +124,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('02/12/1945'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'kcampos02',
@@ -122,6 +134,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('12/08/1990'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser4',
@@ -131,6 +144,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2003'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'janedoe',
@@ -140,6 +154,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('01/01/2001'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'jhag225',
@@ -149,6 +164,7 @@ export default {
           applicationStatus: 'Test Passed',
           dateOfBirth: new Date('02/26/1989'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser5',
@@ -158,6 +174,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2004'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'jnap225',
@@ -167,6 +184,7 @@ export default {
           applicationStatus: 'Test Failed',
           dateOfBirth: new Date('03/04/1960'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser6',
@@ -176,6 +194,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2005'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'smithjohn',
@@ -185,6 +204,7 @@ export default {
           applicationStatus: 'Test Failed',
           dateOfBirth: new Date('01/01/1985'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser7',
@@ -194,6 +214,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2006'),
           manufacturer: 'Acme, Inc.',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'test',
@@ -203,6 +224,7 @@ export default {
           applicationStatus: 'Test Failed',
           dateOfBirth: new Date('03/04/1998'),
           manufacturer: 'Test Manufacturer',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser12',
@@ -212,6 +234,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2001'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
         {
           userName: 'TestUser8',
@@ -221,6 +244,7 @@ export default {
           applicationStatus: 'Pending Sponsorship',
           dateOfBirth: new Date('01/01/2007'),
           manufacturer: 'Widgets R. Us',
+          phoneNumber: '(360) 123-4567',
         },
       ],
     };

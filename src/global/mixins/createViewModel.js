@@ -22,7 +22,7 @@ function getValue(value, type) {
  * of object entries into a typed view model object.
  * @returns {function}
  */
-function getViewModelReductor() {
+function getViewModelReductor(ignoreValue = false) {
   /**
    * Reducing function. Creates a new object with only the value from a typed schema.
    * @param accumulatorObj
@@ -84,6 +84,8 @@ function getViewModelReductor() {
    * @returns {object}
    */
   function gatherIntoViewModelObject(accumulatorObj, [key, value]) {
+    const shouldIgnoreValue = ignoreValue && !Array.isArray(value);
+
     function accumulateFunctionType(type) {
       return getSimplifyableObject({
         ...accumulatorObj,
@@ -107,7 +109,9 @@ function getViewModelReductor() {
         [key]: {
           type,
           typeConstructor: typeLookup(type),
-          value: value.modelValue,
+          value: shouldIgnoreValue
+            ? ''
+            : value.modelValue,
           errored: false,
         },
       });
@@ -140,7 +144,9 @@ function getViewModelReductor() {
       [key]: {
         type: getType(getValue(value)),
         typeConstructor: getType(getValue(value), true),
-        value: getValue(value),
+        value: shouldIgnoreValue
+          ? getDefaultValue(getType(getValue(value), true))
+          : getValue(value),
         errored: false,
       },
     });
@@ -184,7 +190,7 @@ function createViewModelFromArray(arraySchema) {
  * @param schema
  * @returns {object}
  */
-export default function createViewModel(schema) {
+export default function createViewModel(schema, ignoreValue = false) {
   if (schema == null) {
     return {};
   }
@@ -194,7 +200,7 @@ export default function createViewModel(schema) {
   }
 
   const entries = Object.entries(schema);
-  const createViewModelFromEntries = getViewModelReductor();
+  const createViewModelFromEntries = getViewModelReductor(ignoreValue);
 
   return entries.reduce(createViewModelFromEntries, {});
 }
