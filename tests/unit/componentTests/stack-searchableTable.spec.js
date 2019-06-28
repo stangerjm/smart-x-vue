@@ -8,6 +8,11 @@ import BitPaging from '../../../src/components/bit-paging.vue';
 import ModelType from '../../../src/global/constants/ModelType';
 import { smartSearch, smartTable } from '../../../src/components/props';
 
+let searchResult;
+function onSearch(data) {
+  searchResult = data;
+}
+
 // Get all search props except for onSubmit, onReset,
 // and value, which stack-searchableTable overrides
 const {
@@ -570,5 +575,32 @@ describe('stack-searchableTable.vue', () => {
       tableData[0],
       tableData[1],
     ]);
+  });
+
+  it('allows an on-search method to be injected into the search component', () => {
+    const searchableTableWithInjectedSearch = mountStackSearchableTable({
+      ...tableProps,
+      ...searchProps,
+      searchModel: searchModelWithoutBoolean,
+      resultsPerPage: 10,
+      onSearch,
+    });
+
+    clickSearchOptionAndSetValue('name', searchableTableWithInjectedSearch, 'Person 1');
+    expect(searchResult).toEqual({
+      searchModel: {
+        name: 'Person 1',
+      },
+      resultData: [{
+        personId: 1,
+        name: 'Person 1',
+        age: 25,
+        isEmployee: true,
+        hireDate: new Date('01/01/2001'),
+        phoneNumber: '(360) 123-4567',
+        position: 'ITS4',
+        ignoredField: 'data',
+      }],
+    });
   });
 });

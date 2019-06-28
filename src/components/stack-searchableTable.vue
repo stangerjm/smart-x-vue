@@ -113,6 +113,16 @@ export default {
       type: Number,
       default: 10,
     },
+    /**
+     * Function to be called when a search happens
+     * *Note: This function will recieve an object with two properties:
+     *    1.) searchModel: the model that was used in the search
+     *    2.) resultData: the results of the search
+     */
+    onSearch: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -178,6 +188,12 @@ export default {
       this.pageIdx = 0;
 
       this.filterData(submittedData);
+
+      // Inject search model and result data into onSearch method passed in
+      this.onSearch({
+        searchModel: submittedData,
+        resultData: this.masterData,
+      });
     },
     /**
      * Resets the local data to the initial state
