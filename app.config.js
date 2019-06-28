@@ -4,14 +4,7 @@ export default {
    * parse dates from strings.
    * Follows date-fns parse tokens: https://date-fns.org/v2.0.0-alpha.6/docs/parse
    */
-  dateParseFormat: 'MM/DD/YYYY',
-  /**
-   * The format with which to display dates.
-   * Follows date-fns format tokens: https://date-fns.org/v2.0.0-alpha.6/docs/format
-   * *NOTE: The above source could be outdated. Please check the library's CHANGELOG:
-   *    https://github.com/date-fns/date-fns/blob/master/CHANGELOG.md
-   */
-  dateDisplayFormat: 'MM/dd/YYYY',
+  dateParseFormat: 'MM/dd/yyyy',
   /**
    * Placeholder for date inputs. Placeholder will display on-hover and as the user types.
    */

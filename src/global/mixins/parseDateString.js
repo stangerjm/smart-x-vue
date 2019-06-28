@@ -30,9 +30,8 @@ function isValidDateString(value) {
     return false;
   }
 
-  const shortISOFormat = "YYYY-MM-DD'T'HH:mm:ss";
-  const longISOFormat = "YYYY-MM-DD'T'HH:mm:ss.SSS'Z'";
-  const utcFormat = "ccc, DD MMM YYYY HH:mm:ss 'GMT'";
+  const shortISOFormat = "yyyy-MM-dd'T'HH:mm:ss";
+  const longISOFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   const validDate = config.dateParseFormat;
 
   const validateDateString = getDateValidator(value);
@@ -42,7 +41,6 @@ function isValidDateString(value) {
   return (
     validateDateString(shortISOFormat) ||
     validateDateString(longISOFormat) ||
-    validateDateString(utcFormat) ||
     validateDateString(validDate)
   );
 }

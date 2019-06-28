@@ -25,8 +25,6 @@ describe('compare.js', () => {
     expect(compare('01/01/2001', '01/01/2001', Date)).toBeTruthy();
     expect(compare('01/01/2001', new Date('01/01/2001'), Date)).toBeTruthy();
     expect(compare(new Date('01/01/2001'), '01/01/2001', Date)).toBeTruthy();
-    expect(compare('01/01/2001', new Date('01/01/2001').toUTCString(), Date)).toBeTruthy();
-    expect(compare(new Date('01/01/2001').toUTCString(), '01/01/2001', Date)).toBeTruthy();
     expect(compare('01/01/2001', new Date('01/01/2001').toISOString(), Date)).toBeTruthy();
     expect(compare(new Date('01/01/2001').toISOString(), '01/01/2001', Date)).toBeTruthy();
 

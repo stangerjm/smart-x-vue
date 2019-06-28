@@ -13,5 +13,5 @@ export default function formatDate(date) {
     return '';
   }
 
-  return format(date, config.dateDisplayFormat, { awareOfUnicodeTokens: true });
+  return format(date, config.dateParseFormat, { awareOfUnicodeTokens: true });
 }

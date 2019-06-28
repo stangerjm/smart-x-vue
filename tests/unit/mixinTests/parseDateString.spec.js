@@ -6,7 +6,6 @@ describe('parseDateString.js', () => {
       /**
        * Supported formats
        */
-      utcDate: new Date('01/01/2001').toUTCString(),
       isoDate: new Date('01/01/2001').toISOString(),
       dotNetMVCJsonDate: '/Date(1541539613000)',
       dotNetAPIJsonDate: '2002-02-02T00:00:00',
@@ -14,6 +13,7 @@ describe('parseDateString.js', () => {
       /**
        * Unsupported / ignored formats
        */
+      utcDate: new Date('01/01/2001').toUTCString(),
       dateObject: new Date('01/01/2001'),
       dateToString: new Date('11/13/2018').toString(),
       invalidDateString: '01-01-2001',
@@ -29,7 +29,6 @@ describe('parseDateString.js', () => {
       /**
        * Supported formats
        */
-      utcDate: new Date('01/01/2001'),
       isoDate: new Date('01/01/2001'),
       dotNetMVCJsonDate: new Date(2018, 10, 6, 13, 26, 53),
       dotNetAPIJsonDate: new Date('02/02/2002'),
@@ -37,6 +36,7 @@ describe('parseDateString.js', () => {
       /**
        * Unsupported / ignored formats
        */
+      utcDate: null,
       dateObject: null,
       dateToString: null,
       invalidDateString: null,
