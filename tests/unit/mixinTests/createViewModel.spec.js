@@ -313,9 +313,13 @@ describe('createViewModel.js', () => {
       position: { name: 'ITS3', team: 'PADS' },
       phoneNumber: '1234567890',
       password: 'test123',
+      fullName: {
+        fName: 'Jim',
+        lName: 'Bob',
+      },
     }, true);
 
-    const expectedModel = createViewModel({
+    const simpleModel = {
       name: String,
       age: Number,
       birthday: Date,
@@ -324,8 +328,15 @@ describe('createViewModel.js', () => {
       position: { name: String, team: String },
       phoneNumber: String,
       password: String,
-    });
+      fullName: {
+        fName: String,
+        lName: String,
+      },
+    };
+
+    const expectedModel = createViewModel(simpleModel);
 
     expect(modelWithValues).toEqual(expectedModel);
+    expect(modelWithValues.simpleSearchModel).toEqual(simpleModel);
   });
 });

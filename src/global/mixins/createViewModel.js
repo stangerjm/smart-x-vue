@@ -22,7 +22,7 @@ function getValue(value, type) {
  * of object entries into a typed view model object.
  * @returns {function}
  */
-function getViewModelReductor(ignoreValue = false) {
+function getViewModelReductor(createSearchModel = false) {
   /**
    * Reducing function. Creates a new object with only the value from a typed schema.
    * @param accumulatorObj
@@ -30,23 +30,35 @@ function getViewModelReductor(ignoreValue = false) {
    * @param value
    * @returns {object}
    */
-  function simplifyObjectToOriginalModel(accumulatorObj, [key, typedValue]) {
-    if (typedValue.value == null || typedValue.value === '') {
-      return accumulatorObj;
-    }
-    if (typedValue.type !== Object.name) {
+  function getObjectSimplifier(getSearchModel = false) {
+    return function simplifyObjectToOriginalModel(accumulatorObj, [key, typedValue]) {
+      if (getSearchModel && typedValue.typeConstructor !== Object) {
+        return {
+          ...accumulatorObj,
+          [key]: typedValue.typeConstructor === Array
+            ? typedValue.value
+            : typedValue.typeConstructor,
+        };
+      }
+
+      if (typedValue.value == null || typedValue.value === '') {
+        return accumulatorObj;
+      }
+
+      if (typedValue.type !== Object.name) {
+        return {
+          ...accumulatorObj,
+          [key]: typedValue.value,
+        };
+      }
+
       return {
         ...accumulatorObj,
-        [key]: typedValue.value,
+        [key]: Object.entries(typedValue.value).reduce(
+          simplifyObjectToOriginalModel,
+          {},
+        ),
       };
-    }
-
-    return {
-      ...accumulatorObj,
-      [key]: Object.entries(typedValue.value).reduce(
-        simplifyObjectToOriginalModel,
-        {},
-      ),
     };
   }
 
@@ -56,7 +68,9 @@ function getViewModelReductor(ignoreValue = false) {
    * @param obj
    * @returns {object}
    */
-  function simplify(obj) {
+  function simplify(obj, getSearchModel = false) {
+    const simplifyObjectToOriginalModel = getObjectSimplifier(getSearchModel);
+
     return Object.entries(obj).reduce(simplifyObjectToOriginalModel, {});
   }
 
@@ -68,10 +82,18 @@ function getViewModelReductor(ignoreValue = false) {
    * @returns {object}
    */
   function getSimplifyableObject(obj) {
-    return Object.defineProperty(obj, 'simpleVersion', {
-      enumerable: false,
-      get() {
-        return simplify(obj);
+    return Object.defineProperties(obj, {
+      simpleVersion: {
+        enumerable: false,
+        get() {
+          return simplify(obj);
+        },
+      },
+      simpleSearchModel: {
+        enumerable: false,
+        get() {
+          return simplify(obj, true);
+        },
       },
     });
   }
@@ -84,7 +106,7 @@ function getViewModelReductor(ignoreValue = false) {
    * @returns {object}
    */
   function gatherIntoViewModelObject(accumulatorObj, [key, value]) {
-    const shouldIgnoreValue = ignoreValue && !Array.isArray(value);
+    const shouldIgnoreValue = createSearchModel && !Array.isArray(value);
 
     function accumulateFunctionType(type) {
       return getSimplifyableObject({
@@ -190,7 +212,7 @@ function createViewModelFromArray(arraySchema) {
  * @param schema
  * @returns {object}
  */
-export default function createViewModel(schema, ignoreValue = false) {
+export default function createViewModel(schema, createSearchModel = false) {
   if (schema == null) {
     return {};
   }
@@ -200,7 +222,7 @@ export default function createViewModel(schema, ignoreValue = false) {
   }
 
   const entries = Object.entries(schema);
-  const createViewModelFromEntries = getViewModelReductor(ignoreValue);
+  const createViewModelFromEntries = getViewModelReductor(createSearchModel);
 
   return entries.reduce(createViewModelFromEntries, {});
 }

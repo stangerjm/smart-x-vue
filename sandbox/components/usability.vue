@@ -3,11 +3,13 @@
       <h2>Active Technicians</h2>
 
       <stack-searchable-table :table-data="technicians"
-                            include-action-container
-                            default-context="test"
-                            :searchModel="searchModel"
-                            default-filter="Full Name"
-                            :results-per-page="100">
+                              include-action-container
+                              default-context="test"
+                              :searchModel="searchModel"
+                              default-filter="Full Name"
+                              :results-per-page="100"
+                              :on-search="log"
+                              :on-reset="log">
 
         <template slot="table-action" slot-scope="{ getActionPath, itemId }">
           <router-link :to="getActionPath('test', 'details', itemId)">Details</router-link>
@@ -23,6 +25,11 @@ export default {
   name: 'usability',
   components: {
     StackSearchableTable: () => import('../../src/components/stack-searchableTable'),
+  },
+  methods: {
+    log(x) {
+      console.log(x);
+    },
   },
   data() {
     const manufacturers = ['Acme, Inc.', 'Widgets R. Us', 'Test Manufacturer'];

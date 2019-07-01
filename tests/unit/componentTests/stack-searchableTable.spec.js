@@ -13,6 +13,10 @@ function onSearch(data) {
   searchResult = data;
 }
 
+function reset(data) {
+  searchResult = data;
+}
+
 // Get all search props except for onSubmit, onReset,
 // and value, which stack-searchableTable overrides
 const {
@@ -189,6 +193,8 @@ const searchableTableWithMultipleSearch = mountStackSearchableTable({
   ...tableProps,
   searchModel: multipleSearchModel,
   resultsPerPage,
+  onSearch,
+  onReset: reset,
 });
 
 const table = stackSearchableTable.find(SmartTable);
@@ -590,6 +596,24 @@ describe('stack-searchableTable.vue', () => {
     expect(searchResult).toEqual({
       searchModel: {
         name: 'Person 1',
+      },
+      resultData: [{
+        personId: 1,
+        name: 'Person 1',
+        age: 25,
+        isEmployee: true,
+        hireDate: new Date('01/01/2001'),
+        phoneNumber: '(360) 123-4567',
+        position: 'ITS4',
+        ignoredField: 'data',
+      }],
+    });
+
+    clickSearchOptionAndSetMultipleValue('namePosition', searchableTableWithMultipleSearch, ['Person 1', ['ITS4']]);
+    expect(searchResult).toEqual({
+      searchModel: {
+        name: 'Person 1',
+        position: 'ITS4',
       },
       resultData: [{
         personId: 1,

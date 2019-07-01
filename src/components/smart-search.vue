@@ -366,7 +366,8 @@ export default {
       this.$el.querySelectorAll('.bit-input--date').forEach((input) => { input.value = ''; });
 
       this.onSubmit(null);
-      this.onReset(this.searchData);
+
+      this.onReset(this.searchData.simpleSearchModel);
     },
   },
   mounted() {
