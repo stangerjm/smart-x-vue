@@ -2,11 +2,11 @@
     <div class="usability">
       <h2>Active Technicians</h2>
 
-      <stack-searchable-table :table-data="technicians"
+      <stack-searchable-table :table-data="getPeople"
                               include-action-container
                               default-context="test"
                               :searchModel="searchModel"
-                              default-filter="phoneNumber"
+                              default-filter="Full Name"
                               :results-per-page="100"
                               :on-search="log"
                               :on-reset="log">
@@ -19,7 +19,11 @@
     </div>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex';
 import ModelType from '../../src/global/constants/ModelType';
+
+
+const { mapActions, mapGetters } = createNamespacedHelpers('people');
 
 export default {
   name: 'usability',
@@ -27,9 +31,13 @@ export default {
     StackSearchableTable: () => import('../../src/components/stack-searchableTable'),
   },
   methods: {
+    ...mapActions(['fetchPeopleData']),
     log(x) {
       console.log(x);
     },
+  },
+  computed: {
+    ...mapGetters(['getPeople']),
   },
   data() {
     const manufacturers = ['Acme, Inc.', 'Widgets R. Us', 'Test Manufacturer'];
@@ -255,6 +263,9 @@ export default {
         },
       ],
     };
+  },
+  created() {
+    this.fetchPeopleData();
   },
 };
 </script>

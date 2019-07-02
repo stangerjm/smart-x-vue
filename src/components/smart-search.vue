@@ -382,9 +382,16 @@ export default {
 
       this.onReset(this.searchData.simpleSearchModel);
     },
+    /**
+     * Triggers a search with the current selected filter
+     * @public
+     */
+    triggerSearch() {
+      this.search(this.selectedFilter);
+    },
   },
   mounted() {
-    this.search(this.selectedFilter);
+    this.triggerSearch();
   },
 };
 </script>

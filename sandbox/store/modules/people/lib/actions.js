@@ -1,7 +1,16 @@
 import personService from '../../../services/personService';
 
 export const fetchPeopleData = async (context) => {
+  function delay(time, value) {
+    return new Promise((resolve) => {
+      setTimeout(resolve.bind(null, value), time);
+    });
+  }
+
   const response = await personService.fetchPeople();
+
+  await delay(1000);
+
   const { data: { people } } = response;
   context.commit('updatePeople', people);
 };

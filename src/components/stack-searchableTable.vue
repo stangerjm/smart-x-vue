@@ -5,7 +5,8 @@
     <smart-search :search-model="searchModel"
                   :on-submit="handleSearchSubmit"
                   :default-filter="defaultFilter"
-                  :on-reset="onReset">
+                  :on-reset="onReset"
+                  ref="smartSearch">
 
       <!-- Preserve action slot -->
       <slot name="search-action" slot="extra-action"></slot>
@@ -147,6 +148,8 @@ export default {
      */
     tableData() {
       this.masterData = this.tableData;
+
+      this.$refs.smartSearch.triggerSearch();
     },
   },
   computed: {

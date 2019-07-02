@@ -1,6 +1,6 @@
 import { getDataSortedByColumn } from '../../../../../src/global/mixins';
 
-export const getPeople = state => state.people;
+export const getPeople = state => state.people || [];
 
 export const getPersonSingle = state => id => state.people.find(person => person._id === id);
 
