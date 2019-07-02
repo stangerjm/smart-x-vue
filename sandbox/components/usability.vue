@@ -6,7 +6,7 @@
                               include-action-container
                               default-context="test"
                               :searchModel="searchModel"
-                              default-filter="Full Name"
+                              default-filter="phoneNumber"
                               :results-per-page="100"
                               :on-search="log"
                               :on-reset="log">

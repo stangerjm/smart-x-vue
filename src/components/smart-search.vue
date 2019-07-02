@@ -340,18 +340,31 @@ export default {
       } = this.searchData.simpleVersion;
 
       if (selectedValue == null) {
-        this.onSubmit(null);
+        this.onSubmit(undefined);
         return;
       }
 
       const selectedData = this.extractSelectedData(selectedValue, currentFilter);
 
       if (Array.isArray(selectedData[currentFilter])) {
-        this.onSubmit(null);
+        this.onSubmit(undefined);
         return;
       }
 
-      this.onSubmit(selectedData);
+      // Get the type of the current property
+      const currentPropType = this.searchData[this.selectedFilter].typeConstructor;
+
+      // If the current property is an object, that means it is a multi-select search and
+      // the parent property (the selected filter) should be passed along so the consumer
+      // can know which property this belongs to
+      const wholeSelectedModel = currentPropType === Object
+        ? { [this.selectedFilter]: selectedData }
+        : selectedData;
+
+      this.onSubmit({
+        wholeSelectedModel,
+        selectedData,
+      });
     },
     /**
      * Resets the search fields and calls the passed in onReset function
@@ -365,7 +378,7 @@ export default {
       // TODO: investigate why date-pickers do not reset and need manual clearing
       this.$el.querySelectorAll('.bit-input--date').forEach((input) => { input.value = ''; });
 
-      this.onSubmit(null);
+      this.onSubmit(undefined);
 
       this.onReset(this.searchData.simpleSearchModel);
     },

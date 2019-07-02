@@ -612,8 +612,10 @@ describe('stack-searchableTable.vue', () => {
     clickSearchOptionAndSetMultipleValue('namePosition', searchableTableWithMultipleSearch, ['Person 1', ['ITS4']]);
     expect(searchResult).toEqual({
       searchModel: {
-        name: 'Person 1',
-        position: 'ITS4',
+        namePosition: {
+          name: 'Person 1',
+          position: 'ITS4',
+        },
       },
       resultData: [{
         personId: 1,

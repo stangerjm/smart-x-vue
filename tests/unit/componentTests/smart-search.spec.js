@@ -47,8 +47,8 @@ const multipleSearchModel = {
 };
 
 let result;
-function onSubmit(submittedData) {
-  result = submittedData;
+function onSubmit({ selectedData } = {}) {
+  result = selectedData;
 }
 
 function onReset() {
@@ -277,7 +277,7 @@ describe('smart-search.vue', () => {
     });
 
     // check that date does not submit if not valid
-    testSearchFunctionality('birthday', '1234', null);
+    testSearchFunctionality('birthday', '1234', undefined);
 
     // BOOLEAN
     testSearchFunctionality('isEmployee', true, {

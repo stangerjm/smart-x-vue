@@ -177,9 +177,9 @@ export default {
      * by smart-search component
      * @returns {void}
      */
-    handleSearchSubmit(submittedData) {
+    handleSearchSubmit({ selectedData, wholeSelectedModel } = {}) {
       // Reset data if data is null
-      if (submittedData == null) {
+      if (selectedData == null) {
         this.resetData();
         return;
       }
@@ -187,11 +187,11 @@ export default {
       // Reset current page
       this.pageIdx = 0;
 
-      this.filterData(submittedData);
+      this.filterData(selectedData);
 
       // Inject search model and result data into onSearch method passed in
       this.onSearch({
-        searchModel: submittedData,
+        searchModel: wholeSelectedModel,
         resultData: this.masterData,
       });
     },
