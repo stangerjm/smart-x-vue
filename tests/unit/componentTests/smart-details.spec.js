@@ -1,3 +1,4 @@
+import { mount } from '@vue/test-utils';
 import { createWrapperGenerator } from '../helpers/index';
 import { toTitleCase } from '../../../src/global/mixins';
 import SmartDetails from '../../../src/components/smart-details.vue';
@@ -10,12 +11,12 @@ const mountDetails = createWrapperGenerator(SmartDetails);
  * @param {object} details - The details to be rendered as a smart-details component
  * @param {object} expectedDetails - The expected values for each key in the above details object.
  */
-function matchDetails(details, expectedDetails) {
+function matchDetails(details, expectedDetails, smartDetails) {
   // Mount wrapper
-  const wrapper = mountDetails({ propsData: { detailData: details } });
+  // const wrapper = mountDetails({ propsData: { detailData: details } });
 
   // Get all details (keys and values)
-  const detailContainers = wrapper.findAll('.smart-details--detail');
+  const detailContainers = smartDetails.findAll('.smart-details--detail');
 
   // Get keys of expectedDetails object
   const expectedKeys = Object.keys(expectedDetails);
@@ -39,7 +40,7 @@ function matchDetails(details, expectedDetails) {
       let renderedValue = valueElement.text();
 
       // If text from value node is blank, it is likely a checkbox. Get the value from the checkbox
-      if (renderedValue === '') {
+      if (renderedValue === '' && valueElement.find('input').element != null) {
         renderedValue = valueElement.find('input').element.checked;
       }
 
@@ -85,6 +86,58 @@ describe('smart-details.vue', () => {
     // Component should have rendered each detail, check that the lengths are the same
     expect(detailContainers.length, 'The component did not render all the details passed in.').toBe(detailKeys.length);
 
-    matchDetails(details, expectedDetails);
+    matchDetails(details, expectedDetails, wrapper);
+  });
+
+  it('updates details when detail-data prop is changed', (done) => {
+    const details = {
+      name: 'Test',
+      age: 30,
+      birthday: new Date('01/01/2001'),
+    };
+
+    const expectedDetails = {
+      name: 'Test',
+      age: '30',
+      birthday: '01/01/2001',
+    };
+
+    const detailWrapper = mount({
+      template: '<smart-details :detail-data="detailData" />',
+      components: {
+        SmartDetails,
+      },
+      data() {
+        return {
+          details: {
+            name: undefined,
+            age: undefined,
+            birthday: undefined,
+          },
+        };
+      },
+      computed: {
+        detailData() {
+          return this.details;
+        },
+      },
+      mounted() {
+        setTimeout(() => {
+          this.details = details;
+        }, 500);
+      },
+    });
+
+    const smartDetails = detailWrapper.find(SmartDetails);
+
+    setTimeout(() => {
+      // Check that prop updated correctly
+      expect(smartDetails.vm.detailData).toEqual(details);
+
+      // Check the rendered details to be sure they rendered correctly
+      matchDetails(details, expectedDetails, smartDetails);
+
+      done();
+    }, 1000);
   });
 });

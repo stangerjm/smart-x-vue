@@ -75,15 +75,6 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      /**
-       * Array that will hold the objects containing
-       * properties that have been broken up into columns.
-       */
-      detailColumns: [],
-    };
-  },
   filters: {
     toTitleCase,
     formatDate,
@@ -94,6 +85,32 @@ export default {
      */
     typedDetails() {
       return createViewModel(this.detailData);
+    },
+    /**
+     * Array that will hold the objects containing
+     * properties that have been broken up into columns.
+     */
+    detailColumns() {
+      const details = Object.entries(this.typedDetails);
+
+      // create filter to filter out objects and arrays
+      const filterOutOfScopeData = (item) => {
+        const [key, value] = item;
+        if (!this.isObjectOrArray(value.type)) {
+          return !this.isHiddenField(key);
+        }
+
+        return false;
+      };
+
+      // Filter data to exclude objects and arrays
+      const filteredEntries = details.filter(filterOutOfScopeData);
+
+      // Split the array into chunks with equal elements and assign it to detailColumns
+      return splitArrayIntoChunks(
+        filteredEntries,
+        this.detailsPerColumn,
+      );
     },
   },
   methods: {
@@ -111,31 +128,6 @@ export default {
     isHiddenField(value) {
       return value.startsWith('_');
     },
-  },
-  /**
-   * Filter out associated records and break main details object into objects representing columns.
-   */
-  created() {
-    const details = Object.entries(this.typedDetails);
-
-    // create filter to filter out objects and arrays
-    const filterOutOfScopeData = (item) => {
-      const [key, value] = item;
-      if (!this.isObjectOrArray(value.type)) {
-        return !this.isHiddenField(key);
-      }
-
-      return false;
-    };
-
-    // Filter data to exclude objects and arrays
-    const filteredEntries = details.filter(filterOutOfScopeData);
-
-    // Split the array into chunks with equal elements and assign it to detailColumns
-    this.detailColumns = splitArrayIntoChunks(
-      filteredEntries,
-      this.detailsPerColumn,
-    );
   },
 };
 </script>
