@@ -3,7 +3,8 @@
     'smart-table--cell': true,
     'smart-table--key': isTableKey,
     'smart-table--centeredCell': isCentered(cellValue.type)
-  }">
+  }"
+      :title="cellValue.value">
 
     <!-- Inline heading (for mobile) -->
     <span class="smart-table--inlineHeading">
