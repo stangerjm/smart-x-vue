@@ -2,6 +2,19 @@
 
 A component that renders a mobile oriented search bar.
 
+## Props
+
+<!-- @vuese:smart-search:props:start -->
+|Name|Description|Type|Required|Default|
+|---|---|---|---|---|
+|searchModel|Model that should be used to render the search fields.|`Object`|`true`|-|
+|onSubmit|Function to be executed on a search.|`Function`|`true`|-|
+|onReset|-|`Function`|`false`|default() {}|
+|defaultFilter|-|`String`|`false`|-|
+
+<!-- @vuese:smart-search:props:end -->
+
+
 ## Slots
 
 <!-- @vuese:smart-search:slots:start -->
@@ -10,15 +23,5 @@ A component that renders a mobile oriented search bar.
 |extra-action|Action Slot|-|
 
 <!-- @vuese:smart-search:slots:end -->
-
-
-## MixIns
-
-<!-- @vuese:smart-search:mixIns:start -->
-|MixIn|
-|---|
-|propsMixin|
-
-<!-- @vuese:smart-search:mixIns:end -->
 
 

@@ -91,19 +91,10 @@
 <script>
 import { getInputType, createViewModel, toTitleCase } from '../global/mixins';
 import { isObject } from '../global/mixins/helpers';
-import { smartSearch } from './props';
 import BitIcon from './bit-icon.vue';
 import BitSelect from './bit-select.vue';
 import BitInput from './bit-input.vue';
 import BitBtn from './bit-btn.vue';
-
-const smartSearchProps = smartSearch || {};
-
-const propsMixin = {
-  props: {
-    ...smartSearchProps,
-  },
-};
 
 function getSelectData(masterData) {
   const masterDataEntries = Object.entries(masterData);
@@ -150,6 +141,29 @@ export default {
     BitSelect,
     BitInput,
     BitBtn,
+  },
+  props: {
+    /**
+     * Model that should be used to render the search fields.
+     */
+    searchModel: {
+      type: Object,
+      required: true,
+    },
+    /**
+     * Function to be executed on a search.
+     */
+    onSubmit: {
+      type: Function,
+      required: true,
+    },
+    onReset: {
+      type: Function,
+      default() {},
+    },
+    defaultFilter: {
+      type: String,
+    },
   },
   computed: {
     /**
@@ -226,10 +240,6 @@ export default {
       selectData: getSelectData(searchData),
     };
   },
-  /**
-   * Include all smart-search props
-   */
-  mixins: [propsMixin],
   filters: {
     /** Grab toTitleCase mixin and use it as a filter */
     toTitleCase,

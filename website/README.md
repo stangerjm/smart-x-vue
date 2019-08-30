@@ -26,9 +26,16 @@ npm --version
 
 ### Installing
 
-Install smart-x-vue
+Clone with Git and install the project via npm.
 
 ```
+# Clones into C:/dev/smart-x-vue
+git clone https://github.com/stangerjm/smart-x-vue.git C:/dev
+
+# Move to new directory
+cd C:/dev/smart-x-vue
+
+# Install dependencies
 npm install
 ```
 

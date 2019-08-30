@@ -57,20 +57,11 @@
 </template>
 
 <script>
-import { smartTable } from './props';
 import { getDataSortedByColumn, createViewModel } from '../global/mixins';
 import BlockTableBody from './block-tableBody.vue';
 import BlockTableHeading from './block-tableHeading.vue';
 import BitMessage from './bit-message.vue';
 import BitIcon from './bit-icon.vue';
-
-
-const smartTableProps = smartTable || {};
-const propsMixin = {
-  props: {
-    ...smartTableProps,
-  },
-};
 
 /**
  * A component that renders a responsive table from a data-set.
@@ -85,7 +76,79 @@ export default {
     BitMessage,
     BitIcon,
   },
-  mixins: [propsMixin],
+  props: {
+    /**
+     * The data that will render as a table.
+     */
+    tableData: {
+      type: Array,
+      required: true,
+    },
+    /**
+     * The default context passed into the action container component
+     * @see block-actionContainer
+     */
+    defaultContext: {
+      type: String,
+      required: true,
+    },
+    /**
+     * An array of key names that will render each
+     * heading associated with the key as literal text and not a searchable link.
+     */
+    unsearchableHeadings: {
+      type: Array,
+      default: () => [],
+    },
+    /**
+     * Flag to optionally render the action container
+     */
+    includeActionContainer: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * List of fields to ignore
+     */
+    ignoreFields: {
+      type: Array,
+      default: () => [],
+    },
+    /**
+     * Properties that should be rendered as links to another record rather than a value.
+     */
+    propsToLink: {
+      type: Object,
+      default: () => {},
+    },
+    /**
+     * Optional message to configure what the table renders when table data is empty.
+     */
+    tableEmptyMessage: {
+      type: String,
+      default: 'No data found.',
+    },
+    /**
+     * Optional way to indicate an alternative id key for a record
+     */
+    idKey: {
+      type: String,
+      default: null,
+    },
+    /**
+     * Method to be called on sort that replaces the default sort method
+     */
+    onSort: {
+      type: Function,
+    },
+    /**
+     * Optional name of the action column
+     */
+    actionColumnName: {
+      type: String,
+      default: 'Actions',
+    },
+  },
   computed: {
     /**
      * Retrieves the keys of the first object in the 'typedData' local
